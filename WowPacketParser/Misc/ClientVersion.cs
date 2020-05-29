@@ -306,6 +306,11 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33169, new DateTime(2020, 01, 28)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33237, new DateTime(2020, 02, 04)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33369, new DateTime(2020, 02, 14)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33528, new DateTime(2020, 03, 02)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33724, new DateTime(2020, 03, 19)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33775, new DateTime(2020, 03, 23)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_33941, new DateTime(2020, 04, 04)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_34220, new DateTime(2020, 04, 29)),
 
             // no classic info, pkt contain build in header
         };
@@ -616,6 +621,11 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V8_3_0_33169:
                 case ClientVersionBuild.V8_3_0_33237:
                 case ClientVersionBuild.V8_3_0_33369:
+                case ClientVersionBuild.V8_3_0_33528:
+                case ClientVersionBuild.V8_3_0_33724:
+                case ClientVersionBuild.V8_3_0_33775:
+                case ClientVersionBuild.V8_3_0_33941:
+                case ClientVersionBuild.V8_3_0_34220:
                     return ClientVersionBuild.V8_0_1_27101;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
@@ -632,6 +642,11 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_13_3_32887:
                 case ClientVersionBuild.V1_13_3_33155:
                 case ClientVersionBuild.V1_13_3_33302:
+                case ClientVersionBuild.V1_13_3_33526:
+                case ClientVersionBuild.V1_13_4_33598:
+                case ClientVersionBuild.V1_13_4_33645:
+                case ClientVersionBuild.V1_13_4_33728:
+                case ClientVersionBuild.V1_13_4_33920:
                     return ClientVersionBuild.V1_13_2_31446;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -693,7 +708,7 @@ namespace WowPacketParser.Misc
             return ClientType.WorldOfWarcraft;
         }
 
-        private static ClientVersionBuild GetVersion(DateTime time)
+        public static ClientVersionBuild GetVersion(DateTime time)
         {
             if (time < ClientBuilds[0].Value)
                 return ClientVersionBuild.Zero;
@@ -723,7 +738,7 @@ namespace WowPacketParser.Misc
                 {
                     try
                     {
-                        var asm = Assembly.Load($"WowPacketParserModule.{tmpFallback}");
+                        var asm = Assembly.LoadFrom(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + $"/Parsers/WowPacketParserModule.{tmpFallback}.dll");
                         Trace.WriteLine($"Loading module WowPacketParserModule.{tmpFallback}.dll (fallback)");
 
                         Handler.LoadHandlers(asm, tmpFallback);
@@ -736,7 +751,7 @@ namespace WowPacketParser.Misc
 
                 try
                 {
-                    var asm = Assembly.Load($"WowPacketParserModule.{VersionDefiningBuild}");
+                    var asm = Assembly.LoadFrom(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + $"/Parsers/WowPacketParserModule.{VersionDefiningBuild}.dll");
                     Trace.WriteLine($"Loading module WowPacketParserModule.{VersionDefiningBuild}.dll");
 
                     HotfixStoreMgr.LoadStores(asm);
@@ -810,6 +825,11 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_13_3_32887:
                 case ClientVersionBuild.V1_13_3_33155:
                 case ClientVersionBuild.V1_13_3_33302:
+                case ClientVersionBuild.V1_13_3_33526:
+                case ClientVersionBuild.V1_13_4_33598:
+                case ClientVersionBuild.V1_13_4_33645:
+                case ClientVersionBuild.V1_13_4_33728:
+                case ClientVersionBuild.V1_13_4_33920:
                 {
                     return true;
                 }

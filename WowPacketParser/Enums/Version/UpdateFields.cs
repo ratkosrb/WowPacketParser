@@ -137,7 +137,7 @@ namespace WowPacketParser.Enums.Version
             return null;
         }
 
-        public static int GetUpdateField<T>(T field) // where T: System.Enum // C# 7.3
+        public static int GetUpdateField<T>(T field) where T: Enum
         {
             Dictionary<string, int> byNamesDict;
             if (UpdateFieldNameDictionary.TryGetValue(typeof(T), out byNamesDict))
@@ -150,7 +150,7 @@ namespace WowPacketParser.Enums.Version
             return -1;
         }
 
-        public static string GetUpdateFieldName<T>(int field) // where T: System.Enum // C# 7.3
+        public static string GetUpdateFieldName<T>(int field) where T: Enum
         {
             SortedList<int, UpdateFieldInfo> infoDict;
             if (UpdateFieldDictionary.TryGetValue(typeof(T), out infoDict))
@@ -170,7 +170,7 @@ namespace WowPacketParser.Enums.Version
             return field.ToString(CultureInfo.InvariantCulture);
         }
 
-        public static UpdateFieldInfo GetUpdateFieldInfo<T>(int field) // where T: System.Enum // C# 7.3
+        public static UpdateFieldInfo GetUpdateFieldInfo<T>(int field) where T: Enum
         {
             SortedList<int, UpdateFieldInfo> infoDict;
             if (UpdateFieldDictionary.TryGetValue(typeof(T), out infoDict))
@@ -592,8 +592,13 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_3_0_33169:
                 case ClientVersionBuild.V8_3_0_33237:
                 case ClientVersionBuild.V8_3_0_33369:
+                case ClientVersionBuild.V8_3_0_33528:
+                case ClientVersionBuild.V8_3_0_33724:
+                case ClientVersionBuild.V8_3_0_33775:
+                case ClientVersionBuild.V8_3_0_33941:
+                case ClientVersionBuild.V8_3_0_34220:
                 {
-                    return "V8_3_0_32861";
+                    return "V8_3_0_33062";
                 }
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
@@ -609,6 +614,11 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V1_13_3_32887:
                 case ClientVersionBuild.V1_13_3_33155:
                 case ClientVersionBuild.V1_13_3_33302:
+                case ClientVersionBuild.V1_13_3_33526:
+                case ClientVersionBuild.V1_13_4_33598:
+                case ClientVersionBuild.V1_13_4_33645:
+                case ClientVersionBuild.V1_13_4_33728:
+                case ClientVersionBuild.V1_13_4_33920:
                 {
                     return "V1_13_2_31446";
                 }

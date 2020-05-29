@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.CriteriaTree, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.CriteriaTree, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_3_0_33062, HasIndexInData = false)]
     public class CriteriaTreeEntry
     {
         public string Description { get; set; }
