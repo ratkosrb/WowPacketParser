@@ -614,6 +614,7 @@
     <Compile Include="Store\Objects\CreatureAddon.cs" />
     <Compile Include="Store\Objects\CreatureDefaultTrainer.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
+    <Compile Include="Store\Objects\CreatureGossip.cs" />
     <Compile Include="Store\Objects\CreatureTemplateModel.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />

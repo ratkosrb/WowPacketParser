@@ -390,6 +390,14 @@ namespace WowPacketParser.SQL.Builders
 
             var result = "";
 
+            // `creature_gossip`
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_gossip))
+            {
+                var templateDb = SQLDatabase.Get(Storage.CreatureGossips, Settings.WPPDatabase);
+                result += SQLUtil.Compare(Storage.CreatureGossips, templateDb,
+                    t => StoreGetters.GetName(StoreNameType.Unit, (int)t.CreatureId));
+            } 
+
             // `gossip_menu`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
                 result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips),
@@ -513,7 +521,7 @@ namespace WowPacketParser.SQL.Builders
                 var template = new CreatureTemplateNonWDB
                 {
                     Entry = unit.Key.GetEntry(),
-                    GossipMenuId = npc.GossipId,
+                    GossipMenuId = Storage.CreatureDefaultGossips.ContainsKey(unit.Key.GetEntry()) ? Storage.CreatureDefaultGossips[unit.Key.GetEntry()] : 0,
                     MinLevel = (int)levels[unit.Key.GetEntry()].Item1,
                     MaxLevel = (int)levels[unit.Key.GetEntry()].Item2,
                     Faction = (uint)npc.UnitData.FactionTemplate,
