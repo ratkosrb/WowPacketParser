@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
@@ -142,8 +143,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("MaximumExpansionLevel");
         }
 
-        [Parser(Opcode.SMSG_LIGHTNING_STORM_START)]
-        [Parser(Opcode.SMSG_LIGHTNING_STORM_END)]
+        [Parser(Opcode.SMSG_START_LIGHTNING_STORM)]
+        [Parser(Opcode.SMSG_END_LIGHTNING_STORM)]
         public static void HandleLightningStorm(Packet packet)
         {
             packet.ReadUInt32("LightningStormId");
@@ -300,6 +301,33 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (hasQuantityLostSource)
                     packet.ReadInt32("QuantityLostSource");
             }
+        }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.V8_3_0_33062)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+            packet.ReadByte("IsTournamentRealm");
+
+            packet.ReadBit("XRealmPvpAlert");
+            packet.ReadBit("BlockExitingLoadingScreen");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadInt32("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadInt32("InstanceGroupSize");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
+        public static void HandleClearResurrect(Packet packet)
+        {
         }
     }
 }
