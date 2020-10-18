@@ -87,5 +87,26 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.SMSG_GOSSIP_QUEST_UPDATE)]
+        public static void HandleGossipQuestUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("GossipGUID");
+
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadInt32("QuestType");
+            packet.ReadInt32("QuestLevel");
+            packet.ReadInt32("QuestMaxScalingLevel");
+
+            for (int i = 0; i < 2; ++i)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable");
+            uint questTitleLen = packet.ReadBits(9);
+
+            packet.ReadWoWString("QuestTitle", questTitleLen);
+        }
     }
 }

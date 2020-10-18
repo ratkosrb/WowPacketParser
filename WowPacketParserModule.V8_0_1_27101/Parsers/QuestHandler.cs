@@ -871,5 +871,21 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.CMSG_UI_MAP_QUEST_LINES_REQUEST)]
+        public static void HandleUiMapQuestLinesRequest(Packet packet)
+        {
+            packet.ReadInt32("UiMapID");
+        }
+
+        [Parser(Opcode.SMSG_UI_MAP_QUEST_LINES_RESPONSE)]
+        public static void HandleUiMapQuestLinesResponse(Packet packet)
+        {
+            packet.ReadInt32("UiMapID");
+            var count = packet.ReadUInt32();
+
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32("QuestLineXQuestID", i);
+        }
     }
 }
