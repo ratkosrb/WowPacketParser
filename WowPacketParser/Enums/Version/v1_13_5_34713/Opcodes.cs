@@ -808,11 +808,11 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_BATTLENET_NOTIFICATION, 0x284A}, // ok
             {Opcode.SMSG_BATTLENET_RESPONSE, 0x2849}, // ok
             {Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS, 0x2847},
-            {Opcode.SMSG_BATTLE_PAY_ACK_FAILED, 0x27CC},
+            {Opcode.SMSG_BATTLE_PAY_ACK_FAILED, 0x27D1},
             {Opcode.SMSG_BATTLE_PAY_BATTLE_PET_DELIVERED, 0x27C1},
             {Opcode.SMSG_BATTLE_PAY_COLLECTION_ITEM_DELIVERED, 0x27C2},
             {Opcode.SMSG_BATTLE_PAY_CONFIRM_PURCHASE, 0x27CB},
-            {Opcode.SMSG_BATTLE_PAY_DELIVERY_ENDED, 0x27BA}, // ??
+            {Opcode.SMSG_BATTLE_PAY_DELIVERY_ENDED, 0x27C7}, // ok
             {Opcode.SMSG_BATTLE_PAY_DELIVERY_STARTED, 0x27BE},
             {Opcode.SMSG_BATTLE_PAY_DISTRIBUTION_UNREVOKED, 0x27BC},
             {Opcode.SMSG_BATTLE_PAY_DISTRIBUTION_UPDATE, 0x27BD},
@@ -822,7 +822,7 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_BATTLE_PAY_MOUNT_DELIVERED, 0x27C0},
             {Opcode.SMSG_BATTLE_PAY_PURCHASE_UPDATE, 0x27CA},
             {Opcode.SMSG_BATTLE_PAY_START_DISTRIBUTION_ASSIGN_TO_TARGET_RESPONSE, 0x27C8},
-            {Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE, 0x27C7},
+            {Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE, 0x27CC},
             {Opcode.SMSG_BATTLE_PAY_VALIDATE_PURCHASE_RESPONSE, 0x285A},
             {Opcode.SMSG_BATTLE_PETS_HEALED, 0x2609},
             {Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x26A5},
@@ -1237,7 +1237,7 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_LF_GUILD_POST, 0x29CD},
             {Opcode.SMSG_LF_GUILD_RECRUITS, 0x29CF},
             {Opcode.SMSG_LIVE_REGION_ACCOUNT_RESTORE_RESULT, 0x27B2}, // ??
-            {Opcode.SMSG_LIVE_REGION_CHARACTER_COPY_RESULT, 0x27B5},
+            {Opcode.SMSG_LIVE_REGION_CHARACTER_COPY_RESULT, 0x27BA}, // ok
             {Opcode.SMSG_LIVE_REGION_GET_ACCOUNT_CHARACTER_LIST_RESULT, 0x27A8},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x25CE},
             {Opcode.SMSG_LOAD_EQUIPMENT_SET, 0x2755}, // ok
@@ -1438,7 +1438,7 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT, 0x276F}, // ??
             {Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL, 0x2C47},
             {Opcode.SMSG_PLAY_SCENE, 0x2654},
-            {Opcode.SMSG_PLAY_SOUND, 0x27B0},
+            {Opcode.SMSG_PLAY_SOUND, 0x27B5}, // ok
             {Opcode.SMSG_PLAY_SPEAKERBOT_SOUND, 0x27B3},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x2C45},
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x2C49},
