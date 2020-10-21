@@ -1678,7 +1678,7 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_UPDATE_TALENT_DATA, 0x25EC},
             {Opcode.SMSG_UPDATE_TASK_PROGRESS, 0x27D0}, // ??
             {Opcode.SMSG_UPDATE_WEEKLY_SPELL_USAGE, 0x2C19},
-            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x278D},
+            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x2793}, // ok
             {Opcode.SMSG_USERLIST_ADD, 0x2BB9},
             {Opcode.SMSG_USERLIST_REMOVE, 0x2BBA},
             {Opcode.SMSG_USERLIST_UPDATE, 0x2BBB},
