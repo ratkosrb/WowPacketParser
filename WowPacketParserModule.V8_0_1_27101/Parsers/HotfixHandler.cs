@@ -213,7 +213,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_HOTFIX_CONNECT, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotixData810(Packet packet)
         {
             var hotfixRecords = new List<HotfixRecord>();
@@ -244,7 +244,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_5_29683)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_HOTFIX_CONNECT, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotixData815(Packet packet)
         {
             var hotfixRecords = new List<HotfixRecord>();
@@ -333,12 +333,26 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.SMSG_HOTFIX_CONNECT, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleHotixData(Packet packet)
         {
             var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
                 ReadHotfixData(packet, i, "HotfixData");
+        }
+
+        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
+        public static void HandleDbQueryBulk(Packet packet)
+        {
+            packet.ReadInt32E<DB2Hash>("TableHash");
+
+            var count = packet.ReadBits("Count", 13);
+            for (var i = 0; i < count; ++i)
+            {
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_2_5_31921))
+                    packet.ReadPackedGuid128("Guid", i);
+                packet.ReadInt32("RecordID", i);
+            }
         }
     }
 }

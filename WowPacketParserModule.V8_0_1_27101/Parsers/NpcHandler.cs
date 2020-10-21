@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -40,14 +41,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (tempGossipOptionPOI.HasSelection)
             {
-                if (tempGossipOptionPOI.ActionMenuId != null)
+                if ((packet.TimeSpan - tempGossipOptionPOI.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
-                    //clear temp
-                    tempGossipOptionPOI.MenuId = null;
-                    tempGossipOptionPOI.OptionIndex = null;
-                    tempGossipOptionPOI.ActionMenuId = null;
-                    tempGossipOptionPOI.ActionPoiId = null;
+                    if (tempGossipOptionPOI.ActionMenuId != null)
+                    {
+                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        //clear temp
+                        tempGossipOptionPOI.Reset();
+                    }
+                }
+                else
+                {
+                    lastGossipOption.Reset();
+                    tempGossipOptionPOI.Reset();
                 }
             }
         }
@@ -76,6 +82,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
                 vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i).ItemID;
+                packet.ResetBitReader();
                 vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                     packet.ReadBit("Refundable", i);
@@ -86,6 +93,30 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
+
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_QUEST_UPDATE)]
+        public static void HandleGossipQuestUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("GossipGUID");
+
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadInt32("QuestType");
+            packet.ReadInt32("QuestLevel");
+            packet.ReadInt32("QuestMaxScalingLevel");
+
+            for (int i = 0; i < 2; ++i)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable");
+            uint questTitleLen = packet.ReadBits(9);
+
+            packet.ReadWoWString("QuestTitle", questTitleLen);
         }
     }
 }

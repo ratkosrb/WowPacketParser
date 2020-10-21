@@ -144,6 +144,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("FacialHairStyleID");
             packet.ReadByte("OutfitID");
 
+            for (var i = 0; i < 3; i++)
+                packet.ReadByte("CustomDisplay", i);
+
             packet.ReadWoWString("Name", nameLen);
 
             if (hasTemplateSet)
@@ -216,8 +219,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadUInt16("Talents");
         }
 
-        [Parser(Opcode.SMSG_LEARN_PVP_TALENTS_FAILED)]
-        public static void HandleLearnPvPTalentsFailed(Packet packet)
+        [Parser(Opcode.SMSG_LEARN_PVP_TALENT_FAILED)]
+        public static void HandleLearnPvPTalentFailed(Packet packet)
         {
             packet.ReadBits("Reason", 4);
             packet.ReadUInt32<SpellId>("SpellID");
@@ -354,7 +357,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS)]
         public static void HandleServerCharCustomize(Packet packet)
         {
             packet.ReadPackedGuid128("CharGUID");

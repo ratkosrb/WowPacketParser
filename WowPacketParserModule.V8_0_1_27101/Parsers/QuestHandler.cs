@@ -110,6 +110,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var objectivesCount = packet.ReadUInt32("ObjectivesCount");
             packet.ReadInt32("QuestStartItemID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadInt32("QuestSessionBonus");
+
             for (var i = 0; i < learnSpellsCount; i++)
                 packet.ReadInt32("LearnSpells", i);
 
@@ -142,6 +145,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("DisplayPopup");
             packet.ReadBit("StartCheat");
             packet.ReadBit("AutoLaunched");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadBit(); // Unused by client
 
             ReadQuestRewards(packet, "QuestRewards");
 
@@ -418,8 +424,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("Amount", indexes);
         }
 
-        [Parser(Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE)]
-        public static void HandleQueryTreasurePickerResponse(Packet packet)
+        [Parser(Opcode.SMSG_TREASURE_PICKER_RESPONSE)]
+        public static void HandleTreasurePickerResponse(Packet packet)
         {
             packet.ReadUInt32("QuestId");
             packet.ReadUInt32("TreasurePickerID");
@@ -838,6 +844,22 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 };
                 Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
             }
+        }
+
+        [Parser(Opcode.CMSG_UI_MAP_QUEST_LINES_REQUEST)]
+        public static void HandleUiMapQuestLinesRequest(Packet packet)
+        {
+            packet.ReadInt32("UiMapID");
+        }
+
+        [Parser(Opcode.SMSG_UI_MAP_QUEST_LINES_RESPONSE)]
+        public static void HandleUiMapQuestLinesResponse(Packet packet)
+        {
+            packet.ReadInt32("UiMapID");
+            var count = packet.ReadUInt32();
+
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32("QuestLineXQuestID", i);
         }
     }
 }

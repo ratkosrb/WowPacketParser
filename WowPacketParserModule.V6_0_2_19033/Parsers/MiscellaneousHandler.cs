@@ -432,8 +432,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("MountIsFavorite", i);
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_TOYS_UPDATE)]
-        public static void HandleAccountToysUpdate(Packet packet)
+        [Parser(Opcode.SMSG_ACCOUNT_TOY_UPDATE)]
+        public static void HandleAccountToyUpdate(Packet packet)
         {
             packet.ReadBit("IsFullUpdate");
 
@@ -456,14 +456,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Unk");
 
-            int int32 = packet.ReadInt32("ItemCount");
-            int int16 = packet.ReadInt32("FlagsCount");
+            uint itemCount = packet.ReadUInt32("ItemCount");
+            uint flagCount = packet.ReadUInt32("FlagsCount");
 
-            for (int i = 0; i < int32; i++)
+            for (uint i = 0u; i < itemCount; i++)
                 packet.ReadInt32<ItemId>("ItemID", i);
 
-            for (int i = 0; i < int16; i++)
-                packet.ReadInt32("Flags", i);
+            for (uint i = 0u; i < flagCount; i++)
+                packet.ReadUInt32("Flags", i);
         }
 
         [Parser(Opcode.SMSG_PLAY_SOUND)]
@@ -820,8 +820,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         // new opcode on 6.x, related to combat log and mostly used in garrisons
-        [Parser(Opcode.SMSG_WORLD_TEXT)]
-        public static void HandleWorldText(Packet packet)
+        [Parser(Opcode.SMSG_DISPLAY_WORLD_TEXT)]
+        public static void HandleDisplayWorldText(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Arg1");

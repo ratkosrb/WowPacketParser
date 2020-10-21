@@ -32,6 +32,9 @@ namespace WowPacketParser.Parsing.Parsers
             var i = 0;
             while (packet.CanRead())
                 packet.ReadUInt64("NodeMask", i++);
+
+            NpcHandler.LastGossipOption.Reset();
+            NpcHandler.TempGossipOptionPOI.Reset();
         }
 
         [Parser(Opcode.SMSG_SHOW_TAXI_NODES, ClientVersionBuild.V4_3_4_15595)]
@@ -47,6 +50,9 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
             for (int i = 0; i < count; ++i)
                 packet.ReadByte("NodeMask", i);
+
+            NpcHandler.LastGossipOption.Reset();
+            NpcHandler.TempGossipOptionPOI.Reset();
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]

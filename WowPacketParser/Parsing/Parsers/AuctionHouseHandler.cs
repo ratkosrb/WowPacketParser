@@ -21,6 +21,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadBool("Enabled");
+
+            NpcHandler.LastGossipOption.Reset();
+            NpcHandler.TempGossipOptionPOI.Reset();
         }
 
         [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]

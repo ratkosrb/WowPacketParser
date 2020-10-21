@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ResetBitReader();
 
-            packet.ReadBitsE<TargetFlag>("Flags", 25, idx);
+            packet.ReadBitsE<TargetFlag>("Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683) ? 26 : 25, idx);
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
@@ -636,8 +636,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LEARN_TALENTS_FAILED)]
-        public static void HandleLearnTalentsFailed(Packet packet)
+        [Parser(Opcode.SMSG_LEARN_TALENT_FAILED)]
+        public static void HandleLearnTalentFailed(Packet packet)
         {
             packet.ReadBits("Reason", 4);
             packet.ReadInt32("SpellID");
@@ -722,16 +722,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("IsPet");
         }
 
-        [Parser(Opcode.SMSG_MODIFY_COOLDOWN_RECOVERY_SPEED)] 
-        public static void HandleModifyCooldownRecoverySpeed(Packet packet)
+        [Parser(Opcode.SMSG_UPDATE_COOLDOWN)] 
+        public static void HandleUpdateCooldown(Packet packet)
         {
             packet.ReadInt32("SpellId");
             packet.ReadSingle("SpeedRate");
             packet.ReadSingle("SpeedRate2");
         }
 
-        [Parser(Opcode.SMSG_MODIFY_CHARGE_RECOVERY_SPEED)]
-        public static void HandleModifyChargeRecoverySpeed(Packet packet)
+        [Parser(Opcode.SMSG_UPDATE_CHARGE_CATEGORY_COOLDOWN)]
+        public static void HandleUpdateChargeCategoryCooldown(Packet packet)
         {
             packet.ReadInt32("ChargeCategoryId");
             packet.ReadSingle("SpeedRate");

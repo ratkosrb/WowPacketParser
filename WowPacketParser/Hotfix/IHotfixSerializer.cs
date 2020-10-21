@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using Sigil;
 using System;
 using System.Collections.Generic;
@@ -255,24 +255,136 @@ namespace WowPacketParser.Hotfix
             if (store.Records.Count == 0)
                 return;
 
+            bool isLocale = false;
             var hotfixStructureAttribute = typeof (T).GetCustomAttribute<HotfixStructureAttribute>();
             Debug.Assert(hotfixStructureAttribute != null);
 
             var propertiesInfos = typeof (T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var tableName = Regex.Replace(hotfixStructureAttribute.Hash.ToString(), @"(?<=[a-z])([A-Z])|(?<=[A-Z])([A-Z][a-z])",
+            // Synch with TC
+            var normalizedTableHashString = hotfixStructureAttribute.Hash.ToString()
+                .Replace("GameObject", "Gameobject")
+                .Replace("PvP", "Pvp")
+                .Replace("PVP", "Pvp")
+                .Replace("QuestXP", "QuestXp")
+                .Replace("WMO", "Wmo")
+                .Replace("AddOn", "Addon")
+                .Replace("LFG", "Lfg")
+                .Replace("_", "");
+
+            var tableName = Regex.Replace(normalizedTableHashString, @"(?<=[a-z])([A-Z])|(?<=[A-Z])([A-Z][a-z])",
                 @"_$1$2", RegexOptions.Compiled).ToLower();
 
             if (localeBuilder != null && propertiesInfos.Any(
                 propInfo => propInfo.PropertyType == typeof (string) || propInfo.PropertyType == typeof (string[])))
             {
-                localeBuilder.AppendLine($"TRUNCATE `{tableName}_locale`;");
+                switch (tableName)
+                {
+                    case "achievement":
+                    case "area_table":
+                    case "artifact_appearance":
+                    case "artifact_appearance_set":
+                    case "artifact":
+                    case "auction_house":
+                    case "azerite_essence":
+                    case "azerite_essence_power":
+                    case "barber_shop_style":
+                    case "battlemaster_list":
+                    case "battle_pet_species":
+                    case "broadcast_text":
+                    case "char_titles":
+                    case "chat_channels":
+                    case "chr_classes":
+                    case "chr_races":
+                    case "chr_specialization":
+                    case "creature_family":
+                    case "creature_type":
+                    case "criteria_tree":
+                    case "currency_types":
+                    case "difficulty":
+                    case "dungeon_encounter":
+                    case "faction":
+                    case "gameobjects":
+                    case "garr_ability":
+                    case "garr_building":
+                    case "garr_class_spec":
+                    case "garr_follower":
+                    case "heirloom":
+                    case "item_bag_family":
+                    case "item_class":
+                    case "item_limit_category":
+                    case "item_name_description":
+                    case "item_search_name":
+                    case "item_set":
+                    case "item_sparse":
+                    case "lfg_dungeons":
+                    case "mail_template":
+                    case "map_difficulty":
+                    case "map":
+                    case "mount":
+                    case "names_reserved":
+                    case "player_condition":
+                    case "prestige_level_info":
+                    case "pvp_talent":
+                    case "quest_sort":
+                    case "scenario":
+                    case "scenario_step":
+                    case "skill_line":
+                    case "specialization_spells":
+                    case "spell_category":
+                    case "spell_focus_object":
+                    case "spell_item_enchantment":
+                    case "spell_name":
+                    case "spell_range":
+                    case "spell_shapeshift_form":
+                    case "talent":
+                    case "taxi_nodes":
+                    case "totem_category":
+                    case "toy":
+                    case "transmog_set_group":
+                    case "transmog_set":
+                    case "ui_map":
+                    case "unit_power_bar":
+                    case "wmo_area_table":
+                        break;
+                    default:
+                        return;
+                }
+
+                if (tableName == "broadcast_text")
+                {
+                    var remainingCountDelete = store.Records.Count - 1;
+
+                    localeBuilder.Append($"DELETE FROM `{tableName}_locale` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `ID` IN (");
+                    foreach (var kv in store.Records)
+                    {
+                        localeBuilder?.Append($"{kv.Key}");
+                        localeBuilder?.Append(remainingCountDelete > 0 ? $", " : $");" + Environment.NewLine);
+                        --remainingCountDelete;
+                    }
+                }
+                else
+                    localeBuilder.AppendLine($"DELETE FROM `{tableName}_locale` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `VerifiedBuild`>0;");
                 localeBuilder.Append($"INSERT INTO `{tableName}_locale` (");
-                if (!hotfixStructureAttribute.HasIndexInData)
-                    localeBuilder.Append("`ID`, ");
+                localeBuilder.Append("`ID`, ");
                 localeBuilder.Append("`locale`, ");
+                isLocale = true;
             }
 
-            hotfixBuilder.AppendLine($"TRUNCATE `{tableName}`;");
+            if (tableName == "broadcast_text")
+            {
+                var remainingCountDelete = store.Records.Count - 1;
+
+                hotfixBuilder.Append($"DELETE FROM `{tableName}` WHERE `VerifiedBuild`>0 AND `ID` IN (");
+                foreach (var kv in store.Records)
+                {
+                    hotfixBuilder.Append($"{kv.Key}");
+                    hotfixBuilder.Append(remainingCountDelete > 0 ? $", " : $");" + Environment.NewLine);
+                    --remainingCountDelete;
+                }
+            }
+            else
+                hotfixBuilder.AppendLine($"DELETE FROM `{tableName}` WHERE `VerifiedBuild`>0;");
+
             hotfixBuilder.Append($"INSERT INTO `{tableName}` (");
             if (!hotfixStructureAttribute.HasIndexInData)
                 hotfixBuilder.Append("`ID`, ");
@@ -312,30 +424,36 @@ namespace WowPacketParser.Hotfix
             }
 
             hotfixBuilder.AppendLine("`VerifiedBuild`) VALUES");
-            localeBuilder?.AppendLine("`VerifiedBuild`) VALUES");
+            if (isLocale)
+                localeBuilder?.AppendLine("`VerifiedBuild`) VALUES");
 
             var remainingCount = store.Records.Count - 1;
 
             foreach (var kv in store.Records)
             {
                 hotfixBuilder.Append("(");
-                localeBuilder?.Append("(");
-                if (!hotfixStructureAttribute.HasIndexInData)
-                {
-                    hotfixBuilder.Append($"{kv.Key}, ");
-                    localeBuilder?.Append($"{kv.Key}, ");
-                }
+                if (isLocale)
+                    localeBuilder?.Append("(");
 
-                localeBuilder?.Append($"'{ClientLocale.PacketLocale}', ");
+                if (!hotfixStructureAttribute.HasIndexInData)
+                    hotfixBuilder.Append($"{kv.Key}, ");
+
+                if (isLocale)
+                    localeBuilder?.Append($"{kv.Key}, ");
+
+                if (isLocale)
+                    localeBuilder?.Append($"'{ClientLocale.PacketLocale}', ");
                 _serializer((T)kv.Value, hotfixBuilder, localeBuilder);
 
                 hotfixBuilder.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
-                localeBuilder?.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
+                if (isLocale)
+                    localeBuilder?.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
                 --remainingCount;
             }
 
             hotfixBuilder.AppendLine();
-            localeBuilder?.AppendLine();
+            if (isLocale)
+                localeBuilder?.AppendLine();
         }
     }
 }

@@ -26,6 +26,8 @@ namespace WowPacketParser.SQL.Builders
             }
             else
             {
+                var emptyStringBuilder = new StringBuilder();
+
                 foreach (DB2Hash hashValue in Enum.GetValues(typeof (DB2Hash)))
                 {
                     if (!HotfixSettings.Instance.ShouldLog(hashValue))
@@ -33,8 +35,9 @@ namespace WowPacketParser.SQL.Builders
 
                     var localeBuilder = new StringBuilder();
                     HotfixStoreMgr.GetStore(hashValue)?.Serialize(stringBuilder, localeBuilder);
-                    stringBuilder.Append(localeBuilder);
+                    emptyStringBuilder.Append(localeBuilder);
                 }
+                return emptyStringBuilder.ToString();
             }
 
             return stringBuilder.ToString();
@@ -62,7 +65,7 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return "TRUNCATE `hotfix_data`;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
+            return "DELETE FROM `hotfix_data` WHERE `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
         }
 
         [BuilderMethod(true)]
@@ -87,7 +90,7 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return "TRUNCATE `hotfix_blob`;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
+            return $"DELETE FROM `hotfix_blob` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
         }
 
         // Special Hotfix Builders
