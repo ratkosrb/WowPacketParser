@@ -189,8 +189,9 @@ namespace WowPacketParser.SQL
         /// <param name="storeList">Dictionary retrieved from  parser</param>
         /// <param name="dbList">Dictionary retrieved from  DB</param>
         /// <param name="commentSetter"></param>
+        /// <param name="withDelete"></param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter, bool withDelete = true)
             where T : IDataModel, new()
         {
             var fields = GetFields<T>();
@@ -268,7 +269,7 @@ namespace WowPacketParser.SQL
                 }
             }
 
-            return new SQLInsert<T>(rowsIns).Build() + Environment.NewLine +
+            return new SQLInsert<T>(rowsIns, withDelete).Build() + Environment.NewLine +
                    new SQLUpdate<T>(rowsUpd).Build();
         }
 

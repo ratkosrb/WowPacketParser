@@ -100,7 +100,7 @@ namespace WowPacketParser.SQL.Builders
                     UpdateField value;
                     if (player.UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(visibleItemsStart) + i, out value))
                     {
-                        itemId = value.Int32Value;
+                        itemId = Math.Abs(value.Int32Value);
 
                         // even indexes are item ids, odd indexes are enchant ids
                         if ((itemId != 0) && (i % 2 == 0))
@@ -274,7 +274,8 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.UnixTime = (uint)Utilities.GetUnixTimeFromDateTime(itr.Time);
                     activePlayersRows.Add(row);
                 }
-
+                var activePlayersDelete = new SQLDelete<CharacterActivePlayer>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
+                result.Append(activePlayersDelete.Build());
                 var activePlayersSql = new SQLInsert<CharacterActivePlayer>(activePlayersRows, false);
                 result.Append(activePlayersSql.Build());
                 result.AppendLine();
@@ -385,6 +386,8 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SqlTables.character_chat && !Storage.CharacterTexts.IsEmpty())
             {
+                var characterChatDelete = new SQLDelete<CharacterChat>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
+                result.Append(characterChatDelete.Build());
                 foreach (var text in Storage.CharacterTexts)
                 {
                     if (text.Item1.Guid == null)
@@ -396,7 +399,7 @@ namespace WowPacketParser.SQL.Builders
                     if (text.Item1.ChannelName == null)
                         text.Item1.ChannelName = "";
                 }
-                result.Append(SQLUtil.Compare(Storage.CharacterTexts, SQLDatabase.Get(Storage.CharacterTexts), t => t.SenderName));
+                result.Append(SQLUtil.Compare(Storage.CharacterTexts, SQLDatabase.Get(Storage.CharacterTexts), t => t.SenderName, false));
             }
 
             return result.ToString();

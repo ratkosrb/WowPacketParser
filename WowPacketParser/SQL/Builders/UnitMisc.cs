@@ -1209,7 +1209,7 @@ namespace WowPacketParser.SQL.Builders
                 }
             }
 
-            string result = new SQLInsert<CreatureTextTemplate>(rows, false).Build();
+            string result = new SQLInsert<CreatureTextTemplate>(rows).Build();
 
             if (Settings.SqlTables.creature_text)
             {
@@ -1217,7 +1217,6 @@ namespace WowPacketParser.SQL.Builders
                 {
                     if (text.Item1.Guid == null)
                         text.Item1.Guid = Storage.GetObjectDbGuid(text.Item1.SenderGUID);
-
                     var sameTextList = rows.Where(text2 => text2.Data.Entry == text.Item1.Entry && text2.Data.Text == text.Item1.Text);
                     if (sameTextList.Count() != 0)
                     {
@@ -1230,8 +1229,9 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
+                result += new SQLDelete<CreatureText>(Tuple.Create("0", "999999")).Build();
                 result += SQLUtil.Compare(Storage.CreatureTexts, SQLDatabase.Get(Storage.CreatureTexts),
-                t => t.Entry.ToString());
+                    t => t.Entry.ToString(), false);
             }
 
             return result;
