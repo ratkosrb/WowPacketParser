@@ -615,8 +615,23 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V9_0_1_36247:
                 case ClientVersionBuild.V9_0_1_36272:
                 case ClientVersionBuild.V9_0_1_36322:
+                case ClientVersionBuild.V9_0_1_36372:
+                case ClientVersionBuild.V9_0_1_36492:
+                case ClientVersionBuild.V9_0_1_36577:
                 {
                     return "V9_0_1_36216";
+                }
+                case ClientVersionBuild.V9_0_2_36639:
+                case ClientVersionBuild.V9_0_2_36665:
+                case ClientVersionBuild.V9_0_2_36671:
+                case ClientVersionBuild.V9_0_2_36710:
+                case ClientVersionBuild.V9_0_2_36734:
+                case ClientVersionBuild.V9_0_2_36751:
+                case ClientVersionBuild.V9_0_2_36753:
+                case ClientVersionBuild.V9_0_2_36839:
+                case ClientVersionBuild.V9_0_2_36949:
+                {
+                    return "V9_0_2_36639";
                 }
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
@@ -627,6 +642,9 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V1_13_2_32089:
                 case ClientVersionBuild.V1_13_2_32421:
                 case ClientVersionBuild.V1_13_2_32600:
+                {
+                    return "V1_13_2_31446";
+                }
                 case ClientVersionBuild.V1_13_3_32790:
                 case ClientVersionBuild.V1_13_3_32836:
                 case ClientVersionBuild.V1_13_3_32887:
@@ -644,8 +662,11 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.v1_13_5_34911:
                 case ClientVersionBuild.V1_13_5_35100:
                 case ClientVersionBuild.V1_13_5_35186:
+                case ClientVersionBuild.V1_13_5_36035:
+                case ClientVersionBuild.V1_13_5_36325:
+                case ClientVersionBuild.V1_13_6_36714:
                 {
-                    return "V1_13_2_31446";
+                    return "V1_13_3_32790";
                 }
                 default:
                 {

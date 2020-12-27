@@ -9,6 +9,85 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
     public static class QuestHandler
     {
+        public static void ReadGossipText(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("QuestID", indexes);
+            packet.ReadInt32("ContentTuningID", indexes);
+            packet.ReadInt32("QuestType", indexes);
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadUInt32("QuestFlags", indexes, i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable", indexes);
+
+            var bits13 = packet.ReadBits(9);
+            packet.ReadWoWString("QuestTitle", bits13, indexes);
+        }
+        public static void ReadRewardItem(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadBitsE<LootItemType>("LootItemType", 2, idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, idx);
+
+            packet.ReadInt32("Quantity", idx);
+        }
+
+        public static void ReadQuestRewards(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ChoiceItemCount", idx);
+            packet.ReadInt32("ItemCount", idx);
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("ID", idx, i);
+                packet.ReadInt32("Quantity", idx, i);
+            }
+
+            packet.ReadInt32("RewardMoney", idx);
+            packet.ReadInt32("XP", idx);
+            packet.ReadUInt64("ArtifactXP", idx);
+            packet.ReadInt32("ArtifactCategoryID", idx);
+            packet.ReadInt32("Honor", idx);
+            packet.ReadInt32("Title", idx);
+            packet.ReadInt32("FactionFlags", idx);
+
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadInt32("FactionID", idx, i);
+                packet.ReadInt32("FactionValue", idx, i);
+                packet.ReadInt32("FactionOverride", idx, i);
+                packet.ReadInt32("FactionCapIn", idx, i);
+            }
+
+            for (var i = 0; i < 3; ++i)
+                packet.ReadInt32("SpellCompletionDisplayID", idx, i);
+
+            packet.ReadInt32("SpellCompletionID", idx);
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("CurrencyID", idx, i);
+                packet.ReadInt32("CurrencyQty", idx, i);
+            }
+
+            packet.ReadInt32("SkillLineID", idx);
+            packet.ReadInt32("NumSkillUps", idx);
+            packet.ReadInt32("TreasurePickerID", idx);
+
+            for (var i = 0; i < 6; ++i)
+                ReadRewardItem(packet, "QuestRewards", "ItemChoiceData", i);
+
+            packet.ResetBitReader();
+            packet.ReadBit("IsBoostSpell", idx);
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_TREASURE_PICKER_CACHE)]
+        public static void HandleEmpty(Packet packet)
+        {
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
@@ -44,7 +123,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             quest.RewardBonusMoney = (uint)packet.ReadInt32("RewardBonusMoney");
 
-            var rewardDisplaySpellCount = packet.ReadUInt32("rewardDisplaySpellCount");
+            var rewardDisplaySpellCount = packet.ReadUInt32("RewardDisplaySpellCount");
 
             quest.RewardSpellWod = (uint)packet.ReadInt32("RewardSpell");
             quest.RewardHonorWod = (uint)packet.ReadInt32("RewardHonor");
@@ -129,13 +208,17 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
             quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
 
-            // May group that into own table
-            quest.RewardDisplaySpellShadowlands = new uint[12];
-            quest.RewardDisplaySpellPlayerCondition = new int[12];
-            for (int i = 0; i < rewardDisplaySpellCount; ++i)
+            for (uint i = 0; i < rewardDisplaySpellCount; ++i)
             {
-                quest.RewardDisplaySpellShadowlands[i] = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell");
-                quest.RewardDisplaySpellPlayerCondition[i] = packet.ReadInt32("PlayerCondition", i, "RewardDisplaySpell");
+                QuestRewardDisplaySpell questRewardDisplaySpell = new QuestRewardDisplaySpell
+                {
+                    QuestID = (uint)id.Key,
+                    Idx = i,
+                    SpellID = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell"),
+                    PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionID", i, "RewardDisplaySpell")
+            };
+
+                Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
             }
 
             packet.ResetBitReader();
@@ -149,6 +232,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             uint questTurnTextWindowLen = packet.ReadBits("questTurnTextWindowLen", 10);
             uint questTurnTargetNameLen = packet.ReadBits("questTurnTargetNameLen", 8);
             uint questCompletionLogLen = packet.ReadBits("questCompletionLogLen", 11);
+            packet.ReadBit("ReadyForTranslation");
 
             for (uint i = 0; i < objectiveCount; ++i)
             {
@@ -232,6 +316,255 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             Storage.QuestTemplates.Add(quest, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
+        public static void HandleQuestPoiQueryResponse(Packet packet)
+        {
+            packet.ReadUInt32("NumPOIs");
+            var questPOIData = packet.ReadUInt32("QuestPOIData");
+
+            for (var i = 0; i < questPOIData; ++i)
+            {
+                int questId = packet.ReadInt32("QuestID", i);
+
+                var questPOIBlobData = packet.ReadUInt32("QuestPOIBlobData", i);
+
+                for (var j = 0; j < questPOIBlobData; ++j)
+                {
+                    QuestPOI questPoi = new QuestPOI
+                    {
+                        QuestID = questId,
+                        ID = j,
+                        BlobIndex = packet.ReadInt32("BlobIndex", i, j),
+                        ObjectiveIndex = packet.ReadInt32("ObjectiveIndex", i, j),
+                        QuestObjectiveID = packet.ReadInt32("QuestObjectiveID", i, j),
+                        QuestObjectID = packet.ReadInt32("QuestObjectID", i, j),
+                        MapID = packet.ReadInt32("MapID", i, j),
+                        UiMapID = packet.ReadInt32("UiMapID", i, j),
+                        Priority = packet.ReadInt32("Priority", i, j),
+                        Flags = packet.ReadInt32("Flags", i, j),
+                        WorldEffectID = packet.ReadInt32("WorldEffectID", i, j),
+                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j),
+                        NavigationPlayerConditionID = packet.ReadInt32("NavigationPlayerConditionID", i, j),
+                        SpawnTrackingID = packet.ReadInt32("SpawnTrackingID", i, j)
+                    };
+
+                    var questPOIBlobPoint = packet.ReadUInt32("QuestPOIBlobPoint", i, j);
+                    for (var k = 0; k < questPOIBlobPoint; ++k)
+                    {
+                        QuestPOIPoint questPoiPoint = new QuestPOIPoint
+                        {
+                            QuestID = questId,
+                            Idx1 = j,
+                            Idx2 = k,
+                            X = packet.ReadInt16("X", i, j, k),
+                            Y = packet.ReadInt16("Y", i, j, k),
+                            Z = packet.ReadInt16("Z", i, j, k)
+                        };
+                        Storage.QuestPOIPoints.Add(questPoiPoint, packet.TimeSpan);
+                    }
+
+                    packet.ResetBitReader();
+                    questPoi.AlwaysAllowMergingBlobs = packet.ReadBit("AlwaysAllowMergingBlobs", i, j);
+
+                    Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
+        public static void QuestGiverOfferReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+
+            packet.ReadInt32("QuestGiverCreatureID");
+            int id = packet.ReadInt32("QuestID");
+
+            QuestOfferReward questOfferReward = new QuestOfferReward
+            {
+                ID = (uint)id
+            };
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ReadInt32("SuggestedPartyMembers");
+
+            var emotesCount = packet.ReadUInt32("EmotesCount");
+
+            // QuestDescEmote
+            questOfferReward.Emote = new uint?[] { 0, 0, 0, 0 };
+            questOfferReward.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
+            for (var i = 0; i < emotesCount; i++)
+            {
+                questOfferReward.Emote[i] = (uint)packet.ReadInt32("Type");
+                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay");
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AutoLaunched");
+            packet.ReadBit("Unused");
+
+            ReadQuestRewards(packet, "QuestRewards");
+
+            packet.ReadInt32("QuestPackageID");
+            packet.ReadInt32("PortraitGiver");
+            packet.ReadInt32("PortraitGiverMount");
+            packet.ReadInt32("PortraitTurnIn");
+
+            packet.ResetBitReader();
+
+            uint questTitleLen = packet.ReadBits(9);
+            uint rewardTextLen = packet.ReadBits(12);
+            uint portraitGiverTextLen = packet.ReadBits(10);
+            uint portraitGiverNameLen = packet.ReadBits(8);
+            uint portraitTurnInTextLen = packet.ReadBits(10);
+            uint portraitTurnInNameLen = packet.ReadBits(8);
+
+            packet.ReadWoWString("QuestTitle", questTitleLen);
+            questOfferReward.RewardText = packet.ReadWoWString("RewardText", rewardTextLen);
+            packet.ReadWoWString("PortraitGiverText", portraitGiverTextLen);
+            packet.ReadWoWString("PortraitGiverName", portraitGiverNameLen);
+            packet.ReadWoWString("PortraitTurnInText", portraitTurnInTextLen);
+            packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
+
+            Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32("QuestID");
+            ReadRewardItem(packet, "ItemChoice");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
+        public static void HandleQuestGiverQuestDetails(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadPackedGuid128("InformUnit");
+
+            int id = packet.ReadInt32("QuestID");
+            QuestDetails questDetails = new QuestDetails
+            {
+                ID = (uint)id
+            };
+
+            packet.ReadInt32("QuestPackageID");
+            packet.ReadInt32("PortraitGiver");
+            packet.ReadInt32("PortraitGiverMount");
+            packet.ReadInt32("PortraitTurnIn");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ReadInt32("SuggestedPartyMembers");
+            var learnSpellsCount = packet.ReadUInt32("LearnSpellsCount");
+
+            var descEmotesCount = packet.ReadUInt32("DescEmotesCount");
+            var objectivesCount = packet.ReadUInt32("ObjectivesCount");
+            packet.ReadInt32("QuestStartItemID");
+            packet.ReadInt32("QuestSessionBonus");
+
+            for (var i = 0; i < learnSpellsCount; i++)
+                packet.ReadInt32("LearnSpells", i);
+
+            questDetails.Emote = new uint?[] { 0, 0, 0, 0 };
+            questDetails.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
+            for (var i = 0; i < descEmotesCount; i++)
+            {
+                questDetails.Emote[i] = (uint)packet.ReadInt32("Type", i);
+                questDetails.EmoteDelay[i] = packet.ReadUInt32("Delay", i);
+            }
+
+            for (var i = 0; i < objectivesCount; i++)
+            {
+                packet.ReadInt32("ObjectiveID", i);
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadInt32("Amount", i);
+                packet.ReadByte("Type", i);
+            }
+
+            packet.ResetBitReader();
+
+            uint questTitleLen = packet.ReadBits(9);
+            uint descriptionTextLen = packet.ReadBits(12);
+            uint logDescriptionLen = packet.ReadBits(12);
+            uint portraitGiverTextLen = packet.ReadBits(10);
+            uint portraitGiverNameLen = packet.ReadBits(8);
+            uint portraitTurnInTextLen = packet.ReadBits(10);
+            uint portraitTurnInNameLen = packet.ReadBits(8);
+
+            packet.ReadBit("AutoLaunched");
+            packet.ReadBit("Unused");
+            packet.ReadBit("StartCheat");
+            packet.ReadBit("DisplayPopup");
+
+            ReadQuestRewards(packet, "QuestRewards");
+
+            packet.ReadWoWString("QuestTitle", questTitleLen);
+            packet.ReadWoWString("DescriptionText", descriptionTextLen);
+            packet.ReadWoWString("LogDescription", logDescriptionLen);
+            packet.ReadWoWString("PortraitGiverText", portraitGiverTextLen);
+            packet.ReadWoWString("PortraitGiverName", portraitGiverNameLen);
+            packet.ReadWoWString("PortraitTurnInText", portraitTurnInTextLen);
+            packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
+
+            Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE)]
+        public static void HandleQuestgiverQuestList(Packet packet)
+        {
+            WowGuid guid = packet.ReadPackedGuid128("QuestGiverGUID");
+
+            QuestGreeting questGreeting = new QuestGreeting
+            {
+                ID = guid.GetEntry(),
+                GreetEmoteDelay = packet.ReadUInt32("GreetEmoteDelay"),
+                GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
+            };
+
+            uint gossipTextCount = packet.ReadUInt32("GossipTextCount");
+            packet.ResetBitReader();
+            uint greetingLen = packet.ReadBits(11);
+
+            for (int i = 0; i < gossipTextCount; i++)
+                ReadGossipText(packet, i);
+
+            questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
+
+            switch (guid.GetObjectType())
+            {
+                case ObjectType.Unit:
+                    questGreeting.Type = 0;
+                    break;
+                case ObjectType.GameObject:
+                    questGreeting.Type = 1;
+                    break;
+            }
+
+            Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questGreeting.Greeting != string.Empty)
+            {
+                QuestGreetingLocale localesQuestGreeting = new QuestGreetingLocale
+                {
+                    ID = questGreeting.ID,
+                    Type = questGreeting.Type,
+                    Greeting = questGreeting.Greeting
+                };
+                Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
+            }
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CLOSE_QUEST)]
+        public static void HandleQuestGiverCloseQuest(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
         }
     }
 }
