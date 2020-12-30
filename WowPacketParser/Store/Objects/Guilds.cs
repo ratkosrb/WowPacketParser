@@ -12,7 +12,7 @@ namespace WowPacketParser.Store.Objects
         public string GuildName;
 
         [DBFieldName("leaderguid")]
-        public uint LeaderGUID;
+        public uint LeaderGUID = 0;
 
         [DBFieldName("EmblemStyle")]
         public int EmblemStyle;
@@ -30,11 +30,10 @@ namespace WowPacketParser.Store.Objects
         public int BackgroundColor;
 
         [DBFieldName("info")]
-        public string info;
+        public string info = "";
 
         [DBFieldName("motd")]
-        public string motd;
-
+        public string motd = "No message set";
     }
 
     [DBTableName("guild_rank")]
@@ -50,6 +49,6 @@ namespace WowPacketParser.Store.Objects
         public string RankName;
 
         [DBFieldName("rights")]
-        public int rights;
+        public int rights = 67;
     }
 }

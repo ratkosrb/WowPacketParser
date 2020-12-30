@@ -43,7 +43,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
                 var guildName = packet.ReadWoWString("GuildName", nameLen);
 
-                GuildTemplate guild = new GuildTemplate { GuildGUID = guildGuid.Low.ToString(), GuildName = guildName, LeaderGUID = 1, EmblemStyle = emblemStyle, EmblemColor = emblemColor, BorderStyle = borderStyle, BorderColor = borderColor, BackgroundColor = backgroundColor, info = "", motd = "No message set." };
+                GuildTemplate guild = new GuildTemplate { GuildGUID = guildGuid.Low.ToString(), GuildName = guildName, EmblemStyle = emblemStyle, EmblemColor = emblemColor, BorderStyle = borderStyle, BorderColor = borderColor, BackgroundColor = backgroundColor };
                 Storage.Guild.Add(guild);
             }
         }
