@@ -161,6 +161,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
 
         public int InteractSpellID => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_INTERACT_SPELLID);
 
+        public WowGuid GuildGUID => GetGuidValue(UnitField.UNIT_FIELD_GUILD_GUID);
+
         public class VisibleItem : IVisibleItem
         {
             public int ItemID { get; set; }
@@ -328,6 +330,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public float HoverHeight => UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT).GetValueOrDefault(1.0f);
 
         public int InteractSpellID => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_INTERACT_SPELLID);
+
+        public WowGuid GuildGUID => GetGuidValue(UnitField.UNIT_FIELD_GUILD_GUID);
 
         public class VisibleItem : IVisibleItem
         {

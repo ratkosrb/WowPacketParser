@@ -17,5 +17,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint PlayerBytes2 { get; }
         uint PlayerFlags { get; }
         IVisibleItem[] VisibleItems { get; }
+        uint GuildRank { get; }
     }
 }

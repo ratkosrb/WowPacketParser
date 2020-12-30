@@ -364,4 +364,23 @@ namespace WowPacketParser.Store.Objects
         public WowGuid Guid;
         public DateTime Time;
     }
+
+    [DBTableName("guild_member")]
+    public sealed class GuildMember : IDataModel
+    {
+        [DBFieldName("guildid")]
+        public string GuildGUID = "";
+
+        [DBFieldName("guid", true, true)]
+        public string Guid;
+
+        [DBFieldName("rank")]
+        public uint GuildRank = 0;
+
+        [DBFieldName("pnote")]
+        public string pnote = "";
+
+        [DBFieldName("offnote")]
+        public string offnote = "";
+    }
 }
