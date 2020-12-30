@@ -168,6 +168,8 @@ namespace WowPacketParser.Misc
 
             public static readonly bool characters = Conf.GetBoolean("characters", false);
             public static readonly bool character_inventory = Conf.GetBoolean("character_inventory", false);
+            public static readonly bool guild = Conf.GetBoolean("guild", false);
+            public static readonly bool guild_rank = Conf.GetBoolean("guild_rank", false);
 
             public static readonly bool areatrigger_template = Conf.GetBoolean("areatrigger_template", false);
             public static readonly bool areatrigger_template_polygon_vertices = Conf.GetBoolean("areatrigger_template_polygon_vertices", false);

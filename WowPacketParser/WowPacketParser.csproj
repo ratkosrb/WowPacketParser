@@ -597,6 +597,7 @@
     <Compile Include="SQL\Builders\Characters.cs" />
     <Compile Include="SQL\Builders\Conversations.cs" />
     <Compile Include="SQL\Builders\GameObjectMisc.cs" />
+    <Compile Include="SQL\Builders\Guilds.cs" />
     <Compile Include="SQL\Builders\HotfixBuilder.cs" />
     <Compile Include="SQL\Builders\Locales.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
@@ -638,6 +639,7 @@
     <Compile Include="Store\Objects\CreatureTrainer.cs" />
     <Compile Include="Store\Objects\DynamicObject.cs" />
     <Compile Include="Store\Objects\DynamicObjectSpawn.cs" />
+    <Compile Include="Store\Objects\Guilds.cs" />
     <Compile Include="Store\Objects\ItemInstance.cs" />
     <Compile Include="Store\Objects\LootTemplate.cs" />
     <Compile Include="Store\Objects\ObjectCreate.cs" />
