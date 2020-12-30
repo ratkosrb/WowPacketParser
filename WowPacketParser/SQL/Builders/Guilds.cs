@@ -14,16 +14,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SqlTables.guild && !Settings.SqlTables.guild_rank)
                 return string.Empty;
 
-            if (Storage.Guild.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SqlTables.guild)
-                return string.Empty;
-
-            if (Storage.GuildRank.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SqlTables.guild_rank)
+            if (Storage.Guild.IsEmpty() && Storage.GuildRank.IsEmpty())
                 return string.Empty;
 
             StringBuilder result = new StringBuilder();
