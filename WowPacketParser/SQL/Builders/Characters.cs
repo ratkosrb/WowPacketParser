@@ -464,21 +464,12 @@ namespace WowPacketParser.SQL.Builders
                     if (player.UnitData.GuildGUID.Low != 0)
                     {
                         var guildRow = new Row<GuildMember>();
-                        guildRow.Data.GuildGUID = player.UnitData.GuildGUID.Low.ToString();
+                        guildRow.Data.GuildGUID = player.UnitData.GuildGUIDOriginal.Low.ToString();
                         guildRow.Data.Guid = "@PGUID+" + player.DbGuid;
                         guildRow.Data.GuildRank = player.PlayerDataOriginal.GuildRank;
                         guildMemberRows.Add(guildRow);
                     }
                 }
-            }
-
-            if (Settings.SqlTables.characters)
-            {
-                var characterDelete = new SQLDelete<CharacterTemplate>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                result.Append(characterDelete.Build());
-                var characterSql = new SQLInsert<CharacterTemplate>(characterRows, false);
-                result.Append(characterSql.Build());
-                result.AppendLine();
             }
 
             if (Settings.SqlTables.characters)
