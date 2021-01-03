@@ -22,6 +22,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("play_sound")]
     public sealed class PlaySound : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("source_guid", true, true)]
         public string SourceGuid;
 
@@ -33,18 +36,15 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("sound", true)]
         public uint Sound;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("play_music")]
     public sealed class PlayMusic : IDataModel
     {
-        [DBFieldName("music", true)]
-        public uint Music;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("music", true)]
+        public uint Music;
     }
 }

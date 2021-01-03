@@ -45,31 +45,31 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("client_creature_interact")]
     public sealed class CreatureClientInteract : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
     }
 
     [DBTableName("client_gameobject_use")]
     public sealed class GameObjectClientUse : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
     }
 
     [DBTableName("client_item_use")]
     public sealed class ItemClientUse : IDataModel
     {
-        [DBFieldName("entry", true, true)]
-        public uint Entry;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("entry", true, true)]
+        public uint Entry;
     }
     [DBTableName("client_release_spirit")]
     public sealed class ClientReleaseSpirit : IDataModel

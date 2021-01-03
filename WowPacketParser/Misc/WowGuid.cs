@@ -37,7 +37,8 @@ namespace WowPacketParser.Misc
 
         public ObjectType GetObjectType()
         {
-            if (ClientVersion.Expansion == ClientType.WorldOfWarcraft)
+            if (ClientVersion.Expansion == ClientType.WorldOfWarcraft ||
+                ClientVersion.Expansion == ClientType.TheBurningCrusade)
             {
                 if (Storage.Objects.ContainsKey(this))
                 {

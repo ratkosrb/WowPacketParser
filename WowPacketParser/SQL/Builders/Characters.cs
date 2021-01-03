@@ -38,8 +38,8 @@ namespace WowPacketParser.SQL.Builders
             var playerRows = new RowList<PlayerTemplate>();
             var playerGuidValuesRows = new RowList<CreatureGuidValues>();
             var playerAttackLogRows = new RowList<UnitMeleeAttackLog>();
-            var playerAttackStartRows = new RowList<CreatureTargetChange>();
-            var playerAttackStopRows = new RowList<CreatureTargetChange>();
+            var playerAttackStartRows = new RowList<CreatureAttackToggle>();
+            var playerAttackStopRows = new RowList<CreatureAttackToggle>();
             var playerAurasUpdateRows = new RowList<CreatureAurasUpdate>();
             var playerCreate1Rows = new RowList<PlayerCreate1>();
             var playerCreate2Rows = new RowList<PlayerCreate2>();
@@ -139,69 +139,55 @@ namespace WowPacketParser.SQL.Builders
 
                 if (Settings.SqlTables.player)
                 {
-                    Row<PlayerTemplate> addonRow = new Row<PlayerTemplate>();
-                    addonRow.Data.Guid = row.Data.Guid;
-                    addonRow.Data.Name = row.Data.Name;
-                    addonRow.Data.Race = row.Data.Race;
-                    addonRow.Data.Class = row.Data.Class;
-                    addonRow.Data.Gender = row.Data.Gender;
-                    addonRow.Data.Level = row.Data.Level;
-                    addonRow.Data.XP = row.Data.XP;
-                    addonRow.Data.Money = row.Data.Money;
-                    addonRow.Data.PlayerBytes = row.Data.PlayerBytes;
-                    addonRow.Data.PlayerBytes2 = row.Data.PlayerBytes2;
-                    addonRow.Data.PlayerFlags = row.Data.PlayerFlags;
-                    addonRow.Data.PositionX = row.Data.PositionX;
-                    addonRow.Data.PositionY = row.Data.PositionY;
-                    addonRow.Data.PositionZ = row.Data.PositionZ;
-                    addonRow.Data.Orientation = row.Data.Orientation;
-                    addonRow.Data.Map = row.Data.Map;
-                    addonRow.Data.DisplayID = (uint)player.UnitDataOriginal.DisplayID;
-                    addonRow.Data.NativeDisplayID = (uint)player.UnitDataOriginal.NativeDisplayID;
-                    addonRow.Data.MountDisplayID = (uint)player.UnitDataOriginal.MountDisplayID;
-                    addonRow.Data.FactionTemplate = (uint)player.UnitDataOriginal.FactionTemplate;
-                    addonRow.Data.UnitFlags = player.UnitDataOriginal.Flags;
-                    addonRow.Data.CurHealth = (uint)player.UnitDataOriginal.CurHealth;
-                    addonRow.Data.MaxHealth = (uint)player.UnitDataOriginal.MaxHealth;
-                    addonRow.Data.CurMana = (uint)player.UnitDataOriginal.CurMana;
-                    addonRow.Data.MaxMana = (uint)player.UnitDataOriginal.MaxMana;
-                    addonRow.Data.AuraState = player.UnitDataOriginal.AuraState;
-                    addonRow.Data.EmoteState = (uint)player.UnitDataOriginal.EmoteState;
-                    addonRow.Data.StandState = player.UnitDataOriginal.StandState;
-                    addonRow.Data.PetTalentPoints = player.UnitDataOriginal.PetTalentPoints;
-                    addonRow.Data.VisFlags = player.UnitDataOriginal.VisFlags;
-                    addonRow.Data.AnimTier = player.UnitDataOriginal.AnimTier;
-                    addonRow.Data.SheatheState = player.UnitDataOriginal.SheatheState;
-                    addonRow.Data.PvpFlags = player.UnitDataOriginal.PvpFlags;
-                    addonRow.Data.PetFlags = player.UnitDataOriginal.PetFlags;
-                    addonRow.Data.ShapeshiftForm = player.UnitDataOriginal.ShapeshiftForm;
-                    addonRow.Data.SpeedWalk = moveData.WalkSpeed / MovementInfo.DEFAULT_WALK_SPEED;
-                    addonRow.Data.SpeedRun = moveData.RunSpeed / MovementInfo.DEFAULT_RUN_SPEED;
-                    addonRow.Data.Scale = player.ObjectDataOriginal.Scale;
-                    addonRow.Data.BoundingRadius = player.UnitDataOriginal.BoundingRadius;
-                    addonRow.Data.CombatReach = player.UnitDataOriginal.CombatReach;
-                    addonRow.Data.ModMeleeHaste = player.UnitDataOriginal.ModHaste;
-                    addonRow.Data.ModRangedHaste = player.UnitDataOriginal.ModRangedHaste;
-                    addonRow.Data.BaseAttackTime = player.UnitDataOriginal.AttackRoundBaseTime[0];
-                    addonRow.Data.RangedAttackTime = player.UnitDataOriginal.RangedAttackRoundBaseTime;
-
-                    string auras = string.Empty;
-                    if (player.Auras != null && player.Auras.Count != 0)
-                    {
-                        foreach (Aura aura in player.Auras)
-                        {
-                            if (aura == null)
-                                continue;
-
-                            auras += aura.SpellId + " ";
-                        }
-
-                        auras = auras.TrimEnd(' ');
-                    }
-                    addonRow.Data.Auras = auras;
-                    addonRow.Data.EquipmentCache = row.Data.EquipmentCache;
-
-                    playerRows.Add(addonRow);
+                    Row<PlayerTemplate> playerRow = new Row<PlayerTemplate>();
+                    playerRow.Data.Guid = row.Data.Guid;
+                    playerRow.Data.Name = row.Data.Name;
+                    playerRow.Data.Race = row.Data.Race;
+                    playerRow.Data.Class = row.Data.Class;
+                    playerRow.Data.Gender = row.Data.Gender;
+                    playerRow.Data.Level = row.Data.Level;
+                    playerRow.Data.XP = row.Data.XP;
+                    playerRow.Data.Money = row.Data.Money;
+                    playerRow.Data.PlayerBytes = row.Data.PlayerBytes;
+                    playerRow.Data.PlayerBytes2 = row.Data.PlayerBytes2;
+                    playerRow.Data.PlayerFlags = row.Data.PlayerFlags;
+                    playerRow.Data.PositionX = row.Data.PositionX;
+                    playerRow.Data.PositionY = row.Data.PositionY;
+                    playerRow.Data.PositionZ = row.Data.PositionZ;
+                    playerRow.Data.Orientation = row.Data.Orientation;
+                    playerRow.Data.Map = row.Data.Map;
+                    playerRow.Data.DisplayID = (uint)player.UnitDataOriginal.DisplayID;
+                    playerRow.Data.NativeDisplayID = (uint)player.UnitDataOriginal.NativeDisplayID;
+                    playerRow.Data.MountDisplayID = (uint)player.UnitDataOriginal.MountDisplayID;
+                    playerRow.Data.FactionTemplate = (uint)player.UnitDataOriginal.FactionTemplate;
+                    playerRow.Data.UnitFlags = player.UnitDataOriginal.Flags;
+                    playerRow.Data.UnitFlags2 = player.UnitDataOriginal.Flags2;
+                    playerRow.Data.CurHealth = (uint)player.UnitDataOriginal.CurHealth;
+                    playerRow.Data.MaxHealth = (uint)player.UnitDataOriginal.MaxHealth;
+                    playerRow.Data.CurMana = (uint)player.UnitDataOriginal.CurMana;
+                    playerRow.Data.MaxMana = (uint)player.UnitDataOriginal.MaxMana;
+                    playerRow.Data.AuraState = player.UnitDataOriginal.AuraState;
+                    playerRow.Data.EmoteState = (uint)player.UnitDataOriginal.EmoteState;
+                    playerRow.Data.StandState = player.UnitDataOriginal.StandState;
+                    playerRow.Data.PetTalentPoints = player.UnitDataOriginal.PetTalentPoints;
+                    playerRow.Data.VisFlags = player.UnitDataOriginal.VisFlags;
+                    playerRow.Data.AnimTier = player.UnitDataOriginal.AnimTier;
+                    playerRow.Data.SheatheState = player.UnitDataOriginal.SheatheState;
+                    playerRow.Data.PvpFlags = player.UnitDataOriginal.PvpFlags;
+                    playerRow.Data.PetFlags = player.UnitDataOriginal.PetFlags;
+                    playerRow.Data.ShapeshiftForm = player.UnitDataOriginal.ShapeshiftForm;
+                    playerRow.Data.SpeedWalk = moveData.WalkSpeed / MovementInfo.DEFAULT_WALK_SPEED;
+                    playerRow.Data.SpeedRun = moveData.RunSpeed / MovementInfo.DEFAULT_RUN_SPEED;
+                    playerRow.Data.Scale = player.ObjectDataOriginal.Scale;
+                    playerRow.Data.BoundingRadius = player.UnitDataOriginal.BoundingRadius;
+                    playerRow.Data.CombatReach = player.UnitDataOriginal.CombatReach;
+                    playerRow.Data.ModMeleeHaste = player.UnitDataOriginal.ModHaste;
+                    playerRow.Data.ModRangedHaste = player.UnitDataOriginal.ModRangedHaste;
+                    playerRow.Data.BaseAttackTime = player.UnitDataOriginal.AttackRoundBaseTime[0];
+                    playerRow.Data.RangedAttackTime = player.UnitDataOriginal.RangedAttackRoundBaseTime;
+                    playerRow.Data.Auras = player.GetAurasString(false);
+                    playerRow.Data.EquipmentCache = row.Data.EquipmentCache;
+                    playerRows.Add(playerRow);
                 }
 
                 if (Settings.SqlTables.player_guid_values)
@@ -247,7 +233,7 @@ namespace WowPacketParser.SQL.Builders
                     {
                         foreach (var attack in Storage.UnitAttackStartTimes[objPair.Key])
                         {
-                            Row<CreatureTargetChange> attackRow = new Row<CreatureTargetChange>();
+                            Row<CreatureAttackToggle> attackRow = new Row<CreatureAttackToggle>();
                             attackRow.Data.GUID = row.Data.Guid;
                             Storage.GetObjectDbGuidEntryType(attack.victim, out attackRow.Data.VictimGuid, out attackRow.Data.VictimId, out attackRow.Data.VictimType);
                             attackRow.Data.UnixTimeMs = (ulong)Utilities.GetUnixTimeMsFromDateTime(attack.time);
@@ -262,7 +248,7 @@ namespace WowPacketParser.SQL.Builders
                     {
                         foreach (var attack in Storage.UnitAttackStopTimes[objPair.Key])
                         {
-                            Row<CreatureTargetChange> attackRow = new Row<CreatureTargetChange>();
+                            Row<CreatureAttackToggle> attackRow = new Row<CreatureAttackToggle>();
                             attackRow.Data.GUID = row.Data.Guid;
                             Storage.GetObjectDbGuidEntryType(attack.victim, out attackRow.Data.VictimGuid, out attackRow.Data.VictimId, out attackRow.Data.VictimType);
                             attackRow.Data.UnixTimeMs = (ulong)Utilities.GetUnixTimeMsFromDateTime(attack.time);
@@ -532,17 +518,13 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.UnixTime = (uint)Utilities.GetUnixTimeFromDateTime(itr.Time);
                     activePlayersRows.Add(row);
                 }
-                var activePlayersDelete = new SQLDelete<CharacterActivePlayer>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                result.Append(activePlayersDelete.Build());
-                var activePlayersSql = new SQLInsert<CharacterActivePlayer>(activePlayersRows, false);
+                var activePlayersSql = new SQLInsert<CharacterActivePlayer>(activePlayersRows, true);
                 result.Append(activePlayersSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_create1_time)
             {
-                var create1Delete = new SQLDelete<PlayerCreate1>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                result.Append(create1Delete.Build());
                 var createSql = new SQLInsert<PlayerCreate1>(playerCreate1Rows, false);
                 result.Append(createSql.Build());
                 result.AppendLine();
@@ -550,8 +532,6 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SqlTables.player_create2_time)
             {
-                var create2Delete = new SQLDelete<PlayerCreate2>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                result.Append(create2Delete.Build());
                 var createSql = new SQLInsert<PlayerCreate2>(playerCreate2Rows, false);
                 result.Append(createSql.Build());
                 result.AppendLine();
@@ -559,8 +539,6 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SqlTables.player_destroy_time)
             {
-                var destroyDelete = new SQLDelete<PlayerDestroy>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                result.Append(destroyDelete.Build());
                 var destroySql = new SQLInsert<PlayerDestroy>(playerDestroyRows, false);
                 result.Append(destroySql.Build());
                 result.AppendLine();
@@ -614,30 +592,27 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SqlTables.player_attack_log)
             {
-                var characterAttackLogSql = new SQLInsert<UnitMeleeAttackLog>(playerAttackLogRows, false, false, "player_attack_log");
-                result.Append(characterAttackLogSql.Build());
+                var attackLogSql = new SQLInsert<UnitMeleeAttackLog>(playerAttackLogRows, false, false, "player_attack_log");
+                result.Append(attackLogSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_attack_start)
             {
-                var characterAttackStartSql = new SQLInsert<CreatureTargetChange>(playerAttackStartRows, false, false, "player_attack_start");
-                result.Append(characterAttackStartSql.Build());
+                var attackStartSql = new SQLInsert<CreatureAttackToggle>(playerAttackStartRows, false, false, "player_attack_start");
+                result.Append(attackStartSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_attack_stop)
             {
-                var characterAttackStopSql = new SQLInsert<CreatureTargetChange>(playerAttackStopRows, false, false, "player_attack_stop");
-                result.Append(characterAttackStopSql.Build());
+                var attackStopSql = new SQLInsert<CreatureAttackToggle>(playerAttackStopRows, false, false, "player_attack_stop");
+                result.Append(attackStopSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_emote)
             {
-                var emoteDelete = new SQLDelete<CreatureEmote>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                emoteDelete.tableNameOverride = "player_emote";
-                result.Append(emoteDelete.Build());
                 var emoteSql = new SQLInsert<CreatureEmote>(playerEmoteRows, false, false, "player_emote");
                 result.Append(emoteSql.Build());
                 result.AppendLine();
@@ -645,43 +620,41 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SqlTables.player_equipment_values_update)
             {
-                var characterTargetChangeSql = new SQLInsert<CreatureEquipmentValuesUpdate>(playerEquipmentValuesUpdateRows, false, false, "player_equipment_values_update");
-                result.Append(characterTargetChangeSql.Build());
+                var equipmentUpdateSql = new SQLInsert<CreatureEquipmentValuesUpdate>(playerEquipmentValuesUpdateRows, false, false, "player_equipment_values_update");
+                result.Append(equipmentUpdateSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_guid_values_update)
             {
-                var characterTargetChangeSql = new SQLInsert<CreatureGuidValuesUpdate>(playerGuidValuesUpdateRows, false, false, "player_guid_values_update");
-                result.Append(characterTargetChangeSql.Build());
+                var guidsUpdateSql = new SQLInsert<CreatureGuidValuesUpdate>(playerGuidValuesUpdateRows, false, false, "player_guid_values_update");
+                result.Append(guidsUpdateSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_auras_update)
             {
-                var characterUpdateSql = new SQLInsert<CreatureAurasUpdate>(playerAurasUpdateRows, false, false, "player_auras_update");
-                result.Append(characterUpdateSql.Build());
+                var aurasUpdateSql = new SQLInsert<CreatureAurasUpdate>(playerAurasUpdateRows, false, false, "player_auras_update");
+                result.Append(aurasUpdateSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_values_update)
             {
-                var characterUpdateSql = new SQLInsert<CreatureValuesUpdate>(playerValuesUpdateRows, false, false, "player_values_update");
-                result.Append(characterUpdateSql.Build());
+                var valuesUpdateSql = new SQLInsert<CreatureValuesUpdate>(playerValuesUpdateRows, false, false, "player_values_update");
+                result.Append(valuesUpdateSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_speed_update)
             {
-                var characterUpdateSql = new SQLInsert<CreatureSpeedUpdate>(playerSpeedUpdateRows, false, false, "player_speed_update");
-                result.Append(characterUpdateSql.Build());
+                var speedUpdateSql = new SQLInsert<CreatureSpeedUpdate>(playerSpeedUpdateRows, false, false, "player_speed_update");
+                result.Append(speedUpdateSql.Build());
                 result.AppendLine();
             }
 
             if (Settings.SqlTables.player_chat && !Storage.CharacterTexts.IsEmpty())
             {
-                var characterChatDelete = new SQLDelete<CharacterChat>(Tuple.Create("@PGUID+0", "@PGUID+" + maxDbGuid));
-                result.Append(characterChatDelete.Build());
                 foreach (var text in Storage.CharacterTexts)
                 {
                     if (text.Item1.Guid == null)

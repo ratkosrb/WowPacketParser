@@ -23,6 +23,7 @@ namespace WowPacketParser.Store
             obj.OriginalUpdateFields = obj.UpdateFields != null ? new Dictionary<int, UpdateField>(obj.UpdateFields) : null;
             if (!string.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
                 obj.SourceSniffId = Program.sniffFileNames.IndexOf(packet.FileName);
+            obj.SourceSniffBuild = ClientVersion.BuildInt;
             Storage.Objects.Add(guid, obj, packet.TimeSpan);
         }
         public static string GetObjectDbGuid(WowGuid guid)
@@ -53,6 +54,9 @@ namespace WowPacketParser.Store
         }
         public static string GetObjectTypeNameForDB(WowGuid guid)
         {
+            if (guid.IsEmpty())
+                return "";
+
             if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (guid.GetHighType() == HighGuidType.Pet)
@@ -308,8 +312,7 @@ namespace WowPacketParser.Store
                 }
             }
 
-            if (guid.GetObjectType() == ObjectType.Unit &&
-                guid.GetHighType() != HighGuidType.Pet)
+            if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_auras_update)
                     return;
@@ -337,8 +340,7 @@ namespace WowPacketParser.Store
         public static readonly Dictionary<WowGuid, List<CreatureGuidValuesUpdate>> UnitGuidValuesUpdates = new Dictionary<WowGuid, List<CreatureGuidValuesUpdate>>();
         public static void StoreUnitGuidValuesUpdate(WowGuid guid, CreatureGuidValuesUpdate update)
         {
-            if (guid.GetObjectType() == ObjectType.Unit &&
-                guid.GetHighType() != HighGuidType.Pet)
+            if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_guid_values_update)
                     return;
@@ -366,8 +368,7 @@ namespace WowPacketParser.Store
         public static readonly Dictionary<WowGuid, List<CreatureEquipmentValuesUpdate>> UnitEquipmentValuesUpdates = new Dictionary<WowGuid, List<CreatureEquipmentValuesUpdate>>();
         public static void StoreUnitEquipmentValuesUpdate(WowGuid guid, CreatureEquipmentValuesUpdate update)
         {
-            if (guid.GetObjectType() == ObjectType.Unit &&
-                guid.GetHighType() != HighGuidType.Pet)
+            if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_equipment_values_update)
                     return;
@@ -395,8 +396,7 @@ namespace WowPacketParser.Store
         public static readonly Dictionary<WowGuid, List<CreatureValuesUpdate>> UnitValuesUpdates = new Dictionary<WowGuid, List<CreatureValuesUpdate>>();
         public static void StoreUnitValuesUpdate(WowGuid guid, CreatureValuesUpdate update)
         {
-            if (guid.GetObjectType() == ObjectType.Unit &&
-                guid.GetHighType() != HighGuidType.Pet)
+            if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_values_update)
                     return;
@@ -424,8 +424,7 @@ namespace WowPacketParser.Store
         public static readonly Dictionary<WowGuid, List<CreatureSpeedUpdate>> UnitSpeedUpdates = new Dictionary<WowGuid, List<CreatureSpeedUpdate>>();
         public static void StoreUnitSpeedUpdate(WowGuid guid, CreatureSpeedUpdate update)
         {
-            if (guid.GetObjectType() == ObjectType.Unit &&
-                guid.GetHighType() != HighGuidType.Pet)
+            if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_speed_update)
                     return;
@@ -544,8 +543,7 @@ namespace WowPacketParser.Store
         public static readonly Dictionary<WowGuid, List<CreatureEmote>> Emotes = new Dictionary<WowGuid, List<CreatureEmote>>();
         public static void StoreUnitEmote(WowGuid guid, EmoteType emote, DateTime time)
         {
-            if (guid.GetObjectType() == ObjectType.Unit &&
-                guid.GetHighType() != HighGuidType.Pet)
+            if (guid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_emote)
                     return;
@@ -575,8 +573,7 @@ namespace WowPacketParser.Store
         {
             WowGuid attackerGuid = attackData.Attacker;
 
-            if (attackerGuid.GetObjectType() == ObjectType.Unit &&
-                attackerGuid.GetHighType() != HighGuidType.Pet)
+            if (attackerGuid.GetObjectType() == ObjectType.Unit)
             {
                 if (!Settings.SqlTables.creature_attack_log)
                     return;
@@ -601,11 +598,11 @@ namespace WowPacketParser.Store
                 Storage.UnitAttackLogs.Add(attackerGuid, attacksList);
             }
         }
-        public static readonly Dictionary<WowGuid, List<CreatureTargetData>> UnitAttackStartTimes = new Dictionary<WowGuid, List<CreatureTargetData>>();
-        public static readonly Dictionary<WowGuid, List<CreatureTargetData>> UnitAttackStopTimes = new Dictionary<WowGuid, List<CreatureTargetData>>();
+        public static readonly Dictionary<WowGuid, List<CreatureAttackData>> UnitAttackStartTimes = new Dictionary<WowGuid, List<CreatureAttackData>>();
+        public static readonly Dictionary<WowGuid, List<CreatureAttackData>> UnitAttackStopTimes = new Dictionary<WowGuid, List<CreatureAttackData>>();
         public static void StoreUnitAttackToggle(WowGuid attackerGuid, WowGuid victimGuid, DateTime time, bool start)
         {
-            Dictionary<WowGuid, List<CreatureTargetData>> store = null;
+            Dictionary<WowGuid, List<CreatureAttackData>> store = null;
             if (start)
             {
                 if (attackerGuid.GetObjectType() == ObjectType.Unit &&
@@ -631,12 +628,12 @@ namespace WowPacketParser.Store
 
             if (store.ContainsKey(attackerGuid))
             {
-                store[attackerGuid].Add(new CreatureTargetData(victimGuid, time));
+                store[attackerGuid].Add(new CreatureAttackData(victimGuid, time));
             }
             else
             {
-                List<CreatureTargetData> attackList = new List<CreatureTargetData>();
-                attackList.Add(new CreatureTargetData(victimGuid, time));
+                List<CreatureAttackData> attackList = new List<CreatureAttackData>();
+                attackList.Add(new CreatureAttackData(victimGuid, time));
                 store.Add(attackerGuid, attackList);
             }
         }
@@ -659,6 +656,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestTemplate> QuestTemplates = new DataBag<QuestTemplate>(Settings.SqlTables.quest_template);
         public static readonly DataBag<QuestObjective> QuestObjectives = new DataBag<QuestObjective>(Settings.SqlTables.quest_template);
         public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(Settings.SqlTables.quest_template);
+        public static readonly DataBag<QuestRewardDisplaySpell> QuestRewardDisplaySpells = new DataBag<QuestRewardDisplaySpell>(Settings.SqlTables.quest_template);
         public static readonly DataBag<CreatureTemplate> CreatureTemplates = new DataBag<CreatureTemplate>(Settings.SqlTables.creature_template_wdb);
         public static readonly DataBag<CreatureTemplateClassic> CreatureTemplatesClassic = new DataBag<CreatureTemplateClassic>(Settings.SqlTables.creature_template_wdb);
         public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(Settings.SqlTables.creature_template);
@@ -856,8 +854,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestEnder> QuestEnders = new DataBag<QuestEnder>(Settings.SqlTables.quest_ender);
         public static readonly DataBag<QuestClientAccept> QuestClientAcceptTimes = new DataBag<QuestClientAccept>(Settings.SqlTables.client_quest_accept);
         public static readonly DataBag<QuestClientComplete> QuestClientCompleteTimes = new DataBag<QuestClientComplete>(Settings.SqlTables.client_quest_complete);
-        public static readonly DataBag<QuestCompleteTime> QuestCompleteTimes = new DataBag<QuestCompleteTime>(Settings.SqlTables.quest_complete_time);
-        public static readonly DataBag<QuestFailTime> QuestFailTimes = new DataBag<QuestFailTime>(Settings.SqlTables.quest_fail_time);
+        public static readonly DataBag<QuestCompleteTime> QuestCompleteTimes = new DataBag<QuestCompleteTime>(Settings.SqlTables.quest_update_complete);
+        public static readonly DataBag<QuestFailTime> QuestFailTimes = new DataBag<QuestFailTime>(Settings.SqlTables.quest_update_failed);
         public static readonly DataBag<QuestGreeting> QuestGreetings = new DataBag<QuestGreeting>(Settings.SqlTables.quest_template);
         public static readonly DataBag<QuestDetails> QuestDetails = new DataBag<QuestDetails>(Settings.SqlTables.quest_template);
         public static readonly DataBag<QuestRequestItems> QuestRequestItems = new DataBag<QuestRequestItems>(Settings.SqlTables.quest_template);
@@ -931,6 +929,8 @@ namespace WowPacketParser.Store
 
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(Settings.SqlTables.hotfix_data);
         public static readonly DataBag<HotfixBlob> HotfixBlobs = new DataBag<HotfixBlob>(Settings.SqlTables.hotfix_blob);
+        public static readonly DataBag<HotfixOptionalData> HotfixOptionalDatas = new DataBag<HotfixOptionalData>(new List<SQLOutput> { });
+
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(Settings.SqlTables.scene_template);
 
@@ -993,6 +993,7 @@ namespace WowPacketParser.Store
             QuestTemplates.Clear();
             QuestObjectives.Clear();
             QuestVisualEffects.Clear();
+            QuestRewardDisplaySpells.Clear();
 
             UnitAttackLogs.Clear();
             UnitAttackStartTimes.Clear();
@@ -1000,6 +1001,7 @@ namespace WowPacketParser.Store
             CreatureClientInteractTimes.Clear();
             CreatureLoot.Clear();
             CreatureStats.Clear();
+
             CreatureTemplates.Clear();
             CreatureTemplatesClassic.Clear();
             CreatureTemplatesNonWDB.Clear();
@@ -1091,6 +1093,7 @@ namespace WowPacketParser.Store
 
             HotfixDatas.Clear();
             HotfixBlobs.Clear();
+            HotfixOptionalDatas.Clear();
 
             Scenes.Clear();
 

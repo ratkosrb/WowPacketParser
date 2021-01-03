@@ -24,6 +24,7 @@ namespace WowPacketParser.Misc
         public static readonly bool SaveHealthUpdates = Conf.GetBoolean("SaveHealthUpdates", false);
         public static readonly bool SaveManaUpdates = Conf.GetBoolean("SaveManaUpdates", false);
         public static readonly bool SaveTempSpawns = Conf.GetBoolean("SaveTempSpawns", false);
+        public static readonly bool SavePets = Conf.GetBoolean("SavePets", false);
         public static readonly bool SkipOnlyVerifiedBuildUpdateRows = Conf.GetBoolean("SkipOnlyVerifiedBuildUpdateRows", false);
         public static readonly bool IgnoreZeroValues = Conf.GetBoolean("IgnoreZeroValues", false);
         public static readonly bool ForceInsertQueries = Conf.GetBoolean("ForceInsertQueries", false);
@@ -37,6 +38,7 @@ namespace WowPacketParser.Misc
         public static readonly bool ParsingLog = Conf.GetBoolean("ParsingLog", false);
         public static readonly bool DevMode = Conf.GetBoolean("DevMode", false);
         public static readonly int Threads = Conf.GetInt("Threads", 8);
+        public static readonly bool ParseAllHotfixes = Conf.GetBoolean("ParseAllHotfixes", false);
 
         public static readonly bool SSHEnabled = Conf.GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = Conf.GetString("SSHHost", "localhost");
@@ -154,8 +156,8 @@ namespace WowPacketParser.Misc
             public static readonly bool player_movement_server = Conf.GetBoolean("player_movement_server", false);
             public static readonly bool player_speed_update = Conf.GetBoolean("player_speed_update", false);
             public static readonly bool player_values_update = Conf.GetBoolean("player_values_update", false);
-            public static readonly bool quest_complete_time = Conf.GetBoolean("quest_complete_time", false);
-            public static readonly bool quest_fail_time = Conf.GetBoolean("quest_fail_time", false);
+            public static readonly bool quest_update_complete = Conf.GetBoolean("quest_update_complete", false);
+            public static readonly bool quest_update_failed = Conf.GetBoolean("quest_update_failed", false);
             public static readonly bool spell_cast_failed = Conf.GetBoolean("spell_cast_failed", false);
             public static readonly bool spell_cast_go = Conf.GetBoolean("spell_cast_go", false);
             public static readonly bool spell_cast_start = Conf.GetBoolean("spell_cast_start", false);

@@ -21,6 +21,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public uint DynamicFlags => UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_DYNAMIC_FLAGS);
 
         public float Scale => UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X).GetValueOrDefault(1.0f);
+
+        public IObjectData Clone() { return new ObjectData(Object); }
     }
 
     public class OriginalObjectData : IObjectData
@@ -40,5 +42,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public uint DynamicFlags => UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_DYNAMIC_FLAGS);
 
         public float Scale => UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X).GetValueOrDefault(1.0f);
+
+        public IObjectData Clone() { return new OriginalObjectData(Object); }
     }
 }

@@ -5,9 +5,8 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
 {
     public class UnitData : IUnitData
     {
-        public uint Entry { get; set; }
         public int DisplayID { get; set; }
-        public uint[] NpcFlags { get; } = new uint[2];
+        public uint[] NpcFlags { get; set; } = new uint[2];
         public uint StateSpellVisualID { get; set; }
         public uint StateAnimID { get; set; }
         public uint StateAnimKitID { get; set; }
@@ -34,8 +33,8 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
         public uint OverrideDisplayPowerID { get; set; }
         public long Health { get; set; }
         public long CurHealth => Health;
-        public int[] Power { get; } = new int[6];
-        public int[] MaxPower { get; } = new int[6];
+        public int[] Power { get; set; } = new int[6];
+        public int[] MaxPower { get; set; } = new int[6];
         public int CurMana => Power[0];
         public int MaxMana => MaxPower[0];
         public float[] PowerRegenFlatModifier { get; } = new float[6];
@@ -52,12 +51,12 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
         public int ScalingHealthItemLevelCurveID { get; set; }
         public int ScalingDamageItemLevelCurveID { get; set; }
         public int FactionTemplate { get; set; }
-        public IVisibleItem[] VirtualItems { get; } = new IVisibleItem[3];
+        public IVisibleItem[] VirtualItems { get; set; } = new IVisibleItem[3];
         public uint Flags { get; set; }
         public uint Flags2 { get; set; }
         public uint Flags3 { get; set; }
         public uint AuraState { get; set; }
-        public uint[] AttackRoundBaseTime { get; } = new uint[2];
+        public uint[] AttackRoundBaseTime { get; set; } = new uint[2];
         public uint RangedAttackRoundBaseTime { get; set; }
         public float BoundingRadius { get; set; }
         public float CombatReach { get; set; }
@@ -133,6 +132,19 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();
         public DynamicUpdateField<int> WorldEffects { get; } = new DynamicUpdateField<int>();
         public DynamicUpdateField<WowGuid> ChannelObjects { get; } = new DynamicUpdateField<WowGuid>();
+
+        public IUnitData Clone()
+        {
+            UnitData copy = (UnitData)MemberwiseClone();
+            copy.NpcFlags = (uint[])NpcFlags.Clone();
+            copy.Power = (int[])Power.Clone();
+            copy.MaxPower = (int[])MaxPower.Clone();
+            copy.AttackRoundBaseTime = (uint[])AttackRoundBaseTime.Clone();
+            copy.VirtualItems = new IVisibleItem[3];
+            for (int i = 0; i < 3; i++)
+                copy.VirtualItems[i] = VirtualItems[i].Clone();
+            return copy;
+        }
     }
 }
 

@@ -25,6 +25,8 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
         public byte AnimProgress => PercentHealth;
         public uint CustomParam { get; set; }
         public DynamicUpdateField<int> EnableDoodadSets { get; } = new DynamicUpdateField<int>();
+
+        public IGameObjectData Clone() { return (IGameObjectData)MemberwiseClone(); }
     }
 }
 

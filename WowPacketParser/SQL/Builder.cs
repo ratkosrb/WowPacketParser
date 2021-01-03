@@ -74,7 +74,7 @@ namespace WowPacketParser.SQL
                 ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects
                 : Storage.Objects.Where(
                     obj =>
-                        obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet)   // remove pets
+                        obj.Value.Item1.Type == ObjectType.Unit)
                     .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
                     .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
 

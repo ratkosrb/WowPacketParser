@@ -53,6 +53,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("dynamicobject_create1_time")]
     public sealed class DynamicObjectCreate1 : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -67,14 +70,14 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float? Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("dynamicobject_create2_time")]
     public sealed class DynamicObjectCreate2 : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -89,18 +92,15 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float? Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("dynamicobject_destroy_time")]
     public sealed class DynamicObjectDestroy : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
     }
 }

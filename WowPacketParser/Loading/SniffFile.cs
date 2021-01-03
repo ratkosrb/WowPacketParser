@@ -444,7 +444,8 @@ namespace WowPacketParser.Loading
                    "SET @DGUID = 0;" + Environment.NewLine +
                    "SET @IGUID = 0; " + Environment.NewLine +
                    "SET @OGUID = 0; " + Environment.NewLine +
-                   "SET @PGUID = 0; " + Environment.NewLine;
+                   "SET @PGUID = 0; " + Environment.NewLine +
+                   "SET @PID = 0; " + Environment.NewLine;
         }
 
         private static long _lastPercent;

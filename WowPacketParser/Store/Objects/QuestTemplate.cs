@@ -85,12 +85,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardDisplaySpell", TargetedDatabase.Legion, TargetedDatabase.Shadowlands, 3)]
         public uint?[] RewardDisplaySpellLegion;
 
-        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Shadowlands, 12)]
-        public uint[] RewardDisplaySpellShadowlands;
-
-        [DBFieldName("RewardDisplaySpellPlayerCondition", TargetedDatabase.Shadowlands, 12)]
-        public int[] RewardDisplaySpellPlayerCondition;
-
         [DBFieldName("RewardSpell", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
         public int? RewardSpell;
 
@@ -378,23 +372,23 @@ namespace WowPacketParser.Store.Objects
         public uint? QuestId;
     }
 
-    [DBTableName("quest_complete_time")]
+    [DBTableName("quest_update_complete")]
     public sealed class QuestCompleteTime : IDataModel
     {
-        [DBFieldName("quest_id", true)]
-        public uint QuestId;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("quest_id", true)]
+        public uint QuestId;
     }
 
-    [DBTableName("quest_fail_time")]
+    [DBTableName("quest_update_failed")]
     public sealed class QuestFailTime : IDataModel
     {
-        [DBFieldName("quest_id", true)]
-        public uint QuestId;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("quest_id", true)]
+        public uint QuestId;
     }
 }

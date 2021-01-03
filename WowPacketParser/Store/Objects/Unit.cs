@@ -67,6 +67,31 @@ namespace WowPacketParser.Store.Objects
                 DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
         }
 
+        public string GetAurasString(bool noCaster)
+        {
+            string auras = string.Empty;
+            if (Auras != null && Auras.Count != 0)
+            {
+                foreach (Aura aura in Auras)
+                {
+                    if (aura == null)
+                        continue;
+
+                    if (noCaster)
+                    {
+                        // usually "template auras" do not have caster
+                        if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
+                            continue;
+                    }
+
+                    auras += aura.SpellId + " ";
+                }
+                auras = auras.TrimEnd(' ');
+            }
+
+            return auras;
+        }
+
         public void AddWaypoint(ServerSideMovement movementData, Vector3 startPosition, DateTime packetTime)
         {
             List<ServerSideMovement> list = null;
@@ -79,7 +104,7 @@ namespace WowPacketParser.Store.Objects
             movementData.StartPositionX = startPosition.X;
             movementData.StartPositionY = startPosition.Y;
             movementData.StartPositionZ = startPosition.Z;
-            movementData.UnixTime = (uint)Utilities.GetUnixTimeFromDateTime(packetTime);
+            movementData.UnixTimeMs = (ulong)Utilities.GetUnixTimeMsFromDateTime(packetTime);
 
             if (movementData.SplineCount > 0 &&
                 movementData.SplinePoints != null)

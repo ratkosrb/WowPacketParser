@@ -82,16 +82,19 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("animprogress")]
         public uint? AnimProgress;
 
-        [DBFieldName("SniffId", false, false, false, true)]
+        [DBFieldName("sniff_id", false, false, false, true)]
         public int? SniffId;
 
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
+        [DBFieldName("sniff_build")]
+        public int? SniffBuild = ClientVersion.BuildInt;
     }
 
     [DBTableName("gameobject_create1_time")]
     public sealed class GameObjectCreate1 : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -106,14 +109,14 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float? Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("gameobject_create2_time")]
     public sealed class GameObjectCreate2 : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -128,29 +131,26 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float? Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("gameobject_destroy_time")]
     public sealed class GameObjectDestroy : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
     }
 
     [DBTableName("gameobject_values_update")]
     public sealed class GameObjectUpdate : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
 
         [DBFieldName("display_id", false, false, true)]
         public uint? DisplayID;
@@ -174,6 +174,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("gameobject_custom_anim")]
     public sealed class GameObjectCustomAnim : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -182,18 +185,15 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("as_despawn", false, false, true)]
         public bool? AsDespawn;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("gameobject_despawn_anim")]
     public sealed class GameObjectDespawnAnim : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
     }
 }

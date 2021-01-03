@@ -137,6 +137,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unit_flags")]
         public uint? UnitFlags;
 
+        [DBFieldName("unit_flags2")]
+        public uint? UnitFlags2;
+
         [DBFieldName("current_health")]
         public uint? CurHealth;
 
@@ -213,6 +216,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("player_create1_time")]
     public sealed class PlayerCreate1 : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -227,14 +233,14 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float? Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("player_create2_time")]
     public sealed class PlayerCreate2 : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string GUID;
 
@@ -249,19 +255,16 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float? Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 
     [DBTableName("player_destroy_time")]
     public sealed class PlayerDestroy : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string GUID;
-
         [DBFieldName("unixtimems", true)]
         public ulong UnixTimeMs;
+
+        [DBFieldName("guid", true, true)]
+        public string GUID;
     }
 
     [DBTableName("character_inventory")]
@@ -309,6 +312,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("player_movement_client")]
     public sealed class ClientSideMovement : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("guid", true, true)]
         public string Guid;
 
@@ -335,9 +341,6 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("orientation")]
         public float Orientation;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
     public sealed class PlayerMovement
     {
@@ -353,11 +356,11 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("player_active_player")]
     public sealed class CharacterActivePlayer : IDataModel
     {
-        [DBFieldName("guid", true, true)]
-        public string Guid;
-
         [DBFieldName("unixtime", true)]
         public uint UnixTime;
+
+        [DBFieldName("guid", true, true)]
+        public string Guid;
     }
     public sealed class ActivePlayerCreateTime
     {

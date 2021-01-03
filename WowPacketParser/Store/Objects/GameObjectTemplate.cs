@@ -13,8 +13,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type")]
         public GameObjectType? Type;
 
-        [DBFieldName("displayId")]
+        [DBFieldName("display_id")]
         public uint? DisplayID;
+
+        [DBFieldName("scale")]
+        public float? Size;
 
         [DBFieldName("name", LocaleConstant.enUS)] // ToDo: Add locale support
         public string Name;
@@ -25,14 +28,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("cast_bar_caption", LocaleConstant.enUS)] // ToDo: Add locale support
         public string CastCaption;
 
-        [DBFieldName("unk1")]
+        [DBFieldName("unk_string")]
         public string UnkString;
-
-        [DBFieldName("size")]
-        public float? Size;
-
-        //TODO: move to gameobject_questitem
-        public uint?[] QuestItems;
 
         [DBFieldName("data", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 24, true)]
         [DBFieldName("data", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 32, true)]
@@ -41,10 +38,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("data", TargetedDatabase.Classic, 34, true)]
         public int?[] Data;
 
-        [DBFieldName("required_level", TargetedDatabase.Cataclysm)]
+        [DBFieldName("quest_items_count")]
+        public uint QuestItems;
+
+        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm, TargetedDatabase.Shadowlands)]
         public int? RequiredLevel;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("ContentTuningId", TargetedDatabase.Shadowlands)]
+        public int? ContentTuningId;
+
+        [DBFieldName("sniff_build")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 

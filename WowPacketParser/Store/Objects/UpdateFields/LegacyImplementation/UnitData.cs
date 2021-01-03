@@ -29,8 +29,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
         }
 
-        public uint Entry => UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY);
-
         public int DisplayID => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_DISPLAYID);
 
         public int NativeDisplayID => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_NATIVEDISPLAYID);
@@ -110,6 +108,11 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                     }
                     return items;
                 }
+                else if (ClientVersion.InVersion(ClientVersionBuild.Zero, ClientVersionBuild.V3_0_2_9056))
+                {
+                    return UpdateFields.GetArray<UnitField, int>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_DISPLAY, 3)
+                        .Select(rawId => new VisibleItem { ItemID = rawId }).ToArray();
+                }
                 else
                     return UpdateFields.GetArray<UnitField, int>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 3)
                         .Select(rawId => new VisibleItem { ItemID = rawId }).ToArray();
@@ -168,7 +171,11 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             public int ItemID { get; set; }
             public ushort ItemAppearanceModID { get; set; }
             public ushort ItemVisual { get; set; }
+
+            public IVisibleItem Clone() { return (IVisibleItem)MemberwiseClone(); }
         }
+
+        public IUnitData Clone() { return new UnitData(Object); }
     }
     public class OriginalUnitData : IUnitData
     {
@@ -193,8 +200,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                 return new WowGuid128(Utilities.MAKE_PAIR64(parts[0], parts[1]), Utilities.MAKE_PAIR64(parts[2], parts[3]));
             }
         }
-
-        public uint Entry => UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY);
 
         public int DisplayID => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_DISPLAYID);
 
@@ -338,6 +343,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             public int ItemID { get; set; }
             public ushort ItemAppearanceModID { get; set; }
             public ushort ItemVisual { get; set; }
+
+            public IVisibleItem Clone() { return (IVisibleItem)MemberwiseClone(); }
         }
+
+        public IUnitData Clone() { return new OriginalUnitData(Object); }
     }
 }

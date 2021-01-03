@@ -205,7 +205,7 @@ namespace WowPacketParser.SQL.Builders
             return spellsSql.Build();
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string SpellPetCooldown()
         {
             if (!Settings.SqlTables.spell_pet_cooldown)
@@ -219,7 +219,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellPetCooldown, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string SpellPetActions()
         {
             if (!Settings.SqlTables.spell_pet_action)

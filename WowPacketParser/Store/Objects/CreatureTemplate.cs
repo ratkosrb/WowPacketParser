@@ -43,7 +43,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unit_class", TargetedDatabase.BattleForAzeroth)]
         public uint? UnitClass;
 
-        [DBFieldName("FadeRegionRadius", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("FadeRegionRadius", TargetedDatabase.BattleForAzeroth, TargetedDatabase.Shadowlands)]
         public float? FadeRegionRadius;
 
         [DBFieldName("WidgetSetID", TargetedDatabase.BattleForAzeroth)]
@@ -148,7 +148,6 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("auras")]
         public string Auras;
-
     }
 
     [DBTableName("creature_questitem")]
@@ -278,7 +277,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("movement_id")]
         public uint? MovementID;
 
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
+        [DBFieldName("sniff_build")]
+        public int? SniffBuild = ClientVersion.BuildInt;
     }
 }

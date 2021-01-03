@@ -5,5 +5,7 @@
         int ItemID { get; }
         ushort ItemAppearanceModID { get; }
         ushort ItemVisual { get; }
+
+        IVisibleItem Clone();
     }
 }

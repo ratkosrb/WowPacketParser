@@ -968,6 +968,7 @@ namespace WowPacketParser.Enums
         [UpdateField(UpdateFieldType.Bytes)]
         GAMEOBJECT_BYTES_1,
         GAMEOBJECT_DISPLAYID,
+        [UpdateField(UpdateFieldType.Short)]
         GAMEOBJECT_DYNAMIC,
         GAMEOBJECT_END,
         [UpdateField(UpdateFieldType.Int)]

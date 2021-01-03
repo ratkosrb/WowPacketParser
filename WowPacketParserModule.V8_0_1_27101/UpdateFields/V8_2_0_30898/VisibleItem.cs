@@ -8,6 +8,8 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_0_30898
         public int ItemID { get; set; }
         public ushort ItemAppearanceModID { get; set; }
         public ushort ItemVisual { get; set; }
+
+        public IVisibleItem Clone() { return (IVisibleItem)MemberwiseClone(); }
     }
 }
 

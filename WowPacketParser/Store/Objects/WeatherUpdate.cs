@@ -6,6 +6,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("weather_update")]
     public sealed class WeatherUpdate : IDataModel
     {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
         [DBFieldName("map_id")]
         public uint? MapId;
 
@@ -23,8 +26,5 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("instant")]
         public byte? Instant;
-
-        [DBFieldName("unixtimems", true)]
-        public ulong UnixTimeMs;
     }
 }

@@ -33,6 +33,7 @@ namespace WowPacketParser.Store.Objects
         public bool ForceTemporarySpawn;
 
         public int SourceSniffId;
+        public int SourceSniffBuild;
 
         public WoWObject()
         {

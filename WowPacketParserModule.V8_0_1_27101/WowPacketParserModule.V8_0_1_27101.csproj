@@ -362,6 +362,7 @@
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\ToyHandler.cs" />
+    <Compile Include="Parsers\TransmogrificationHandler.cs" />
     <Compile Include="Parsers\UpdateFieldsHandler810.cs" />
     <Compile Include="Parsers\UpdateFieldsHandler815.cs" />
     <Compile Include="Parsers\UpdateFieldsHandler820.cs" />

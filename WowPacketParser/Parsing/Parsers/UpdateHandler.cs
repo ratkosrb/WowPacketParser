@@ -201,8 +201,9 @@ namespace WowPacketParser.Parsing.Parsers
         }
         public static void StoreObjectSpeedUpdate(DateTime time, WowGuid guid, MovementInfo moveInfo)
         {
-            if ((guid.GetObjectType() == ObjectType.Unit && guid.GetHighType() != HighGuidType.Pet) ||
-                (guid.GetObjectType() == ObjectType.Player || guid.GetObjectType() == ObjectType.ActivePlayer))
+            if ((guid.GetObjectType() == ObjectType.Unit) ||
+                (guid.GetObjectType() == ObjectType.Player) || 
+                (guid.GetObjectType() == ObjectType.ActivePlayer))
             {
                 if (Storage.Objects.ContainsKey(guid))
                 {
@@ -291,8 +292,9 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void StoreObjectUpdate(DateTime time, WowGuid guid, Dictionary<int, UpdateField> updates)
         {
-            if ((guid.GetObjectType() == ObjectType.Unit && guid.GetHighType() != HighGuidType.Pet) ||
-                (guid.GetObjectType() == ObjectType.Player || guid.GetObjectType() == ObjectType.ActivePlayer))
+            if ((guid.GetObjectType() == ObjectType.Unit) ||
+                (guid.GetObjectType() == ObjectType.Player) ||
+                (guid.GetObjectType() == ObjectType.ActivePlayer))
             {
                 bool hasData = false;
                 CreatureValuesUpdate creatureUpdate = new CreatureValuesUpdate();
@@ -303,7 +305,7 @@ namespace WowPacketParser.Parsing.Parsers
                         if (Storage.Objects.ContainsKey(guid))
                         {
                             var obj = Storage.Objects[guid].Item1 as Unit;
-                            if (obj.UnitData.Entry != update.Value.UInt32Value)
+                            if (obj.ObjectData.EntryID != update.Value.UInt32Value)
                             {
                                 hasData = true;
                                 creatureUpdate.Entry = update.Value.UInt32Value;
@@ -469,6 +471,18 @@ namespace WowPacketParser.Parsing.Parsers
                             {
                                 hasData = true;
                                 creatureUpdate.UnitFlag = update.Value.UInt32Value;
+                            }
+                        }
+                    }
+                    else if (update.Key == UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FLAGS_2))
+                    {
+                        if (Storage.Objects.ContainsKey(guid))
+                        {
+                            var obj = Storage.Objects[guid].Item1 as Unit;
+                            if (obj.UnitData.Flags2 != update.Value.UInt32Value)
+                            {
+                                hasData = true;
+                                creatureUpdate.UnitFlag2 = update.Value.UInt32Value;
                             }
                         }
                     }
@@ -1158,6 +1172,15 @@ namespace WowPacketParser.Parsing.Parsers
                                 byte[] intBytes = BitConverter.GetBytes(fieldData[k].UInt32Value);
                                 packet.AddValue(k > 0 ? key + " + " + k : key, intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
                             }
+                        }
+                        break;
+                    }
+                    case UpdateFieldType.Short:
+                    {
+                        for (int k = 0; k < fieldData.Count; ++k)
+                        {
+                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                                packet.AddValue(k > 0 ? key + " + " + k : key, ((short)(fieldData[k].UInt32Value & 0xffff)) + "/" + ((short)(fieldData[k].UInt32Value >> 16)), index);
                         }
                         break;
                     }

@@ -4,7 +4,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IUnitData
     {
-        uint Entry { get; }
         int DisplayID { get; }
         int NativeDisplayID { get; }
         int MountDisplayID { get; }
@@ -53,5 +52,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         float HoverHeight { get; }
         int InteractSpellID { get; }
         WowGuid GuildGUID { get; }
+        IUnitData Clone();
     }
 }

@@ -14,5 +14,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         sbyte TypeID { get; }
         byte PercentHealth { get; }
         byte AnimProgress { get; }
+
+        IGameObjectData Clone();
     }
 }

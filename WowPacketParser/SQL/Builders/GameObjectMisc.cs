@@ -11,7 +11,7 @@ namespace WowPacketParser.SQL.Builders
     [BuilderClass]
     public static class GameObjectMisc
     {
-        [BuilderMethod(true, Gameobjects = true)]
+        [BuilderMethod(false, Gameobjects = true)]
         public static string GameObjectTemplateAddon(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (!Settings.SqlTables.gameobject_template_addon)

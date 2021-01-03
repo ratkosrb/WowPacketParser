@@ -25,6 +25,8 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_0_30898
         public uint ArtKit { get; set; }
         public uint CustomParam { get; set; }
         public DynamicUpdateField<int> EnableDoodadSets { get; } = new DynamicUpdateField<int>();
+
+        public IGameObjectData Clone() { return (IGameObjectData)MemberwiseClone(); }
     }
 }
 

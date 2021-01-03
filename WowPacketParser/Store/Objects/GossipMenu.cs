@@ -13,8 +13,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text_id", true)]
         public uint? TextID;
 
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
+        [DBFieldName("sniff_build")]
+        public int? SniffBuild = ClientVersion.BuildInt;
 
         public ObjectType ObjectType;
 
@@ -25,13 +25,13 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("creature_gossip")]
     public class CreatureGossip : IDataModel
     {
-        [DBFieldName("CreatureId", true)]
+        [DBFieldName("entry", true)]
         public uint? CreatureId;
 
-        [DBFieldName("GossipMenuId", true)]
+        [DBFieldName("gossip_menu_id", true)]
         public uint? GossipMenuId;
 
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
+        [DBFieldName("sniff_build")]
+        public int? SniffBuild = ClientVersion.BuildInt;
     }
 }

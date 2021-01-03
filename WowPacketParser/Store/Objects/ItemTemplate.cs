@@ -284,9 +284,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CurrencySubstitutionCount", TargetedDatabase.Cataclysm)]
         public uint? CurrencySubstitutionCount;
 
-        [DBFieldName("flagsCustom")]
-        public uint? FlagsCustom;
-
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }

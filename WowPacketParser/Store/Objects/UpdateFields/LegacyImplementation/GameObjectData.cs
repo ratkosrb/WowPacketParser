@@ -60,6 +60,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public byte AnimProgress => (byte)(ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)
                 ? ((UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_BYTES_1) & 0xFF000000) >> 24)
                 : UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_ANIMPROGRESS));
+
+        public IGameObjectData Clone() { return new GameObjectData(Object); }
     }
     public class OriginalGameObjectData : IGameObjectData
     {
@@ -117,5 +119,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public byte AnimProgress => (byte)(ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)
                 ? ((UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_BYTES_1) & 0xFF000000) >> 24)
                 : UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_ANIMPROGRESS));
+
+        public IGameObjectData Clone() { return new OriginalGameObjectData(Object); }
     }
 }

@@ -22,8 +22,14 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("option_broadcast_text")]
         public int? OptionBroadcastTextId = 0;
 
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
+        [DBFieldName("option_id")]
+        public uint OptionId = 0;
+
+        [DBFieldName("npc_option_npcflag")]
+        public uint NpcOptionNpcFlag = 0;
+
+        [DBFieldName("sniff_build")]
+        public int? SniffBuild = ClientVersion.BuildInt;
 
         public string BroadcastTextIDHelper;
     }

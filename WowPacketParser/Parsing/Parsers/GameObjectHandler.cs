@@ -52,10 +52,26 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
                 gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint?[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                for (int i = 0; i < gameObject.QuestItems.Length; i++)
-                    gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+            {
+                uint count = (uint)(ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4);
+                for (uint i = 0; i < count; i++)
+                {
+                    uint itemId = packet.ReadUInt32<ItemId>("QuestItem", i);
+                    if (itemId != 0)
+                    {
+                        gameObject.QuestItems++;
+                        GameObjectTemplateQuestItem questItem = new GameObjectTemplateQuestItem
+                        {
+                            GameObjectEntry = (uint)entry.Key,
+                            Idx = i,
+                            ItemId = itemId
+                        };
+
+                        Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
+                    }
+                }
+            }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");

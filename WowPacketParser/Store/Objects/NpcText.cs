@@ -113,7 +113,7 @@ namespace WowPacketParser.Store.Objects
         public string Text01;
 
         [DBFieldName("BroadcastTextID0")]
-        public uint? BroadcastTextID0;
+        public uint BroadcastTextID0;
 
         [DBFieldName("lang0")]
         public Language? Lang0;
@@ -146,7 +146,7 @@ namespace WowPacketParser.Store.Objects
         public string Text11;
 
         [DBFieldName("BroadcastTextID1")]
-        public uint? BroadcastTextID1;
+        public uint BroadcastTextID1;
 
         [DBFieldName("lang1")]
         public Language? Lang1;
@@ -179,7 +179,7 @@ namespace WowPacketParser.Store.Objects
         public string Text21;
 
         [DBFieldName("BroadcastTextID2")]
-        public uint? BroadcastTextID2;
+        public uint BroadcastTextID2;
 
         [DBFieldName("lang2")]
         public Language? Lang2;
@@ -212,7 +212,7 @@ namespace WowPacketParser.Store.Objects
         public string Text31;
 
         [DBFieldName("BroadcastTextID3")]
-        public uint? BroadcastTextID3;
+        public uint BroadcastTextID3;
 
         [DBFieldName("lang3")]
         public Language? Lang3;
@@ -245,7 +245,7 @@ namespace WowPacketParser.Store.Objects
         public string Text41;
 
         [DBFieldName("BroadcastTextID4")]
-        public uint? BroadcastTextID4;
+        public uint BroadcastTextID4;
 
         [DBFieldName("lang4")]
         public Language? Lang4;
@@ -278,7 +278,7 @@ namespace WowPacketParser.Store.Objects
         public string Text51;
 
         [DBFieldName("BroadcastTextID5")]
-        public uint? BroadcastTextID5;
+        public uint BroadcastTextID5;
 
         [DBFieldName("lang5")]
         public Language? Lang5;
@@ -311,7 +311,7 @@ namespace WowPacketParser.Store.Objects
         public string Text61;
 
         [DBFieldName("BroadcastTextID6")]
-        public uint? BroadcastTextID6;
+        public uint BroadcastTextID6;
 
         [DBFieldName("lang6")]
         public Language? Lang6;
@@ -344,7 +344,7 @@ namespace WowPacketParser.Store.Objects
         public string Text71;
 
         [DBFieldName("BroadcastTextID7")]
-        public uint? BroadcastTextID7;
+        public uint BroadcastTextID7;
 
         [DBFieldName("lang7")]
         public Language? Lang7;

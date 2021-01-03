@@ -6,5 +6,7 @@
         uint TypeID { get; }
         uint DynamicFlags { get; }
         float Scale { get; }
+
+        IObjectData Clone();
     }
 }

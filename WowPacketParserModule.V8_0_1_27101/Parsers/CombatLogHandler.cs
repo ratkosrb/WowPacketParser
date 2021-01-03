@@ -46,6 +46,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt16("PlayerItemLevel", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                 packet.ReadUInt16("TargetItemLevel", idx);
+            
             packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);
             packet.ReadByte("ScalesWithItemLevel", idx);
         }

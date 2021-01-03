@@ -2,12 +2,6 @@
 
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
-    public class VisiblePlayerItem
-    {
-        public uint ItemID;
-        public uint EnchantID;
-    }
-
     public interface IPlayerData
     {
         WowGuid WowAccount { get; }
@@ -18,5 +12,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint PlayerFlags { get; }
         IVisibleItem[] VisibleItems { get; }
         uint GuildRank { get; }
+        IPlayerData Clone();
     }
 }

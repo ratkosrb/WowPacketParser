@@ -1,0 +1,21 @@
+﻿using WowPacketParser.Misc;
+
+namespace WowPacketParser.Store.Objects.UpdateFields
+{
+    public interface IPlayerData
+    {
+        WowGuid WowAccount { get; }
+        uint Experience { get; }
+        uint Money { get; }
+        uint PlayerBytes1 { get; }
+        uint PlayerBytes2 { get; }
+        uint PlayerFlags { get; }
+        IVisibleItem[] VisibleItems { get; }
+<<<<<<< HEAD
+        uint GuildRank { get; }
+=======
+
+        IPlayerData Clone();
+>>>>>>> db28330dacb0990845d1be83f1667fa81f0dd0df
+    }
+}

@@ -50,6 +50,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             public int ItemID { get; set; }
             public ushort ItemAppearanceModID { get; set; }
             public ushort ItemVisual { get; set; }
+
+            public IVisibleItem Clone() { return (IVisibleItem)MemberwiseClone(); }
         }
 
         public IVisibleItem[] VisibleItems
@@ -96,6 +98,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                 }
             }
         }
+
+        public IPlayerData Clone() { return new PlayerData(Object); }
     }
 
     public class OriginalPlayerData : IPlayerData
@@ -143,6 +147,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             public int ItemID { get; set; }
             public ushort ItemAppearanceModID { get; set; }
             public ushort ItemVisual { get; set; }
+
+            public IVisibleItem Clone() { return (IVisibleItem)MemberwiseClone(); }
         }
         
         public IVisibleItem[] VisibleItems
@@ -189,6 +195,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                 }
             }
         }
+
+        public IPlayerData Clone() { return new OriginalPlayerData(Object); }
     }
 }
 

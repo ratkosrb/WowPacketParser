@@ -60,8 +60,25 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.QuestVisualEffects, templateDb, StoreNameType.None);
         }
 
-        [BuilderMethod(true, Units = true)]
-        public static string CreatureTemplate(Dictionary<WowGuid, Unit> units)
+        [BuilderMethod(true)]
+        public static string QuestRewardDisplaySpell()
+        {
+            if (!Settings.SqlTables.quest_template)
+                return string.Empty;
+
+            if (Settings.TargetedDatabase != TargetedDatabase.Shadowlands)
+                return string.Empty;
+
+            if (Storage.QuestRewardDisplaySpells.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.QuestRewardDisplaySpells);
+
+            return SQLUtil.Compare(Storage.QuestRewardDisplaySpells, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod(true)]
+        public static string CreatureTemplate()
         {
             if (!Settings.SqlTables.creature_template_wdb)
                 return string.Empty;
@@ -110,7 +127,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.CreatureTemplateModels, templatesDb, StoreNameType.Unit);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string CreatureTemplateQuestItem()
         {
             if (!Settings.SqlTables.creature_template)
@@ -128,7 +145,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.CreatureTemplateQuestItems, templatesDb, StoreNameType.Unit);
         }
 
-        [BuilderMethod(true, Gameobjects = true)]
+        [BuilderMethod(false, Gameobjects = true)]
         public static string GameObjectTemplate(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (!Settings.SqlTables.gameobject_template)
@@ -144,7 +161,7 @@ namespace WowPacketParser.SQL.Builders
                 GameObject go = gameobjects.FirstOrDefault(p => p.Key.GetEntry() == goT.Item1.Entry.GetValueOrDefault()).Value;
                 if (go != null)
                 {
-                    if (goT.Item1.Size == null) // only true for 3.x and 4.x. WDB field since 5.x
+                    if (goT.Item1.Size == null) // only true for 1.x to 4.x. WDB field since 5.x
                         goT.Item1.Size = go.ObjectData.Scale;
                 }
             }
@@ -152,13 +169,14 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string GameObjectTemplateQuestItem()
         {
             if (!Settings.SqlTables.gameobject_template)
                 return string.Empty;
 
-            if (Settings.TargetedDatabase <= TargetedDatabase.WarlordsOfDraenor)
+            if (Settings.TargetedDatabase != TargetedDatabase.Classic &&
+                Settings.TargetedDatabase <= TargetedDatabase.WarlordsOfDraenor)
                 return string.Empty;
 
             if (Storage.GameObjectTemplateQuestItems.IsEmpty())
@@ -169,7 +187,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.GameObjectTemplateQuestItems, templatesDb, StoreNameType.GameObject);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string ItemTemplate()
         {
             if (!Settings.SqlTables.item_template)
@@ -270,7 +288,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.PlayerChoiceResponseRewardItems, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string PageText()
         {
             if (!Settings.SqlTables.page_text)
@@ -284,15 +302,15 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.PageTexts, templatesDb, StoreNameType.PageText);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(false)]
         public static string NpcText()
         {
             if (!Settings.SqlTables.npc_text)
                 return string.Empty;
 
-            if (!Storage.NpcTexts.IsEmpty() &&
-                (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
-                Settings.TargetedDatabase == TargetedDatabase.Cataclysm))
+            if (!Storage.NpcTexts.IsEmpty() && ClientVersion.RemovedInVersion(ClientType.MistsOfPandaria) &&
+                (Settings.TargetedDatabase >= TargetedDatabase.Zero ||
+                Settings.TargetedDatabase <= TargetedDatabase.Cataclysm))
             {
                 foreach (var npcText in Storage.NpcTexts)
                     npcText.Item1.ConvertToDBStruct();
@@ -475,7 +493,7 @@ namespace WowPacketParser.SQL.Builders
                 return SQLUtil.Compare(Storage.NpcTexts, templatesDb, StoreNameType.NpcText);
             }
 
-            if (!Storage.NpcTextsMop.IsEmpty() &&
+            if (!Storage.NpcTextsMop.IsEmpty() && ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) &&
                 (Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor ||
                 Settings.TargetedDatabase == TargetedDatabase.Classic))
             {

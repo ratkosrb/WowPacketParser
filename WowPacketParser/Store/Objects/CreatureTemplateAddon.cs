@@ -32,7 +32,5 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("auras")]
         public string Auras;
-
-        public string CommentAuras;
     }
 }

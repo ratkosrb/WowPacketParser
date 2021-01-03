@@ -50,10 +50,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint?[packet.ReadByte("QuestItems Length")]; // correct?
-
-            for (int i = 0; i < gameObject.QuestItems.Length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+            gameObject.QuestItems = packet.ReadByte("QuestItemsCount");
+            for (uint i = 0; i < gameObject.QuestItems; i++)
+            {
+                packet.ReadUInt32<ItemId>("QuestItem", i);
+            }
 
             gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
