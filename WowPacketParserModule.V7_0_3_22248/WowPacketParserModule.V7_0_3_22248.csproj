@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Copyright>Copyright © 2014-2020</Copyright>
     <Authors>TrinityCore</Authors>
     <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
@@ -44,6 +44,12 @@
       <EmbedInteropTypes>false</EmbedInteropTypes>
       <Private>false</Private>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DBFileReaderLib">
+      <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1379,6 +1379,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_FORCE_TURN_RATE_CHANGE_ACK)]
         [Parser(Opcode.CMSG_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_FORCE_PITCH_RATE_CHANGE_ACK)]
         public static void HandleSpeedChangeMessage(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
@@ -1430,6 +1431,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
         [Parser(Opcode.SMSG_MOVE_ENABLE_TRANSITION_BETWEEN_SWIM_AND_FLY)]
         [Parser(Opcode.SMSG_MOVE_DISABLE_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_GRAVITY)]
         [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSetMovementMessages(Packet packet)
@@ -1454,6 +1457,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_FORCE_MOVE_UNROOT_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSpecialMoveAckMessages2(Packet packet)
         {
             WowGuid guid;

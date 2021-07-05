@@ -54,7 +54,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadByte("Subclass", idx, "VisualItems", j);
             }
 
-            packet.ReadTime("LastPlayedTime", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("LastPlayedTime", idx);
+            else
+                packet.ReadTime("LastPlayedTime", idx);
 
             packet.ReadInt16("SpecID", idx);
             packet.ReadInt32("Unknown703", idx);
@@ -201,6 +204,43 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
             if (hasAzeriteLevel)
                 packet.ReadInt32("AzeriteLevel");
+        }
+
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            var nameLen = packet.ReadBits(6);
+            var hasTemplateSet = packet.ReadBit("HasTemplateSet");
+            packet.ReadBit("IsTrialBoost");
+            packet.ReadBit("UseNPE");
+
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
+
+            var customizationCount = packet.ReadUInt32();
+
+            packet.ReadWoWString("Name", nameLen);
+
+            if (hasTemplateSet)
+                packet.ReadInt32("TemplateSetID");
+
+            for (var i = 0u; i < customizationCount; ++i)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
+
+        [Parser(Opcode.SMSG_CHECK_CHARACTER_NAME_AVAILABILITY_RESULT)]
+        public static void HandleCheckCharacterNameAvailabilityResult(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadUInt32("Result");
+        }
+
+        [Parser(Opcode.CMSG_CHECK_CHARACTER_NAME_AVAILABILITY)]
+        public static void HandleCheckCharacterNameAvailability(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadWoWString("Character Name", packet.ReadBits(6));
         }
     }
 }

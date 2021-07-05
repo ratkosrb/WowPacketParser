@@ -20,13 +20,17 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var count = packet.ReadUInt32("NumObjUpdates");
             uint map = packet.ReadUInt16<MapId>("MapID");
             packet.ResetBitReader();
-            var hasDestroyObject = packet.ReadBit("HasDestroyObjects");
-            if (hasDestroyObject)
+            var hasRemovedObjects = packet.ReadBit("HasRemovedObjects");
+            if (hasRemovedObjects)
             {
-                packet.ReadInt16("Int0");
-                var destroyObjCount = packet.ReadUInt32("DestroyObjectsCount");
-                for (var i = 0; i < destroyObjCount; i++)
-                    packet.ReadPackedGuid128("Object GUID", i);
+                var destroyedObjCount = packet.ReadInt16("DestroyedObjCount");
+                var removedObjCount = packet.ReadUInt32("RemovedObjCount"); // destroyed + out of range
+                var outOfRangeObjCount = removedObjCount - destroyedObjCount;
+
+                for (var i = 0; i < destroyedObjCount; i++)
+                    packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i);
+                for (var i = 0; i < outOfRangeObjCount; i++)
+                    packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i);
             }
             packet.ReadUInt32("Data size");
 
@@ -490,9 +494,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (hasAnimKitCreate)
             {
-                packet.ReadUInt16("AiID", index);
-                packet.ReadUInt16("MovementID", index);
-                packet.ReadUInt16("MeleeID", index);
+                var aiId = packet.ReadUInt16("AiID", index);
+                var movementId = packet.ReadUInt16("MovementID", index);
+                var meleeId = packet.ReadUInt16("MeleeID", index);
+                if (obj is Unit unit)
+                {
+                    unit.AIAnimKit = aiId;
+                    unit.MovementAnimKit = movementId;
+                    unit.MeleeAnimKit = meleeId;
+                }
+                else if (obj is GameObject gob)
+                {
+                    gob.AIAnimKitID = aiId;
+                }
             }
 
             if (hasRotation)
@@ -576,6 +590,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 if (packet.ReadBit("HasAreaTriggerCircularMovement", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
+
+                if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                    if (packet.ReadBit("HasAreaTriggerUnk901", index)) // seen with spellid 343597
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk901;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
@@ -675,6 +693,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk901) != 0)
+                {
+                    packet.ReadInt32("Unk901"); // some id prolly, its neither npc nor spell though
+                    packet.ReadVector3("Unk901Position");
+                }
+
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasCircularMovement) != 0)
                 {
                     packet.ResetBitReader();
@@ -704,7 +728,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (hasGameObject)
             {
                 packet.ResetBitReader();
-                packet.ReadUInt32("WorldEffectID", index);
+                var worldEffectId = packet.ReadUInt32("WorldEffectID", index);
+                if (worldEffectId != 0 && obj is GameObject gob)
+                    gob.WorldEffectID = worldEffectId;
 
                 var bit8 = packet.ReadBit("bit8", index);
                 if (bit8)

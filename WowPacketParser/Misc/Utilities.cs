@@ -13,16 +13,22 @@ namespace WowPacketParser.Misc
 {
     public static class Utilities
     {
-        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-        public static DateTime GetDateTimeFromUnixTime(double unixTime)
+        public static DateTime GetDateTimeFromUnixTime(long unixTime)
         {
-            return Epoch.AddSeconds(unixTime);
+            try
+            {
+                return DateTimeOffset.FromUnixTimeSeconds(unixTime).UtcDateTime;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // weird values are sent sometimes that make no sense, clamp to valid range
+                return unixTime < DateTimeOffset.MinValue.ToUnixTimeSeconds() ? DateTimeOffset.MinValue.UtcDateTime : DateTimeOffset.MaxValue.UtcDateTime;
+            }
         }
 
-        public static double GetUnixTimeFromDateTime(DateTime time)
+        public static long GetUnixTimeFromDateTime(DateTime time)
         {
-            return (time - Epoch).TotalSeconds;
+            return ((DateTimeOffset)DateTime.SpecifyKind(time, DateTimeKind.Utc)).ToUnixTimeSeconds();
         }
 
         public static byte[] HexStringToBinary(string data)
@@ -242,6 +248,9 @@ namespace WowPacketParser.Misc
             if (o1 is float || o2 is double)
                 return false;
 
+            if (o1 is Blob blob1 && o2 is Blob blob2)
+                return blob1.Data.SequenceEqual(blob2.Data);
+
             // Notice that if one of the values is DBNull, DBNull == "" must return true
             string str1 = o1 as string;
             string str2 = o2 as string;
@@ -292,7 +301,7 @@ namespace WowPacketParser.Misc
             return dict;
         }
 
-        public static List<T> GetAttributes<T>(FieldInfo field) where T : Attribute 
+        public static List<T> GetAttributes<T>(FieldInfo field) where T : Attribute
         {
             var list = new List<T>();
 

@@ -280,6 +280,8 @@ namespace WowPacketParser.Hotfix
                 switch (tableName)
                 {
                     case "achievement":
+                    case "adventure_journal":
+                    case "adventure_map_poi":
                     case "area_table":
                     case "artifact_appearance":
                     case "artifact_appearance_set":
@@ -294,6 +296,8 @@ namespace WowPacketParser.Hotfix
                     case "char_titles":
                     case "chat_channels":
                     case "chr_classes":
+                    case "chr_customization_choice":
+                    case "chr_customization_option":
                     case "chr_races":
                     case "chr_specialization":
                     case "creature_family":
@@ -316,6 +320,7 @@ namespace WowPacketParser.Hotfix
                     case "item_search_name":
                     case "item_set":
                     case "item_sparse":
+                    case "languages":
                     case "lfg_dungeons":
                     case "mail_template":
                     case "map_difficulty":

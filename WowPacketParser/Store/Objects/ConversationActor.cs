@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -9,11 +10,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ConversationId", true)]
         public uint? ConversationId;
 
-        [DBFieldName("ConversationActorId", true)]
-        public uint? ConversationActorId;
+        [DBFieldName("ConversationActorId")]
+        public int? ConversationActorId;
 
         [DBFieldName("Idx", true)]
         public uint? Idx;
+
+        [DBFieldName("CreatureId", TargetedDatabase.Shadowlands)]
+        public uint? CreatureId;
+
+        [DBFieldName("CreatureDisplayInfoId", TargetedDatabase.Shadowlands)]
+        public uint? CreatureDisplayInfoId;
 
         public WowGuid Guid;
 

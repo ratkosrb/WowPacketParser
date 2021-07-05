@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
@@ -34,14 +33,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var data = packet.ReadBytes(size);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            if (entry < 0 || status == HotfixStatus.Invalid)
+            if (entry < 0 || status == HotfixStatus.RecordRemoved)
             {
                 packet.WriteLine("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
-            if (status == HotfixStatus.Unavailable)
+            if (status == HotfixStatus.Invalid)
             {
-                packet.WriteLine("Row {0} is unavailable.", entry);
+                packet.WriteLine("Row {0} is invalid.", entry);
             }
             else
             {
@@ -128,7 +127,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                                 {
                                     TableHash = type,
                                     RecordID = entry,
-                                    Blob = "0x" + Utilities.ByteArrayToHexString(data)
+                                    Blob = new Blob(data)
                                 };
 
                                 Storage.HotfixBlobs.Add(hotfixBlob);
@@ -139,16 +138,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             db2File.ClosePacket(false);
                             break;
                         }
-                    case HotfixStatus.Invalid:
+                    case HotfixStatus.RecordRemoved:
                         {
                             packet.WriteLine($"Row {entry} has been removed.");
                             HotfixStoreMgr.RemoveRecord(type, entry);
                             break;
                         }
-                    case HotfixStatus.Unavailable:
+                    case HotfixStatus.Invalid:
                         {
                             // sniffs from others may have the data
-                            packet.WriteLine($"Row {entry} is unavailable.");
+                            packet.WriteLine($"Row {entry} is invalid.");
                             break;
                         }
                     default:
@@ -202,7 +201,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             RecordID = entry,
                             Key = hash,
 
-                            Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
+                            Data = new Blob(optionalData)
                         };
 
                         Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
@@ -250,6 +249,24 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hotfixData = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
             ReadHotfixData(hotfixData, hotfixRecords, "HotfixData");
+        }
+        [Parser(Opcode.CMSG_HOTFIX_REQUEST, ClientVersionBuild.V9_0_5_37503)]
+        public static void HandleHotfixRequest905(Packet packet)
+        {
+            packet.ReadUInt32("CurrentBuild");
+            packet.ReadUInt32("InternalBuild");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
+        }
+
+        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_0_5_37503)]
+        public static void HandleAvailableHotfixes905(Packet packet)
+        {
+            packet.ReadInt32("VirtualRealmAddress");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
         }
     }
 }

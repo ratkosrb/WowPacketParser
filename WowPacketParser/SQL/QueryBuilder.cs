@@ -528,8 +528,12 @@ namespace WowPacketParser.SQL
                 }
                 else
                 {
-                    Array arr = value as Array;
-                    if (arr != null)
+                    if (value is Blob blob)
+                    {
+                        query.Append(SQLUtil.ToSQLValue(blob));
+                        query.Append(SQLUtil.CommaSeparator);
+                    }
+                    else if (value is Array arr)
                     {
                         foreach (object v in arr)
                         {
