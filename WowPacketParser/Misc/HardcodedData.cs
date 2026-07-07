@@ -73,7 +73,8 @@ namespace WowPacketParser.Misc
         }
         public static bool IsModDodgePercentAura(uint spellId)
         {
-            return ModDodgePercentSpells.Contains(spellId);
+            return ModDodgePercentSpells.Contains(spellId) ||
+                   ModDefenseSkillSpells.Contains(spellId);
         }
         public static bool IsModCritPercentAura(uint spellId)
         {
@@ -93,6 +94,9 @@ namespace WowPacketParser.Misc
 
         // Spells with SPELL_AURA_MOD_TOTAL_STAT_PERCENTAGE
         public static readonly HashSet<uint> ModTotalStatPercentSpells = new HashSet<uint> { 67, 7713, 11443, 14535, 15271, 16461, 16555, 16567, 17003, 17004, 17005, 17006, 17213, 18697, 18698, 18699, 18700, 18701, 18948, 19168, 19180, 19181, 19372, 20217, 20257, 20258, 20259, 20260, 20261, 20262, 20263, 20264, 20265, 20266, 20591, 20598, 20812, 21062, 22572, 22818, 24296, 24297, 24425, 24894, 24899, 24900, 25141, 25898, 26017, 26018, 28679, 28801, 29140, 29143, 29144, 29145, 29146, 29212 };
+
+        // Spells with SPELL_AURA_MOD_SKILL for skill 95
+        public static readonly HashSet<uint> ModDefenseSkillSpells = new HashSet<uint> { 3629, 5420, 7048, 7427, 7511, 7513, 7514, 7515, 7516, 7517, 7518, 10351, 12956, 13383, 13384, 13385, 13386, 13387, 13388, 13389, 13390, 13922, 13930, 14249, 15804, 17178, 17513, 18185, 18196, 18369, 21407, 21408, 21409, 21410, 21411, 21412, 21413, 21414, 21415, 21416, 21417, 21418, 21419, 21420, 21421, 21422, 21423, 21424, 22685, 22850, 23162, 23164, 23165, 24148, 24151, 24575, 24774, 24775, 25163, 26613, 27720, 29335 };
 
         // Spells with SPELL_AURA_MOD_DODGE_PERCENT
         public static readonly HashSet<uint> ModDodgePercentSpells = new HashSet<uint> { 1114, 1812, 1813, 1814, 1815, 2564, 2651, 4086, 4751, 4752, 5277, 5426, 8273, 13163, 13669, 13670, 13671, 13672, 13673, 13712, 13788, 13789, 13790, 13791, 14278, 15087, 16254, 16271, 16272, 16273, 16274, 16321, 16331, 16448, 18062, 19263, 19289, 19291, 19292, 19293, 20582, 21878, 22847, 24153, 24864, 24867, 25071, 27653, 31007 };
