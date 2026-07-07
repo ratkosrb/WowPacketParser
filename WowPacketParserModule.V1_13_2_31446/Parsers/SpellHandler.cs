@@ -196,6 +196,28 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             ReadSpellCastRequest(packet, "Cast");
         }
 
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifierFlat(Packet packet)
+        {
+            var modCount = packet.ReadUInt32("Modifier type count");
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                packet.ReadByteE<SpellModOp>("Spell Mod", j);
+
+                var modTypeCount = packet.ReadUInt32("Count", j);
+                for (var i = 0; i < modTypeCount; ++i)
+                {
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_4_33598))
+                        packet.ReadInt32("Amount", j, i);
+                    else
+                        packet.ReadSingle("Amount", j, i);
+                    packet.ReadByte("Spell Mask bitpos", j, i);
+                }
+            }
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
