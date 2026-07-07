@@ -176,7 +176,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var modTypeCount = packet.ReadUInt32("Count", j);
                 for (var i = 0; i < modTypeCount; ++i)
                 {
-                    packet.ReadSingle("Amount", j, i);
+                    if (ClientVersion.AddedInClassicVersion(1, 13, 6, 1, 13, 6)) // guess
+                        packet.ReadInt32("Amount", j, i);
+                    else
+                        packet.ReadSingle("Amount", j, i);
                     packet.ReadByte("Spell Mask bitpos", j, i);
                 }
             }

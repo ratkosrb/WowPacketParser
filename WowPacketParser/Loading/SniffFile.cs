@@ -161,13 +161,12 @@ namespace WowPacketParser.Loading
 
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
+                    var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
+
                     // In vanilla and tbc sniffs the same high guid types is used for all server side objects.
                     // We need to perform an analysis to guess the right type of guids.
-                    if (ClientVersion.Expansion == ClientType.WorldOfWarcraft ||
-                        ClientVersion.Expansion == ClientType.TheBurningCrusade)
+                    if ((uint)ClientVersion.Build <= (uint)ClientVersionBuild.V3_0_2_9056)
                     {
-                        var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
-
                         var pwp = new ParallelWorkProcessor<Packet>(() => // read
                         {
                             if (!reader.PacketReader.CanRead())
@@ -231,6 +230,7 @@ namespace WowPacketParser.Loading
 
                         pwp.WaitForFinished(Timeout.Infinite);
                         reader.PacketReader.Dispose();
+                        reader = null;
                     }
 
                     var written = false;
@@ -239,7 +239,8 @@ namespace WowPacketParser.Loading
                         var firstRead = true;
                         var firstWrite = true;
 
-                        var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
+                        if (reader == null)
+                            reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
 
                         var pwp = new ParallelWorkProcessor<Packet>(() => // read
                         {
