@@ -220,11 +220,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Float Damage", i);
                 packet.ReadInt32("Int Damage", i);
                 attackData.TotalAbsorbedDamage += packet.ReadInt32("Damage Absorbed", i);
-                attackData.TotalResistedDamage += packet.ReadInt32("Damage Resisted", i);
+                if (ClientVersion.AddedInVersion(1, 6, 0))
+                    attackData.TotalResistedDamage += packet.ReadInt32("Damage Resisted", i);
             }
 
             attackData.VictimState = (uint)packet.ReadInt32E<VictimStates>("VictimState");
             attackData.AttackerState = packet.ReadInt32("AttackerState");
+            if (ClientVersion.RemovedInVersion(1, 6, 0))
+                packet.ReadUInt32("Spell Damage");
             attackData.SpellId = (uint)packet.ReadInt32<SpellId>("Melee Spell ID ");
             attackData.BlockedDamage = packet.ReadInt32("Block Amount");
 
