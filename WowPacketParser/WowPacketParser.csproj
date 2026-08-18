@@ -425,6 +425,7 @@
     <Compile Include="Enums\VehicleFlags.cs" />
     <Compile Include="Enums\Version\V0_9_1_3810\Opcodes.cs" />
     <Compile Include="Enums\Version\V0_9_1_3810\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V1_6_1_4544\UpdateFields.cs" />
     <Compile Include="Enums\Version\V1_8_4_4878\Opcodes.cs" />
     <Compile Include="Enums\Version\V1_8_4_4878\UpdateFields.cs" />
     <Compile Include="Enums\Version\V1_9_4_5086\UpdateFields.cs" />
