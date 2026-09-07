@@ -111,11 +111,5 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
         {
             WowPacketParserModule.V8_0_1_27101.Parsers.CombatLogHandler.HandleSpellNonMeleeDmgLog(packet);
         }
-
-        [Parser(Opcode.SMSG_ATTACK_SWING_ERROR)]
-        public static void HandleAttackSwingError(Packet packet)
-        {
-            WowPacketParserModule.V8_0_1_27101.Parsers.CombatHandler.HandleAttackSwingError(packet);
-        }
     }
 }

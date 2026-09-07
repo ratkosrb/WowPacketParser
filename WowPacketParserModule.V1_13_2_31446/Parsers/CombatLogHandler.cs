@@ -149,10 +149,5 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         {
             packet.ReadByte("UnkByte");
         }
-
-        [Parser(Opcode.SMSG_ATTACK_SWING_ERROR)]
-        public static void HandleAttackSwingError(Packet packet)
-        {
-        }
     }
 }

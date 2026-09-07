@@ -238,5 +238,16 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             for (var i = 0; i < areaCount; ++i)
                 packet.ReadUInt32<AreaId>("Area", i);
         }
+
+        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
+        public static void HandleSummonRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadUInt32("SummonerVirtualRealmAddress");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadByte("Reason");
+            packet.ResetBitReader();
+            packet.ReadBit("SkipStartingArea");
+        }
     }
 }
