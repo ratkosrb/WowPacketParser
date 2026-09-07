@@ -163,5 +163,11 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_7_38363))
                 packet.ReadBit("UnkBit");
         }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULT)]
+        public static void HandleInspectResult(Packet packet)
+        {
+            WowPacketParserModule.V8_0_1_27101.Parsers.CharacterHandler.HandleInspectResult(packet);
+        }
     }
 }

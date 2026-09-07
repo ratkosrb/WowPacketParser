@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var azeritePowerCount = packet.ReadUInt32("AzeritePowersCount", idx);
             uint azeriteEssenceCount = 0;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+            if (ClientVersion.AddedInVersion(8, 2, 0, 1, 14, 0, 2, 5, 1))
                 azeriteEssenceCount = packet.ReadUInt32("AzeriteEssenceCount", idx);
 
             for (int j = 0; j < azeritePowerCount; j++)
@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadAzeriteEssenceData(packet, "AzeriteEssence", i);
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+            if (ClientVersion.AddedInVersion(8, 2, 0, 1, 14, 0, 2, 5, 1))
             {
                 for (int i = 0; i < enchantsCount; i++)
                 {
