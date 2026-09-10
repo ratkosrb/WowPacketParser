@@ -198,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.QuestType = packet.ReadInt32E<QuestType>("QuestType");
             quest.QuestLevel = packet.ReadInt32("QuestLevel");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 quest.MinLevel = packet.ReadInt32("QuestMinLevel");
 
             quest.QuestSortID = packet.ReadInt32E<QuestSort>("QuestSortID");
@@ -218,7 +218,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             quest.NextQuestID = packet.ReadInt32<QuestId>("NextQuestID");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 quest.RewardXPDifficulty = packet.ReadUInt32("RewardXPDifficulty");
 
             quest.RewardMoney = packet.ReadInt32("RewardMoney");
@@ -232,7 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_0_1_6180))
                 quest.RewardHonor = packet.ReadInt32("RewardHonor");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 quest.RewardKillHonor = packet.ReadSingle("RewardKillHonor");
 
             quest.StartItem = packet.ReadUInt32<ItemId>("StartItem");
@@ -250,11 +250,11 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.RewardTalents = packet.ReadUInt32("RewardTalents");
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 quest.RewardArenaPoints = packet.ReadUInt32("RewardArenaPoints");
 
             // TODO: Find when was this added/removed and what is it
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) && (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_1_13164)))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) && (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_1_13164)))
                 packet.ReadInt32("Unknown Int32");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
@@ -286,7 +286,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RewardFactionID = new uint?[repCount];
             quest.RewardFactionValue = new int?[repCount];
             quest.RewardFactionOverride = new int?[repCount];
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
             {
                 for (int i = 0; i < repCount; i++)
                     quest.RewardFactionID[i] = packet.ReadUInt32("RewardFactionID", i);
@@ -308,7 +308,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.QuestDescription = packet.ReadCString("QuestDescription");
             quest.AreaDescription = packet.ReadCString("AreaDescription");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 quest.QuestCompletionLog = packet.ReadCString("QuestCompletionLog");
 
             var reqId = new KeyValuePair<int, bool>[4];
@@ -338,7 +338,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                     quest.RequiredItemID[i] = (uint) packet.ReadInt32<ItemId>("RequiredItemID", i);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                     quest.RequiredItemCount[i] = packet.ReadUInt32("RequiredItemCount", i);
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_8_9464))
