@@ -1318,9 +1318,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE)]
         public static void HandleItemTextQueryResult(Packet packet)
         {
-            if (!packet.ReadBool("Empty"))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
             {
-                packet.ReadGuid("Item Guid");
+                if (!packet.ReadBool("Empty"))
+                {
+                    packet.ReadGuid("Item Guid");
+                    packet.ReadCString("Item Text");
+                }
+            }
+            else
+            {
+                packet.ReadUInt32("Item Text Id");
                 packet.ReadCString("Item Text");
             }
         }
