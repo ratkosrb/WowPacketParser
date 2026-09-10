@@ -307,6 +307,16 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Item Guid");
             packet.ReadInt32("Error ID");
+
+            packet.ReadInt32("Paid Money");
+            packet.ReadInt32("Honor Points");
+            packet.ReadInt32("Arena Points");
+
+            for (int i = 0; i < 5; ++i) // Items
+            {
+                packet.ReadInt32("ItemCount", i);
+                packet.ReadInt32("Item", i);
+            }
         }
 
         [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
