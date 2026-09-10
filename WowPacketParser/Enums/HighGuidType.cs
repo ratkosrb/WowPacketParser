@@ -238,6 +238,7 @@ namespace WowPacketParser.Enums
         Unit          = 0xF03,
         Unit2         = 0x308,  // seen in a vanilla sniff
         Pet           = 0xF04,
+        Pet2          = 0xF0F,  // seen in 3.3.2 sniff as aura caster of spell 48090
         Vehicle       = 0xF05
     }
 }
