@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("AuctionHouse ID");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 packet.ReadBool("Enabled");
 
             NpcHandler.LastGossipOption.Reset();
