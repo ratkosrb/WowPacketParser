@@ -108,7 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
                 else
                     packet.ReadUInt32("COD", i);
 
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_0_10958))
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3_11685))
                     packet.ReadUInt32("Item Text Id", i);
 
                 packet.ReadUInt32("Package", i); // Package.dbc ID
@@ -124,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
                 mailTemplate.Entry = (uint)packet.ReadUInt32("Template Id", i); // MailTemplate.dbc ID
                 mailTemplate.Subject = packet.ReadCString("Subject", i);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                     mailTemplate.Body = packet.ReadCString("Body", i);
 
                 mailTemplate.ItemsCount = packet.ReadByte("Item Count", i);
