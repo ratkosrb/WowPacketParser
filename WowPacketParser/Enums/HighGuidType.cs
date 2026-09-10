@@ -223,6 +223,7 @@ namespace WowPacketParser.Enums
         BattleGround1 = 0x101,
         InstanceSave  = 0x104,
         Group         = 0x105,
+        Group2        = 0xE0D,
         BattleGround2 = 0x109,
         MOTransport   = 0x10C,
         Unknown270    = 0x10E, // pets and mounts?

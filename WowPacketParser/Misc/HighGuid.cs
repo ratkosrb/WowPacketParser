@@ -26,6 +26,7 @@ namespace WowPacketParser.Misc
             { HighGuidTypeLegacy.BattleGround1, HighGuidType.PVPQueueGroup }, // ?? unused in wpp
             { HighGuidTypeLegacy.InstanceSave, HighGuidType.LFGList }, // ?? unused in wpp
             { HighGuidTypeLegacy.Group, HighGuidType.RaidGroup },
+            { HighGuidTypeLegacy.Group2, HighGuidType.RaidGroup },
             { HighGuidTypeLegacy.BattleGround2, HighGuidType.PVPQueueGroup }, // ?? unused in wpp
             { HighGuidTypeLegacy.MOTransport, HighGuidType.Transport }, // ?? unused in wpp
             { HighGuidTypeLegacy.MOTransport2, HighGuidType.Transport },
