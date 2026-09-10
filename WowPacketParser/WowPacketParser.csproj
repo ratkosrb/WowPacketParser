@@ -456,7 +456,10 @@
     <Compile Include="Enums\Version\V3_4_0_45166\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_4_1_47014\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_4_3_51666\Opcodes.cs" />
-    <Compile Include="Enums\Version\V3_0_9_9551\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V3_0_1_8874\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V3_0_2_9056\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V3_1_0_9767\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V3_2_0_10192\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_0_5_16048\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_0_5_16048\UpdateFields.cs" />
