@@ -1328,7 +1328,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ITEM_TEXT_QUERY)]
         public static void HandleItemTextQuery(Packet packet)
         {
-            packet.ReadGuid("Item Guid");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                packet.ReadGuid("Item Guid");
+            else
+            {
+                packet.ReadUInt32("Item Text Id");
+                packet.ReadUInt32("Mail Id");
+                packet.ReadUInt32("Unk");
+            }
         }
 
         [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS, ClientVersionBuild.V4_3_4_15595)]
