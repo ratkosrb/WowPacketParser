@@ -2669,12 +2669,14 @@ namespace WowPacketParser.Store
 
         // Spell Casts
         public static readonly DataBag<PlaySpellVisualKit> SpellPlayVisualKit = new DataBag<PlaySpellVisualKit>(Settings.SqlTables.play_spell_visual_kit);
+        public static readonly DataBag<SpellChainUpdate> SpellChainUpdates = new DataBag<SpellChainUpdate>(Settings.SqlTables.spell_chain_update);
         public static readonly DataBag<SpellChannelStart> SpellChannelStart = new DataBag<SpellChannelStart>(Settings.SqlTables.spell_channel_start);
         public static readonly DataBag<SpellChannelUpdate> SpellChannelUpdate = new DataBag<SpellChannelUpdate>(Settings.SqlTables.spell_channel_update);
         public static readonly DataBag<SpellCastFailed> SpellCastFailed = new DataBag<SpellCastFailed>(Settings.SqlTables.spell_cast_failed);
         public static readonly DataBag<SpellCastData> SpellCastStart = new DataBag<SpellCastData>(Settings.SqlTables.spell_cast_start);
         public static readonly DataBag<SpellCastData> SpellCastGo = new DataBag<SpellCastData>(Settings.SqlTables.spell_cast_go);
         public static readonly DataBag<SpellUniqueCaster> SpellUniqueCasters = new DataBag<SpellUniqueCaster>(Settings.SqlTables.spell_unique_caster);
+        public static readonly DataBag<SpellUniqueChainUpdate> SpellUniqueChainUpdates = new DataBag<SpellUniqueChainUpdate>(Settings.SqlTables.spell_unique_chain_updates);
         public static readonly DataBag<CreatureSpellImmunity> CreatureSpellImmunity = new DataBag<CreatureSpellImmunity>(Settings.SqlTables.creature_spell_immunity);
         public static readonly DataBag<CreatureUniqueSpellHit> CreatureUniqueSpellHits = new DataBag<CreatureUniqueSpellHit>(Settings.SqlTables.creature_unique_spell_hit);
 
@@ -3227,11 +3229,13 @@ namespace WowPacketParser.Store
             SpellClicks.Clear();
 
             SpellPlayVisualKit.Clear();
+            SpellChainUpdates.Clear();
             SpellChannelStart.Clear();
             SpellChannelUpdate.Clear();
             SpellCastFailed.Clear();
             SpellCastStart.Clear();
             SpellCastGo.Clear();
+            SpellUniqueChainUpdates.Clear();
             SpellUniqueCasters.Clear();
             CreaturePetActions.Clear();
             CreaturePetCooldown.Clear();

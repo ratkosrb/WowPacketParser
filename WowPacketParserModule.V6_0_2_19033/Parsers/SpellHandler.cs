@@ -497,11 +497,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]
         public static void HandleUpdateChainTargets(Packet packet)
         {
-            packet.ReadPackedGuid128("Caster GUID");
-            packet.ReadUInt32<SpellId>("SpellID");
+            SpellUniqueChainUpdate uniqueData = new SpellUniqueChainUpdate();
+            SpellChainUpdate replayData = new SpellChainUpdate();
+            replayData.Guid = packet.ReadPackedGuid128("Caster GUID");
+            replayData.SpellId = uniqueData.SpellId = packet.ReadUInt32<SpellId>("SpellID");
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
-                packet.ReadPackedGuid128("Targets", i);
+                replayData.TargetsList.Add(packet.ReadPackedGuid128("Targets", i));
+            uniqueData.SniffId = packet.SniffId;
+            replayData.Time = packet.Time;
+            Storage.SpellUniqueChainUpdates.Add(uniqueData);
+            Storage.SpellChainUpdates.Add(replayData);
         }
 
         [Parser(Opcode.CMSG_CANCEL_AURA)]

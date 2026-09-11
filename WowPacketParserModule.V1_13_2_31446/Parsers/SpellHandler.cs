@@ -289,15 +289,18 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]
         public static void HandleUpdateChainTargets(Packet packet)
         {
+            SpellUniqueChainUpdate uniqueData = new SpellUniqueChainUpdate();
             packet.ReadPackedGuid128("Caster GUID");
             packet.ReadUInt32("SpellXSpellVisualID");
             packet.ReadPackedGuid128("CastID");
             packet.ReadPackedGuid128("Target GUID");
-            packet.ReadUInt32<SpellId>("SpellID");
+            uniqueData.SpellId = packet.ReadUInt32<SpellId>("SpellID");
+            uniqueData.SniffId = packet.SniffId;
+            Storage.SpellUniqueChainUpdates.Add(uniqueData);
         }
 
         [Parser(Opcode.CMSG_SELF_RES)]
-        public static void HandleCharacterNull(Packet packet)
+        public static void HandleSpellRes(Packet packet)
         {
             packet.ReadUInt32<SpellId>("SpellID");
         }

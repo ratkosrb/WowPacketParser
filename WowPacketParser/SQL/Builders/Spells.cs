@@ -53,6 +53,18 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string SpellUniqueChainTargets()
+        {
+            if (Storage.SpellUniqueChainUpdates.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SqlTables.spell_unique_chain_updates)
+                return string.Empty;
+
+            return SQLUtil.MakeInsertWithSniffIdList(Storage.SpellUniqueChainUpdates, false, true);
+        }
+
+        [BuilderMethod]
         public static string SpellAuraFlags()
         {
             if (Storage.SpellAuraFlags.IsEmpty())
@@ -209,6 +221,60 @@ namespace WowPacketParser.SQL.Builders
                 result.Append(positionSql.Build());
             }
             
+            return result.ToString();
+        }
+
+        [BuilderMethod]
+        public static string SpellChainUpdates()
+        {
+            if (Storage.SpellChainUpdates.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SqlTables.spell_chain_update)
+                return string.Empty;
+
+            uint targetListId = 0;
+            var spellRows = new RowList<SpellChainUpdate>();
+            var targetRows = new RowList<SpellChainUpdateTarget>();
+            foreach (var chain in Storage.SpellChainUpdates)
+            {
+                if (chain.Item1.Guid.GetObjectType() == ObjectType.Player && !Settings.SavePlayerCasts)
+                    continue;
+
+                if (chain.Item1.TargetsList.Count > 0)
+                {
+                    chain.Item1.TargetsListId = ++targetListId;
+                    chain.Item1.TargetsCount = (uint)chain.Item1.TargetsList.Count;
+
+                    foreach (WowGuid guid in chain.Item1.TargetsList)
+                    {
+                        Row<SpellChainUpdateTarget> row2 = new Row<SpellChainUpdateTarget>();
+                        row2.Data = new SpellChainUpdateTarget();
+                        row2.Data.ListId = chain.Item1.TargetsListId;
+                        Storage.GetObjectDbGuidEntryType(guid, out row2.Data.TargetGuid, out row2.Data.TargetId, out row2.Data.TargetType);
+                        targetRows.Add(row2);
+                    }
+                }
+
+                Row<SpellChainUpdate> row = new Row<SpellChainUpdate>();
+                row.Data = chain.Item1;
+                Storage.GetObjectDbGuidEntryType(chain.Item1.Guid, out row.Data.CasterGuid, out row.Data.CasterId, out row.Data.CasterType);
+                row.Data.UnixTimeMs = (ulong)Utilities.GetUnixTimeMsFromDateTime(chain.Item1.Time);
+                spellRows.Add(row);
+            }
+
+            StringBuilder result = new StringBuilder();
+            if (spellRows.Count != 0)
+            {
+                var spellsSql = new SQLInsert<SpellChainUpdate>(spellRows, false);
+                result.Append(spellsSql.Build());
+                result.AppendLine();
+            }
+            if (targetRows.Count != 0)
+            {
+                var targetsSql = new SQLInsert<SpellChainUpdateTarget>(targetRows, false);
+                result.Append(targetsSql.Build());
+            }
             return result.ToString();
         }
 

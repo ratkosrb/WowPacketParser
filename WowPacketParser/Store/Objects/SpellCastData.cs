@@ -497,4 +497,56 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("sniff_build", true)]
         public int SniffBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("spell_unique_chain_updates")]
+    public sealed class SpellUniqueChainUpdate : ITableWithSniffIdList
+    {
+        [DBFieldName("spell_id", true)]
+        public uint SpellId;
+    }
+
+    [DBTableName("spell_chain_update")]
+    public sealed class SpellChainUpdate : IDataModel
+    {
+        [DBFieldName("unixtimems", true)]
+        public ulong UnixTimeMs;
+
+        [DBFieldName("caster_guid", true, true)]
+        public string CasterGuid;
+
+        [DBFieldName("caster_id")]
+        public uint CasterId;
+
+        [DBFieldName("caster_type", true)]
+        public string CasterType;
+        
+        [DBFieldName("spell_id", true)]
+        public uint SpellId;
+        
+        [DBFieldName("targets_count")]
+        public uint TargetsCount;
+
+        [DBFieldName("targets_list_id")]
+        public uint TargetsListId;
+
+        public WowGuid Guid;
+        public DateTime Time;
+        public List<WowGuid> TargetsList = new List<WowGuid>();
+    }
+
+    [DBTableName("spell_chain_update_target")]
+    public sealed class SpellChainUpdateTarget : IDataModel
+    {
+        [DBFieldName("list_id", true)]
+        public uint ListId;
+
+        [DBFieldName("target_guid", true, true)]
+        public string TargetGuid;
+
+        [DBFieldName("target_id")]
+        public uint TargetId;
+
+        [DBFieldName("target_type", true)]
+        public string TargetType;
+    }
 }

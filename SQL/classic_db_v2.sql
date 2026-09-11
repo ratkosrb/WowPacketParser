@@ -3439,6 +3439,34 @@ CREATE TABLE IF NOT EXISTS `spell_cast_start` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table sniffs_new_test.spell_chain_update
+DROP TABLE IF EXISTS `spell_chain_update`;
+CREATE TABLE IF NOT EXISTS `spell_chain_update` (
+  `unixtimems` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'when the packet was received',
+  `caster_guid` int(10) unsigned NOT NULL DEFAULT '0',
+  `caster_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `caster_type` varchar(16) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `spell_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `targets_count` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `targets_list_id` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`unixtimems`,`caster_guid`,`caster_id`,`caster_type`,`spell_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC COMMENT='from SMSG_SPELL_UPDATE_CHAIN_TARGETS';
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table sniffs_new_test.spell_chain_update_target
+DROP TABLE IF EXISTS `spell_chain_update_target`;
+CREATE TABLE IF NOT EXISTS `spell_chain_update_target` (
+  `list_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `target_guid` int(10) unsigned NOT NULL DEFAULT '0',
+  `target_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `target_type` varchar(16) COLLATE latin1_general_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC COMMENT='targets from SMSG_SPELL_UPDATE_CHAIN_TARGETS';
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table sniffs_new_test.spell_channel_start
 DROP TABLE IF EXISTS `spell_channel_start`;
 CREATE TABLE IF NOT EXISTS `spell_channel_start` (
@@ -3507,6 +3535,17 @@ CREATE TABLE IF NOT EXISTS `spell_unique_caster` (
   `sniff_id_list` text COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`caster_id`,`caster_type`,`spell_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT COMMENT='unique caster and spell combinations';
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table sniffs_new_test.spell_unique_chain_updates
+DROP TABLE IF EXISTS `spell_unique_chain_updates`;
+CREATE TABLE IF NOT EXISTS `spell_unique_chain_updates` (
+  `spell_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `sniff_id_list` text COLLATE latin1_general_ci NOT NULL,
+  PRIMARY KEY (`spell_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT COMMENT='spell ids that have been sent in SMSG_SPELL_UPDATE_CHAIN_TARGETS';
 
 -- Data exporting was unselected.
 

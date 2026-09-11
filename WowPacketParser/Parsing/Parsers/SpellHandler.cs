@@ -1457,11 +1457,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]
         public static void HandleUpdateChainTargets(Packet packet)
         {
-            packet.ReadGuid("Caster GUID");
-            packet.ReadUInt32<SpellId>("Spell ID");
+            SpellUniqueChainUpdate uniqueData = new SpellUniqueChainUpdate();
+            SpellChainUpdate replayData = new SpellChainUpdate();
+            replayData.Guid = packet.ReadGuid("Caster GUID");
+            replayData.SpellId = uniqueData.SpellId = packet.ReadUInt32<SpellId>("Spell ID");
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
-                packet.ReadGuid("Chain target");
+                replayData.TargetsList.Add(packet.ReadGuid("Chain target"));
+            uniqueData.SniffId = packet.SniffId;
+            replayData.Time = packet.Time;
+            Storage.SpellUniqueChainUpdates.Add(uniqueData);
+            Storage.SpellChainUpdates.Add(replayData);
         }
 
         [Parser(Opcode.SMSG_AURACASTLOG)]

@@ -180,6 +180,7 @@ namespace WowPacketParser.Misc
             public static readonly bool spell_cast_failed = Conf.GetBoolean("spell_cast_failed", false);
             public static readonly bool spell_cast_go = Conf.GetBoolean("spell_cast_go", false);
             public static readonly bool spell_cast_start = Conf.GetBoolean("spell_cast_start", false);
+            public static readonly bool spell_chain_update = Conf.GetBoolean("spell_chain_update", false);
             public static readonly bool spell_channel_start = Conf.GetBoolean("spell_channel_start", false);
             public static readonly bool spell_channel_update = Conf.GetBoolean("spell_channel_update", false);
             public static readonly bool weather_updates = Conf.GetBoolean("weather_updates", false);
@@ -279,6 +280,7 @@ namespace WowPacketParser.Misc
             public static readonly bool spell_script_target = Conf.GetBoolean("spell_script_target", false);
             public static readonly bool spell_target_position = Conf.GetBoolean("spell_target_position", false);
             public static readonly bool spell_unique_caster = Conf.GetBoolean("spell_unique_caster", false);
+            public static readonly bool spell_unique_chain_updates = Conf.GetBoolean("spell_unique_chain_updates", false);
             public static readonly bool trainer = Conf.GetBoolean("trainer", false);
             public static readonly bool trainer_locale = Conf.GetBoolean("trainer_locale", false);
             public static readonly bool vehicle_template_accessory = Conf.GetBoolean("vehicle_template_accessory", false);
