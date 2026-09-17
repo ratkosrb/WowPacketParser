@@ -173,6 +173,7 @@ namespace WowPacketParser.SQL.Builders
                 // set some defaults
                 Store.Objects.UpdateFields.IUnitData unitData = creature.UnitDataOriginal != null ? creature.UnitDataOriginal : creature.UnitData;
                 row.Data.PhaseGroup = 0;
+                row.Data.MovementFlags = creature.OriginalMovement.Flags;
                 row.Data.IsSpawn = creature.FirstCreateType;
                 row.Data.Hover = (byte)(creature.OriginalMovement.Hover ? 1 : 0);
                 row.Data.TemporarySpawn = (byte)(creature.IsTemporarySpawn() ? 1 : 0);
@@ -542,6 +543,7 @@ namespace WowPacketParser.SQL.Builders
 
                 bool isFlyingOrCyclic = creature.HasOnlyCyclicMovement;
                 row.Data.WaypointCount = creature.TotalMovementsCount;
+                row.Data.UniqueWaypointCount = (uint)creature.UniqueWaypoints.Count;
                 row.Data.WanderDistance = creature.MaxTravelDistanceFromSpawn;
 
                 // Likely to be waypoints if distance is big

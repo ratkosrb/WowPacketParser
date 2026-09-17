@@ -1943,3 +1943,7 @@ CREATE TABLE IF NOT EXISTS `creature_aggro_distance` (
   `sniff_build` mediumint(8) unsigned NOT NULL DEFAULT '0',
   KEY `entry` (`entry`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED COMMENT='observed proximity aggro distance against players';
+
+ALTER TABLE `creature`
+	ADD COLUMN `unique_waypoint_count` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'number of unique out of combat movement packet positions seen' AFTER `waypoint_count`,
+	ADD COLUMN `movement_flags` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `movement_type`;

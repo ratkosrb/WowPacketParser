@@ -18,6 +18,7 @@ namespace WowPacketParser.Store.Objects
         public List<Aura> AurasOriginal;
         public HashSet<uint> TemplateAuras;
         public List<ServerSideMovement> Waypoints;
+        public List<Vector3> UniqueWaypoints;
         public List<ServerSideMovement> CombatMovements;
         public List<ServerSideMovementSpline> WaypointSplines;
         public List<ServerSideMovementSpline> CombatMovementSplines;
@@ -56,6 +57,7 @@ namespace WowPacketParser.Store.Objects
                 DbGuid = ++UnitGuidCounter;
                 TemplateAuras = new HashSet<uint>();
                 Waypoints = new List<ServerSideMovement>();
+                UniqueWaypoints = new List<Vector3>();
                 WaypointSplines = new List<ServerSideMovementSpline>();
 
                 EnterCombatTime = null;
@@ -262,6 +264,17 @@ namespace WowPacketParser.Store.Objects
                 MaxTravelDistanceFromSpawn = distanceFromSpawn;
         }
 
+        private void CheckUniqueWaypoints(Vector3 position)
+        {
+            foreach (var wp in UniqueWaypoints)
+            {
+                if (Utilities.GetDistance3D(wp.X, wp.Y, wp.Z, position.X, position.Y, position.Z) < 0.1f)
+                    return;
+            }
+
+            UniqueWaypoints.Add(position);
+        }
+
         private void CheckCyclicMovement(uint splineFlags)
         {
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_0_1_6180))
@@ -315,6 +328,7 @@ namespace WowPacketParser.Store.Objects
                     if (HasOnlyCyclicMovement)
                         CheckCyclicMovement(movementData.SplineFlags);
                     CheckMaxMovementDistance(startPosition);
+                    CheckUniqueWaypoints(startPosition);
                     if (movementData.SplinePoints != null)
                     {
                         foreach (Vector3 vector in movementData.SplinePoints)

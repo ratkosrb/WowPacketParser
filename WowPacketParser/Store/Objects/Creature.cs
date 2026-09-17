@@ -74,9 +74,15 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("waypoint_count", DbType = TargetedDbType.WPP)]
         public uint? WaypointCount;
 
+        [DBFieldName("unique_waypoint_count", DbType = TargetedDbType.WPP)]
+        public uint? UniqueWaypointCount;
+
         [DBFieldName("movement_type", DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS))]
         [DBFieldName("MovementType", DbType = (TargetedDbType.TRINITY | TargetedDbType.CMANGOS))]
         public uint? MovementType;
+
+        [DBFieldName("movement_flags", DbType = TargetedDbType.WPP)]
+        public uint? MovementFlags;
 
         [DBFieldName("is_spawn", DbType = (TargetedDbType.WPP))]
         public ObjectCreateType? IsSpawn;
