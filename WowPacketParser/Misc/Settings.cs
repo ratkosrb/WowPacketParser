@@ -228,6 +228,7 @@ namespace WowPacketParser.Misc
             public static readonly bool creature_template_locale = Conf.GetBoolean("creature_template_locale", false);
             public static readonly bool creature_template_scaling = Conf.GetBoolean("creature_template_scaling", false);
             public static readonly bool creature_template_wdb = Conf.GetBoolean("creature_template_wdb", false);
+            public static readonly bool creature_unique_ammo = Conf.GetBoolean("creature_unique_ammo", false);
             public static readonly bool creature_unique_emote = Conf.GetBoolean("creature_unique_emote", false);
             public static readonly bool creature_unique_equipment = Conf.GetBoolean("creature_unique_equipment", false);
             public static readonly bool creature_unique_faction = Conf.GetBoolean("creature_unique_faction", false);

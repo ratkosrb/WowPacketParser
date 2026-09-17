@@ -1455,6 +1455,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureStats> CreatureStats = new DataBag<CreatureStats>(Settings.SqlTables.creature_stats);
         public static readonly DataBag<CreatureStats> CreatureStatsDirty = new DataBag<CreatureStats>(Settings.SqlTables.creature_stats);
         public static readonly DataBag<CreatureUniqueEquipment> CreatureUniqueEquipments = new DataBag<CreatureUniqueEquipment>(Settings.SqlTables.creature_unique_equipment);
+        public static readonly DataBag<CreatureUniqueAmmo> CreatureUniqueAmmos = new DataBag<CreatureUniqueAmmo>(Settings.SqlTables.creature_unique_ammo);
         public class VisibilityDistanceData
         {
             public P2QuantileEstimator median = new P2QuantileEstimator(0.5);
@@ -2861,6 +2862,18 @@ namespace WowPacketParser.Store
                 {
                     Storage.CalculateCreatureSpellTimer(castData, packet.Time);
                     Storage.StoreCreatureCastGoTime(castData.CasterGuid, castData.SpellID, packet.Time);
+
+                    if (castData.AmmoDisplayId != 0 &&
+                        Settings.SqlTables.creature_unique_ammo)
+                    {
+                        CreatureUniqueAmmo data = new CreatureUniqueAmmo();
+                        data.Entry = GetCurrentObjectEntry(castData.CasterGuid);
+                        data.AmmoDisplayId = (uint)castData.AmmoDisplayId;
+                        data.AmmoInventoryType = (uint)castData.AmmoInventoryType;
+                        data.SpellId = castData.SpellID;
+                        data.SniffId = packet.SniffId;
+                        CreatureUniqueAmmos.Add(data);
+                    }
                 }
                 if (Settings.SqlTables.creature_aggro_distance)
                 {

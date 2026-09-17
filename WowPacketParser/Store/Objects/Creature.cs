@@ -1358,4 +1358,20 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("sniff_build", true)]
         public int SniffBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("creature_unique_ammo")]
+    public sealed class CreatureUniqueAmmo : ITableWithSniffIdList
+    {
+        [DBFieldName("entry", true)]
+        public uint Entry;
+
+        [DBFieldName("ammo_display_id", true)]
+        public uint AmmoDisplayId;
+
+        [DBFieldName("ammo_inventory_type", true)]
+        public uint AmmoInventoryType;
+
+        [DBFieldName("spell_id")]
+        public uint SpellId;
+    }
 }

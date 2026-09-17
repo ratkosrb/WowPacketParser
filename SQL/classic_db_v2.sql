@@ -1136,6 +1136,20 @@ CREATE TABLE IF NOT EXISTS `creature_trainer` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table sniffs_new_test.creature_unique_ammo
+DROP TABLE IF EXISTS `creature_unique_ammo`;
+CREATE TABLE IF NOT EXISTS `creature_unique_ammo` (
+  `entry` int(10) unsigned NOT NULL,
+  `ammo_display_id` int(10) unsigned NOT NULL,
+  `ammo_inventory_type` int(10) unsigned NOT NULL,
+  `spell_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `sniff_id_list` text COLLATE latin1_general_ci NOT NULL,
+  PRIMARY KEY (`entry`,`ammo_display_id`,`ammo_inventory_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC COMMENT='ammo seen used by creature in SMSG_SPELL_GO';
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table sniffs_new_test.creature_unique_emote
 DROP TABLE IF EXISTS `creature_unique_emote`;
 CREATE TABLE IF NOT EXISTS `creature_unique_emote` (

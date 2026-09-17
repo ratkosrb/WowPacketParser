@@ -134,6 +134,7 @@
         creature_template_locale,
         creature_template_scaling,
         creature_template_wdb,
+        creature_unique_ammo,
         creature_unique_emote,
         creature_unique_equipment,
         creature_unique_faction,

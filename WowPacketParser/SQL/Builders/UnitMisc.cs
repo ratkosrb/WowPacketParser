@@ -1679,6 +1679,23 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string CreatureUniqueAmmos()
+        {
+            if (Storage.CreatureUniqueAmmos.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SqlTables.creature_unique_ammo)
+                return string.Empty;
+
+            string result = SQLUtil.MakeInsertWithSniffIdList(Storage.CreatureUniqueAmmos, false, true);
+
+            // not used anywhere else so empty to free up memory
+            Storage.CreatureUniqueAmmos.Clear();
+
+            return result;
+        }
+
+        [BuilderMethod]
         public static string CreatureUniqueEmotes()
         {
             if (Storage.CreatureUniqueEmotes.IsEmpty())
