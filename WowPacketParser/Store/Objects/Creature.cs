@@ -1327,4 +1327,29 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("sniff_build", true)]
         public int SniffBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("creature_aggro_distance")]
+    public sealed class CreatureAggroDistance : IDataModel
+    {
+        [DBFieldName("entry", true)]
+        public uint Entry;
+
+        [DBFieldName("creature_level")]
+        public uint CreatureLevel;
+
+        [DBFieldName("player_level")]
+        public uint PlayerLevel;
+
+        [DBFieldName("aggro_distance", true)]
+        public float AggroDistance;
+
+        [DBFieldName("expected_distance")]
+        public float ExpectedDistance;
+
+        [DBFieldName("sniff_id", true, true, false, true)]
+        public string SniffId;
+
+        [DBFieldName("sniff_build", true)]
+        public int SniffBuild = ClientVersion.BuildInt;
+    }
 }

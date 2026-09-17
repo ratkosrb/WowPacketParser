@@ -116,6 +116,7 @@
         conversation_line_template,
         conversation_template,
         creature_addon,
+        creature_aggro_distance,
         creature_armor,
         creature_display_info_addon,
         creature_kill_reputation,

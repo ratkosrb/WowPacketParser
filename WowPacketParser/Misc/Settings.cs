@@ -210,6 +210,7 @@ namespace WowPacketParser.Misc
             public static readonly bool conversation_line_template = Conf.GetBoolean("conversation_line_template", false);
             public static readonly bool conversation_template = Conf.GetBoolean("conversation_template", false);
             public static readonly bool creature_addon = Conf.GetBoolean("creature_addon", false);
+            public static readonly bool creature_aggro_distance = Conf.GetBoolean("creature_aggro_distance", false);
             public static readonly bool creature_armor = Conf.GetBoolean("creature_armor", false);
             public static readonly bool creature_display_info_addon = Conf.GetBoolean("creature_display_info_addon", false);
             public static readonly bool creature_kill_reputation = Conf.GetBoolean("creature_kill_reputation", false);

@@ -208,6 +208,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 }
                 if (oldUnitData != null)
                 {
+                    if (!isCreate && Settings.SqlTables.creature_aggro_distance &&
+                        guid.GetHighType() == HighGuidType.Creature &&
+                       (oldUnitData.Flags & (uint)UnitFlags.IsInCombat) == 0 &&
+                       (unit.UnitData.Flags & (uint)UnitFlags.IsInCombat) != 0 &&
+                       (oldUnitData.Target == null || oldUnitData.Target.IsEmpty()) &&
+                        unit.UnitData.Target.GetHighType() == HighGuidType.Player &&
+                        unit.UnitData.Health == unit.UnitData.MaxHealth &&
+                       !Storage.WasLastCastOnCreatureWithin(guid, packet.Time, 10))
+                    {
+                        Storage.StoreCreatureAggroDistance(unit, packet);
+                    }
+
                     if (oldUnitData.DisplayID != unit.UnitData.DisplayID)
                     {
                         hasData = true;

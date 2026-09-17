@@ -223,7 +223,8 @@ namespace WowPacketParser.Parsing.Parsers
                 bool hasPlayerSpellCritUpdate = false;
                 bool hasPlayerDodgeUpdate = false;
                 bool hasCreatureEquipmentUpdate = false;
-                StoreObjectUpdate(packet, guid, updateMaskArray, updates, true, ref hasPlayerLevelUp, ref hasPlayerMeleeCritUpdate, ref hasPlayerRangedCritUpdate, ref hasPlayerSpellCritUpdate, ref hasPlayerDodgeUpdate, ref hasCreatureEquipmentUpdate);
+                bool hasCreatureAggro = false;
+                StoreObjectUpdate(packet, guid, updateMaskArray, updates, true, ref hasPlayerLevelUp, ref hasPlayerMeleeCritUpdate, ref hasPlayerRangedCritUpdate, ref hasPlayerSpellCritUpdate, ref hasPlayerDodgeUpdate, ref hasCreatureEquipmentUpdate, ref hasCreatureAggro);
                 ApplyUpdateFieldsChange(obj, updates, dynamicUpdates);
 
                 if (guid.GetObjectType() == ObjectType.Unit)
@@ -281,7 +282,8 @@ namespace WowPacketParser.Parsing.Parsers
                 bool hasPlayerSpellCritUpdate = false;
                 bool hasPlayerDodgeUpdate = false;
                 bool hasCreatureEquipmentUpdate = false;
-                StoreObjectUpdate(packet, guid, updateMaskArray, updates, false, ref hasPlayerLevelUp, ref hasPlayerMeleeCritUpdate, ref hasPlayerRangedCritUpdate, ref hasPlayerSpellCritUpdate, ref hasPlayerDodgeUpdate, ref hasCreatureEquipmentUpdate);
+                bool hasCreatureAggro = false;
+                StoreObjectUpdate(packet, guid, updateMaskArray, updates, false, ref hasPlayerLevelUp, ref hasPlayerMeleeCritUpdate, ref hasPlayerRangedCritUpdate, ref hasPlayerSpellCritUpdate, ref hasPlayerDodgeUpdate, ref hasCreatureEquipmentUpdate, ref hasCreatureAggro);
                 var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, obj.Type, index, false, obj.DynamicUpdateFields);
                 ApplyUpdateFieldsChange(obj, updates, dynamicUpdates);
 
@@ -292,6 +294,15 @@ namespace WowPacketParser.Parsing.Parsers
 
                     if (hasCreatureEquipmentUpdate && guid.GetHighType() != HighGuidType.Pet)
                         Storage.StoreCreatureEquipment(creature, packet.SniffId);
+
+                    if (hasCreatureAggro &&
+                        creature.UnitData.Target.GetHighType() == HighGuidType.Player &&
+                       (creature.UnitData.Flags & (uint)UnitFlags.IsInCombat) != 0 &&
+                        creature.UnitData.Health == creature.UnitData.MaxHealth &&
+                        !Storage.WasLastCastOnCreatureWithin(guid, packet.Time, 10))
+                    {
+                        Storage.StoreCreatureAggroDistance(creature, packet);
+                    }
                 }
                 else
                 {
@@ -420,7 +431,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         // returns true if active player leveled up and we need to save stats
-        public static void StoreObjectUpdate(Packet packet, WowGuid guid, BitArray updateMaskArray, Dictionary<int, UpdateField> updates, bool isCreate, ref bool hasPlayerLevelup, ref bool hasPlayerMeleeCritUpdate, ref bool hasPlayerRangedCritUpdate, ref bool hasPlayerSpellCritUpdate, ref bool hasPlayerDodgeUpdate, ref bool hasCreatureEquipmentUpdate)
+        public static void StoreObjectUpdate(Packet packet, WowGuid guid, BitArray updateMaskArray, Dictionary<int, UpdateField> updates, bool isCreate, ref bool hasPlayerLevelup, ref bool hasPlayerMeleeCritUpdate, ref bool hasPlayerRangedCritUpdate, ref bool hasPlayerSpellCritUpdate, ref bool hasPlayerDodgeUpdate, ref bool hasCreatureEquipmentUpdate, ref bool hasCreatureAggro)
         {
             ObjectType objectType = guid.GetObjectType();
             if ((objectType == ObjectType.Unit) ||
@@ -429,6 +440,20 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (ClientVersion.HasAurasInUpdateFields())
                     ParseAurasFromUpdateFields(packet, guid, updateMaskArray, updates, isCreate);
+
+                if (!isCreate && Settings.SqlTables.creature_aggro_distance &&
+                    guid.GetHighType() == HighGuidType.Creature &&
+                    Storage.Objects.ContainsKey(guid) &&
+                    UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FLAGS) > 0 &&
+                    updates.ContainsKey(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FLAGS)) &&
+                    UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_TARGET) > 0 &&
+                    updates.ContainsKey(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_TARGET)))
+                {
+                    var obj = Storage.Objects[guid].Item1 as Unit;
+                    if (obj.UnitData.Target.IsEmpty() &&
+                       (obj.UnitData.Flags & (uint)UnitFlags.IsInCombat) == 0)
+                        hasCreatureAggro = true;
+                }
 
                 int UNIT_FIELD_POWER = UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_POWER);
                 if (UNIT_FIELD_POWER <= 0)

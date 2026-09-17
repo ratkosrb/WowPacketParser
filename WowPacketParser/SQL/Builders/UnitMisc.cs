@@ -1696,6 +1696,23 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string CreatureAggroDistances()
+        {
+            if (Storage.CreatureAggroDistances.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SqlTables.creature_aggro_distance)
+                return string.Empty;
+
+            string result = SQLUtil.Insert(Storage.CreatureAggroDistances, false, true);
+
+            // not used anywhere else so empty to free up memory
+            Storage.CreatureAggroDistances.Clear();
+
+            return result;
+        }
+
+        [BuilderMethod]
         public static string CreatureVisibilityDistances()
         {
             if (Storage.CreatureVisibilityDistances.Count == 0)

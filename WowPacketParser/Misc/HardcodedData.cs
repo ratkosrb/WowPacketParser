@@ -265,7 +265,31 @@ namespace WowPacketParser.Misc
         public static readonly HashSet<uint> ModResistOfStatPercent = new HashSet<uint> { 28574 };
 #endregion
 
-#region ItemTypes
+#region ModAggroDistanceAuras
+
+        public static bool IsStealthOrInvisAura(uint spellId)
+        {
+            return ModStealthSpells.Contains(spellId) ||
+                   ModInvisibilitySpells.Contains(spellId);
+        }
+
+        public static bool IsModDetectRangeAura(uint spellId)
+        {
+            return ModDetectRangeSpells.Contains(spellId);
+        }
+
+        // Spells with SPELL_AURA_MOD_STEALTH
+        public static readonly HashSet<uint> ModStealthSpells = new HashSet<uint> { 743, 1784, 1785, 1786, 1787, 2425, 2585, 3648, 5215, 5858, 5916, 6408, 6538, 6634, 6783, 6920, 8152, 8216, 8218, 8822, 8879, 9572, 9736, 9740, 9913, 9991, 10032, 11327, 11329, 16122, 20540, 20580, 21107, 22766, 24450, 24452, 24453, 24690, 26381 };
+
+        // Spells with SPELL_AURA_MOD_INVISIBILITY
+        public static readonly HashSet<uint> ModInvisibilitySpells = new HashSet<uint> { 66, 885, 3680, 4079, 4952, 4986, 5543, 5732, 6298, 7870, 8149, 8203, 8611, 9093, 9095, 9587, 9738, 10228, 11392, 12332, 12495, 12845, 16380, 17250, 17622, 17651, 17680, 17774, 20672, 23196, 23452, 24221, 24235, 24307, 24699, 25905, 26222, 26604, 27614 };
+
+        // Spells with SPELL_AURA_MOD_DETECT_RANGE
+        public static readonly HashSet<uint> ModDetectRangeSpells = new HashSet<uint> { 453, 2908, 8192, 8955, 9901, 10953 };
+
+#endregion
+
+        #region ItemTypes
         // ITEM_SUBCLASS_WEAPON_AXE
         public static readonly HashSet<uint> WeaponAxes = new HashSet<uint> { 37, 768, 778, 790, 811, 826, 853, 863, 871, 885, 927, 934, 1011, 1157, 1259, 1292, 1383, 1416, 1454, 1459, 1481, 1516, 1602, 1719, 1816, 1819, 1827, 1904, 1905, 1909, 1910, 1927, 1994, 2029, 2044, 2047, 2054, 2066, 2073, 2080, 2134, 2183, 2260, 2265, 2281, 2482, 2490, 2498, 2522, 2530, 2807, 2815, 2827, 2845, 2849, 2878, 3071, 3154, 3293, 3443, 3489, 3755, 3785, 3895, 4019, 4126, 4445, 4561, 4568, 4730, 4824, 4825, 4826, 4923, 4949, 4965, 5196, 5255, 5286, 5344, 5426, 5459, 5551, 5598, 5599, 6194, 6692, 6738, 6966, 6978, 6979, 7115, 7326, 7761, 7786, 7941, 7942, 9378, 9465, 9478, 9485, 9608, 9684, 10611, 10612, 10623, 10744, 10772, 10805, 10837, 11702, 11762, 11763, 11920, 12290, 12348, 12482, 12502, 12527, 12621, 12629, 12773, 12774, 12779, 12798, 12990, 13014, 13015, 13104, 13286, 13408, 13625, 13818, 13952, 14534, 14874, 14875, 14876, 14877, 14880, 14881, 14882, 14893, 15230, 15231, 15232, 15233, 15234, 15235, 15236, 15237, 15238, 15239, 15240, 15853, 15862, 17002, 17016, 17046, 17068, 17382, 17462, 17704, 18293, 18347, 18498, 18596, 18737, 18827, 18828, 19014, 19015, 19103, 19362, 19363, 19762, 19852, 19921, 20417, 20675, 20723, 21129, 21242, 21392, 21401, 21465, 22816, 23582 };
 

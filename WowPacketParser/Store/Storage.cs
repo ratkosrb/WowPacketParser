@@ -922,6 +922,29 @@ namespace WowPacketParser.Store
                 Storage.Emotes.Add(guid, emotesList);
             }
         }
+        public static readonly Dictionary<WowGuid, DateTime> LastCastGoOnCreature = new Dictionary<WowGuid, DateTime>();
+        public static void StoreCastGoTimeOnCreature(WowGuid guid, DateTime time)
+        {
+            // creature_aggro_distance
+
+            if (LastCastGoOnCreature.ContainsKey(guid))
+            {
+                LastCastGoOnCreature[guid] = time;
+            }
+            else
+            {
+                LastCastGoOnCreature.Add(guid, time);
+            }
+        }
+        public static bool WasLastCastOnCreatureWithin(WowGuid guid, DateTime time, int seconds)
+        {
+            DateTime lastTime;
+            if (LastCastGoOnCreature.TryGetValue(guid, out lastTime))
+            {
+                return (time - lastTime).TotalSeconds <= seconds;
+            }
+            return false;
+        }
         public static readonly Dictionary<WowGuid, Dictionary<uint, DateTime>> LastCreatureCastGo = new Dictionary<WowGuid, Dictionary<uint, DateTime>>();
         public static void StoreCreatureCastGoTime(WowGuid guid, uint spellId, DateTime time)
         {
@@ -1327,6 +1350,58 @@ namespace WowPacketParser.Store
             WowGuid guid = CurrentActivePlayer != null ? CurrentActivePlayer : WowGuid64.Empty;
             if (Storage.CharacterReputations.ContainsKey(guid))
                 Storage.CharacterReputations[guid].Clear();
+        }
+        public static readonly DataBag<CreatureAggroDistance> CreatureAggroDistances = new DataBag<CreatureAggroDistance>(Settings.SqlTables.creature_aggro_distance);
+        public static void StoreCreatureAggroDistance(Unit creature, Packet packet)
+        {
+            if (!Settings.SqlTables.creature_aggro_distance)
+                return;
+
+            if (!Objects.ContainsKey(creature.UnitData.Target))
+                return;
+
+            Player player = Objects[creature.UnitData.Target].Item1 as Player;
+            if (player == null)
+                return;
+
+            if (creature.Movement == null || player.Movement == null)
+                return;
+
+            if (Math.Abs(creature.UnitData.Level - player.UnitData.Level) > 3)
+                return;
+
+            if ((player.UnitData.Flags & (uint)UnitFlags.IsInCombat) != 0)
+                return;
+
+            if (player.UnitData.VisFlags != 0)
+                return;
+
+            if (player.HasAuraMatchingCriteria(HardcodedData.IsStealthOrInvisAura))
+                return;
+
+            if (creature.HasAuraMatchingCriteria(HardcodedData.IsModDetectRangeAura))
+                return;
+
+            CreatureAggroDistance data = new CreatureAggroDistance();
+            data.Entry = (uint)creature.ObjectData.EntryID;
+            data.CreatureLevel = (uint)creature.UnitData.Level;
+            data.PlayerLevel = (uint)player.UnitData.Level;
+            data.SniffId = packet.SniffIdString;
+            data.SniffBuild = ClientVersion.BuildInt;
+            data.AggroDistance = Utilities.GetDistance3D(
+                        player.Movement.Position.X,
+                        player.Movement.Position.Y,
+                        player.Movement.Position.Z,
+                        creature.Movement.Position.X,
+                        creature.Movement.Position.Y,
+                        creature.Movement.Position.Z);
+            data.ExpectedDistance = 18 - (player.UnitData.Level - creature.UnitData.Level);
+
+            // skip position error
+            if (data.AggroDistance > 100)
+                return;
+
+            CreatureAggroDistances.Add(data);
         }
 
         public static readonly List<PlayerMovement> PlayerMovements = new List<PlayerMovement>();
@@ -2780,10 +2855,32 @@ namespace WowPacketParser.Store
         }
         public static void StoreSpellCastData(SpellCastData castData, CastDataType type, Packet packet)
         {
-            if (type == CastDataType.Go && castData.CasterGuid.GetHighType() == HighGuidType.Creature)
+            if (type == CastDataType.Go)
             {
-                Storage.CalculateCreatureSpellTimer(castData, packet.Time);
-                Storage.StoreCreatureCastGoTime(castData.CasterGuid, castData.SpellID, packet.Time);
+                if (castData.CasterGuid.GetHighType() == HighGuidType.Creature)
+                {
+                    Storage.CalculateCreatureSpellTimer(castData, packet.Time);
+                    Storage.StoreCreatureCastGoTime(castData.CasterGuid, castData.SpellID, packet.Time);
+                }
+                if (Settings.SqlTables.creature_aggro_distance)
+                {
+                    if (castData.HitTargetsList != null)
+                    {
+                        foreach (WowGuid guid in castData.HitTargetsList)
+                        {
+                            if (guid.GetHighType() == HighGuidType.Creature)
+                                StoreCastGoTimeOnCreature(guid, packet.Time);
+                        }
+                    }
+                    if (castData.MissTargetsList != null)
+                    {
+                        foreach (WowGuid guid in castData.MissTargetsList)
+                        {
+                            if (guid.GetHighType() == HighGuidType.Creature)
+                                StoreCastGoTimeOnCreature(guid, packet.Time);
+                        }
+                    }
+                }
             }
 
             if (Settings.SqlTables.creature_spell_immunity &&
@@ -3074,6 +3171,7 @@ namespace WowPacketParser.Store
             CurrentlyVisibleObjects.Clear();
             HasCurrentPlayerMovedSinceEnterWorld = false;
             CurrentTaxiNode = 0;
+            LastCastGoOnCreature.Clear();
             LastCreatureCastGo.Clear();
             CreatureDeathTimes.Clear();
             GameObjectDespawnTimes.Clear();
@@ -3139,6 +3237,7 @@ namespace WowPacketParser.Store
             CreatureVisibilityDistances.Clear();
 
             CreatureKillReputations.Clear();
+            CreatureAggroDistances.Clear();
             CreatureRespawnTimes.Clear();
             CreatureMeleeDamageTaken.Clear();
             CreatureMeleeAttackDamage.Clear();

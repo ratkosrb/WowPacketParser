@@ -1931,3 +1931,15 @@ CREATE TABLE IF NOT EXISTS `spell_chain_update_target` (
   `target_id` int(10) unsigned NOT NULL DEFAULT '0',
   `target_type` varchar(16) COLLATE latin1_general_ci NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC COMMENT='targets from SMSG_SPELL_UPDATE_CHAIN_TARGETS';
+
+DROP TABLE IF EXISTS `creature_aggro_distance`;
+CREATE TABLE IF NOT EXISTS `creature_aggro_distance` (
+  `entry` int(10) unsigned NOT NULL DEFAULT '0',
+  `creature_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `player_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `aggro_distance` float unsigned NOT NULL DEFAULT '0',
+  `expected_distance` float unsigned NOT NULL DEFAULT '0',
+  `sniff_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'points to sniff_file table',
+  `sniff_build` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  KEY `entry` (`entry`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=FIXED COMMENT='observed proximity aggro distance against players';
