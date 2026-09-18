@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("subclass")]
         public uint? SubClass;
 
-        [DBFieldName("sound_override_subclass", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("sound_override_subclass", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public int? SoundOverrideSubclass;
 
         [DBFieldName("name")]
@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("flags")]
         public ItemProtoFlags? Flags;
 
-        [DBFieldName("flags2", TargetedDbExpansion.WrathOfTheLichKing)]
+        [DBFieldName("flags2", TargetedDbExpansion.WrathOfTheLichKing, Nullable = true)]
         public ItemFlagExtra? FlagsExtra;
 
         [DBFieldName("unk_430_1", TargetedDbExpansion.Cataclysm)]
@@ -94,13 +94,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("container_slots")]
         public uint? ContainerSlots;
 
-        [DBFieldName("stats_count", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm)]
+        [DBFieldName("stats_count", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, Nullable = true)]
         public uint? StatsCount;
 
-        [DBFieldName("stat_type", 10)]
+        [DBFieldName("stat_type", 10, Nullable = true)]
         public ItemModType?[] StatTypes;
 
-        [DBFieldName("stat_value", 10)]
+        [DBFieldName("stat_value", 10, Nullable = true)]
         public int?[] StatValues;
 
         [DBFieldName("scaling_value", TargetedDbExpansion.Cataclysm, 10)]
@@ -115,16 +115,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("scaling_stat_value", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm)]
         public uint? ScalingStatValue;
 
-        [DBFieldName("dmg_min", TargetedDbExpansion.Zero, TargetedDbExpansion.WrathOfTheLichKing, 2)]
-        [DBFieldName("dmg_min", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, 5)]
+        [DBFieldName("dmg_min", TargetedDbExpansion.Zero, TargetedDbExpansion.WrathOfTheLichKing, 5, Nullable = true)]
+        [DBFieldName("dmg_min", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, 2, Nullable = true)]
         public float?[] DamageMins;
 
-        [DBFieldName("dmg_max", TargetedDbExpansion.Zero, TargetedDbExpansion.WrathOfTheLichKing, 5)]
-        [DBFieldName("dmg_max", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, 2)]
+        [DBFieldName("dmg_max", TargetedDbExpansion.Zero, TargetedDbExpansion.WrathOfTheLichKing, 5, Nullable = true)]
+        [DBFieldName("dmg_max", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, 2, Nullable = true)]
         public float?[] DamageMaxs;
 
-        [DBFieldName("dmg_type", TargetedDbExpansion.Zero, TargetedDbExpansion.WrathOfTheLichKing, 5)]
-        [DBFieldName("dmg_type", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, 2)]
+        [DBFieldName("dmg_type", TargetedDbExpansion.Zero, TargetedDbExpansion.WrathOfTheLichKing, 5, Nullable = true)]
+        [DBFieldName("dmg_type", TargetedDbExpansion.WrathOfTheLichKing, TargetedDbExpansion.Cataclysm, 2, Nullable = true)]
         public DamageType?[] DamageTypes;
 
         [DBFieldName("armor", TargetedDbExpansion.Zero, TargetedDbExpansion.Cataclysm)]
@@ -208,7 +208,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("random_property")]
         public int? RandomProperty;
 
-        [DBFieldName("random_suffix", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("random_suffix", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public uint? RandomSuffix;
 
         [DBFieldName("block", TargetedDbExpansion.Zero, TargetedDbExpansion.Cataclysm)]
@@ -229,43 +229,43 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("bag_family", false, false, true)]
         public BagFamilyMask? BagFamily;
 
-        [DBFieldName("totem_category", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("totem_category", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public TotemCategory? TotemCategory;
 
-        [DBFieldName("socket_color_", TargetedDbExpansion.TheBurningCrusade, 3)]
+        [DBFieldName("socket_color_", TargetedDbExpansion.TheBurningCrusade, 3, Nullable = true)]
         public ItemSocketColor?[] ItemSocketColors;
 
-        [DBFieldName("socket_content_", TargetedDbExpansion.TheBurningCrusade, 3)]
+        [DBFieldName("socket_content_", TargetedDbExpansion.TheBurningCrusade, 3, Nullable = true)]
         public uint?[] SocketContent;
 
-        [DBFieldName("socket_bonus", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("socket_bonus", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public int? SocketBonus;
 
-        [DBFieldName("gem_properties", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("gem_properties", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public int? GemProperties;
 
-        [DBFieldName("required_disenchant_skill", TargetedDbExpansion.TheBurningCrusade, TargetedDbExpansion.Cataclysm)]
+        [DBFieldName("required_disenchant_skill", TargetedDbExpansion.TheBurningCrusade, TargetedDbExpansion.Cataclysm, Nullable = true)]
         public int? RequiredDisenchantSkill;
 
-        [DBFieldName("armor_damage_modifier", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("armor_damage_modifier", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public float? ArmorDamageModifier;
 
-        [DBFieldName("duration", TargetedDbExpansion.TheBurningCrusade)]
+        [DBFieldName("duration", TargetedDbExpansion.TheBurningCrusade, Nullable = true)]
         public uint? Duration;
 
-        [DBFieldName("item_limit_category", TargetedDbExpansion.WrathOfTheLichKing)]
+        [DBFieldName("item_limit_category", TargetedDbExpansion.WrathOfTheLichKing, Nullable = true)]
         public int? ItemLimitCategory;
 
-        [DBFieldName("holiday_id", TargetedDbExpansion.WrathOfTheLichKing)]
+        [DBFieldName("holiday_id", TargetedDbExpansion.WrathOfTheLichKing, Nullable = true)]
         public Holiday? HolidayID;
 
-        [DBFieldName("stat_scaling_factor", TargetedDbExpansion.Cataclysm)]
+        [DBFieldName("stat_scaling_factor", TargetedDbExpansion.Cataclysm, Nullable = true)]
         public float? StatScalingFactor;
 
-        [DBFieldName("currency_substitution_id", TargetedDbExpansion.Cataclysm)]
+        [DBFieldName("currency_substitution_id", TargetedDbExpansion.Cataclysm, Nullable = true)]
         public uint? CurrencySubstitutionID;
 
-        [DBFieldName("currency_substitution_count", TargetedDbExpansion.Cataclysm)]
+        [DBFieldName("currency_substitution_count", TargetedDbExpansion.Cataclysm, Nullable = true)]
         public uint? CurrencySubstitutionCount;
 
         [DBFieldName("sniff_build")]
