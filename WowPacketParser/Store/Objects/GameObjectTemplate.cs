@@ -21,49 +21,49 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("displayId", DbType = (TargetedDbType.TRINITY | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
         public uint? DisplayID;
 
-        [DBFieldName("scale", TargetedDbExpansion.WrathOfTheLichKing, DbType = (TargetedDbType.WPP))]
-        [DBFieldName("size", TargetedDbExpansion.WrathOfTheLichKing, DbType = (TargetedDbType.TRINITY | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
+        [DBFieldName("scale", TargetedDbExpansion.WrathOfTheLichKing, Nullable = true, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("size", TargetedDbExpansion.WrathOfTheLichKing, Nullable = true, DbType = (TargetedDbType.TRINITY | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
         public float? Size;
 
         [DBFieldName("name", LocaleConstant.enUS)] // ToDo: Add locale support
         public string Name;
 
-        [DBFieldName("icon_name", TargetedDbExpansion.TheBurningCrusade, DbType = (TargetedDbType.WPP))]
-        [DBFieldName("IconName", TargetedDbExpansion.TheBurningCrusade, DbType = (TargetedDbType.TRINITY | TargetedDbType.CMANGOS))]
+        [DBFieldName("icon_name", Nullable = true, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("IconName", Nullable = true, DbType = (TargetedDbType.TRINITY | TargetedDbType.CMANGOS))]
         public string IconName;
 
         // ToDo: Add locale support
-        [DBFieldName("opening_text", TargetedDbExpansion.TheBurningCrusade, LocaleConstant.enUS, DbType = (TargetedDbType.WPP))]
-        [DBFieldName("castBarCaption", TargetedDbExpansion.TheBurningCrusade, LocaleConstant.enUS, DbType = (TargetedDbType.TRINITY | TargetedDbType.CMANGOS))]
+        [DBFieldName("opening_text", TargetedDbExpansion.TheBurningCrusade, LocaleConstant.enUS, Nullable = true, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("castBarCaption", TargetedDbExpansion.TheBurningCrusade, LocaleConstant.enUS, Nullable = true, DbType = (TargetedDbType.TRINITY | TargetedDbType.CMANGOS))]
         public string CastCaption;
 
-        [DBFieldName("closing_text", Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.TRINITY))]
+        [DBFieldName("closing_text", TargetedDbExpansion.TheBurningCrusade, LocaleConstant.enUS, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.TRINITY))]
         public string ClosingText;
 
         [DBFieldName("data", TargetedDbExpansion.Zero, TargetedDbExpansion.Cataclysm, 24, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
         [DBFieldName("Data", TargetedDbExpansion.Zero, TargetedDbExpansion.Cataclysm, 24, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.TRINITY))]
-        [DBFieldName("data", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.WarlordsOfDraenor, 32, StartAtZero = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
-        [DBFieldName("Data", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.WarlordsOfDraenor, 32, StartAtZero = true, DbType = (TargetedDbType.TRINITY))]
-        [DBFieldName("data", TargetedDbExpansion.WarlordsOfDraenor, TargetedDbExpansion.BattleForAzeroth, 33, StartAtZero = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
-        [DBFieldName("Data", TargetedDbExpansion.WarlordsOfDraenor, TargetedDbExpansion.BattleForAzeroth, 33, StartAtZero = true, DbType = (TargetedDbType.TRINITY))]
-        [DBFieldName("data", TargetedDbExpansion.WrathOfTheLichKingClassic, TargetedDbExpansion.Zero, 34, StartAtZero = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
-        [DBFieldName("Data", TargetedDbExpansion.WrathOfTheLichKingClassic, TargetedDbExpansion.Zero, 34, StartAtZero = true, DbType = (TargetedDbType.TRINITY))]
-        [DBFieldName("data", TargetedDbExpansion.BattleForAzeroth, TargetedDbExpansion.Shadowlands, 34, StartAtZero = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
-        [DBFieldName("Data", TargetedDbExpansion.BattleForAzeroth, TargetedDbExpansion.Shadowlands, 34, StartAtZero = true, DbType = (TargetedDbType.TRINITY))]
-        [DBFieldName("data", TargetedDbExpansion.Shadowlands, 35, StartAtZero = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
-        [DBFieldName("Data", TargetedDbExpansion.Shadowlands, 35, StartAtZero = true, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("data", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.WarlordsOfDraenor, 32, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
+        [DBFieldName("Data", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.WarlordsOfDraenor, 32, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("data", TargetedDbExpansion.WarlordsOfDraenor, TargetedDbExpansion.BattleForAzeroth, 33, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
+        [DBFieldName("Data", TargetedDbExpansion.WarlordsOfDraenor, TargetedDbExpansion.BattleForAzeroth, 33, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("data", TargetedDbExpansion.WrathOfTheLichKingClassic, TargetedDbExpansion.Zero, 34, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
+        [DBFieldName("Data", TargetedDbExpansion.WrathOfTheLichKingClassic, TargetedDbExpansion.Zero, 34, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("data", TargetedDbExpansion.BattleForAzeroth, TargetedDbExpansion.Shadowlands, 34, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
+        [DBFieldName("Data", TargetedDbExpansion.BattleForAzeroth, TargetedDbExpansion.Shadowlands, 34, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("data", TargetedDbExpansion.Shadowlands, 35, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.WPP | TargetedDbType.VMANGOS | TargetedDbType.CMANGOS))]
+        [DBFieldName("Data", TargetedDbExpansion.Shadowlands, 35, StartAtZero = true, Nullable = true, DbType = (TargetedDbType.TRINITY))]
         public int?[] Data;
 
-        [DBFieldName("quest_items_count", TargetedDbExpansion.WrathOfTheLichKingClassic, TargetedDbExpansion.Zero, DbType = (TargetedDbType.WPP))]
-        [DBFieldName("quest_items_count", TargetedDbExpansion.WrathOfTheLichKing, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("quest_items_count", TargetedDbExpansion.WrathOfTheLichKingClassic, TargetedDbExpansion.Zero, Nullable = true, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("quest_items_count", TargetedDbExpansion.WrathOfTheLichKing, Nullable = true, DbType = (TargetedDbType.WPP))]
         public uint QuestItems;
 
-        [DBFieldName("required_level", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.Shadowlands, DbType = (TargetedDbType.WPP))]
-        [DBFieldName("RequiredLevel", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.Shadowlands, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("required_level", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.Shadowlands, Nullable = true, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("RequiredLevel", TargetedDbExpansion.Cataclysm, TargetedDbExpansion.Shadowlands, Nullable = true, DbType = (TargetedDbType.TRINITY))]
         public int? RequiredLevel;
 
-        [DBFieldName("content_tuning_id", TargetedDbExpansion.Shadowlands, DbType = (TargetedDbType.WPP))]
-        [DBFieldName("ContentTuningId", TargetedDbExpansion.Shadowlands, DbType = (TargetedDbType.TRINITY))]
+        [DBFieldName("content_tuning_id", TargetedDbExpansion.Shadowlands, Nullable = true, DbType = (TargetedDbType.WPP))]
+        [DBFieldName("ContentTuningId", TargetedDbExpansion.Shadowlands, Nullable = true, DbType = (TargetedDbType.TRINITY))]
         public int? ContentTuningId;
     }
 

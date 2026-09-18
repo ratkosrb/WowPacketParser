@@ -1958,3 +1958,7 @@ CREATE TABLE IF NOT EXISTS `creature_unique_ammo` (
   PRIMARY KEY (`entry`,`ammo_display_id`,`ammo_inventory_type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC COMMENT='ammo seen used by creature in SMSG_SPELL_GO';
 
+ALTER TABLE `gameobject_template`
+	CHANGE COLUMN `icon_name` `icon_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '1.12+' AFTER `name`,
+	CHANGE COLUMN `cast_bar_caption` `opening_text` VARCHAR(100) NULL DEFAULT NULL COMMENT 'tbc+' AFTER `icon_name`,
+	CHANGE COLUMN `unk1` `closing_text` VARCHAR(100) NULL DEFAULT NULL COMMENT 'tbc+' AFTER `opening_text`;
