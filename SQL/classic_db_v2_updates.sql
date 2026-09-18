@@ -1962,3 +1962,9 @@ ALTER TABLE `gameobject_template`
 	CHANGE COLUMN `icon_name` `icon_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '1.12+' AFTER `name`,
 	CHANGE COLUMN `cast_bar_caption` `opening_text` VARCHAR(100) NULL DEFAULT NULL COMMENT 'tbc+' AFTER `icon_name`,
 	CHANGE COLUMN `unk1` `closing_text` VARCHAR(100) NULL DEFAULT NULL COMMENT 'tbc+' AFTER `opening_text`;
+
+ALTER TABLE `creature_template_wdb`
+	ADD COLUMN `static_flags1` INT(10) UNSIGNED NULL DEFAULT '0' COMMENT 'removed in 1.11' AFTER `type`,
+	CHANGE COLUMN `type_flags` `type_flags` INT(10) UNSIGNED NULL DEFAULT '0' COMMENT '1.11+' AFTER `static_flags1`,
+	CHANGE COLUMN `civilian` `civilian` INT(11) NULL DEFAULT NULL COMMENT '1.5+, removed in tbc' AFTER `mana_multiplier`,
+	CHANGE COLUMN `racial_leader` `racial_leader` INT(11) NULL DEFAULT '0' COMMENT '1.7+' AFTER `civilian`;

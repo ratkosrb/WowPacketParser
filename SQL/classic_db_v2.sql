@@ -1040,13 +1040,14 @@ CREATE TABLE IF NOT EXISTS `creature_template_wdb` (
   `rank` int(11) NOT NULL DEFAULT '0',
   `pet_family` int(11) NOT NULL DEFAULT '0',
   `type` int(11) NOT NULL DEFAULT '0',
-  `type_flags` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'actually static flags before 1.10',
+  `static_flags1` int(10) unsigned DEFAULT '0' COMMENT 'removed in 1.11',
+  `type_flags` int(10) unsigned DEFAULT '0' COMMENT '1.11+',
   `type_flags2` int(10) unsigned DEFAULT NULL COMMENT 'cata+',
   `pet_spell_list_id` int(11) DEFAULT NULL COMMENT '1.8+',
   `health_multiplier` float DEFAULT NULL COMMENT 'tbc+',
   `mana_multiplier` float DEFAULT NULL COMMENT 'tbc+',
-  `civilian` int(11) DEFAULT NULL COMMENT 'removed in tbc',
-  `racial_leader` int(11) NOT NULL DEFAULT '0',
+  `civilian` int(11) DEFAULT NULL COMMENT '1.5+, removed in tbc',
+  `racial_leader` int(11) DEFAULT '0' COMMENT '1.7+',
   `movement_id` int(11) DEFAULT NULL COMMENT 'wotlk+',
   PRIMARY KEY (`entry`,`sniff_build`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='static creature data from SMSG_QUERY_CREATURE_RESPONSE which gets saved to wdb cache';
