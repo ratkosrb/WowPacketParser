@@ -314,8 +314,6 @@ namespace WowPacketParser.Parsing.Parsers
             var reqId = new KeyValuePair<int, bool>[4];
             quest.RequiredNpcOrGo = new int?[4];
             quest.RequiredNpcOrGoCount = new uint?[4];
-            quest.RequiredItemID = new uint?[4];
-            quest.RequiredItemCount = new uint?[4];
             var reqItemFieldCount = 4;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
                 reqItemFieldCount = 5;
