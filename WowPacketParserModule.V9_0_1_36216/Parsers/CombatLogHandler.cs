@@ -268,5 +268,15 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             attackData.Time = packet.Time;
             Storage.StoreUnitAttackLog(attackData);
         }
+
+        [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
+        }
     }
 }

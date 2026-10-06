@@ -272,5 +272,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (bit76)
                 SpellHandler.ReadSpellCastLogData(packet);
         }
+
+        [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            SpellHandler.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
+        }
     }
 }
