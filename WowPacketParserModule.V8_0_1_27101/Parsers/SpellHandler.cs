@@ -124,8 +124,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         public static void ReadSpellCastLogData(Packet packet, params object[] idx)
         {
-            if (!packet.CanRead())
+            if (ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
+            {
+                packet.ReadSByte("Unk1_13_2", idx);
                 return;
+            }
 
             packet.ReadInt64("Health", idx);
             packet.ReadInt32("AttackPower", idx);
