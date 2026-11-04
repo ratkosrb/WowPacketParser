@@ -286,17 +286,14 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             Storage.StoreUnitAurasUpdate(guid, auras, packet.Time, isFullUpdate);
         }
 
-        [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]
-        public static void HandleUpdateChainTargets(Packet packet)
+        [Parser(Opcode.SMSG_RESUME_CAST)]
+        public static void HandleResumeCast(Packet packet)
         {
-            SpellUniqueChainUpdate uniqueData = new SpellUniqueChainUpdate();
-            packet.ReadPackedGuid128("Caster GUID");
+            packet.ReadPackedGuid128("CasterGUID");
             packet.ReadUInt32("SpellXSpellVisualID");
             packet.ReadPackedGuid128("CastID");
-            packet.ReadPackedGuid128("Target GUID");
-            uniqueData.SpellId = packet.ReadUInt32<SpellId>("SpellID");
-            uniqueData.SniffId = packet.SniffId;
-            Storage.SpellUniqueChainUpdates.Add(uniqueData);
+            packet.ReadPackedGuid128("Target");
+            packet.ReadUInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.CMSG_SELF_RES)]
