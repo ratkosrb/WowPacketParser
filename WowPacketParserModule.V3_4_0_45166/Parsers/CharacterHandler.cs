@@ -202,6 +202,22 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 ReadRaceUnlockData(packet, i, "RaceUnlockData");
         }
 
+        // 3.4.0.44930 / 3.4.0.45043
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE, ClientVersionBuild.V3_4_0_44463)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_0_45166))
+            {
+                V7_0_3_22248.Parsers.CharacterHandler.HandleAlterAppearance(packet);
+                return;
+            }
+
+            var customizationCount = packet.ReadUInt32("CustomizationCount");
+            packet.ReadByteE<Gender>("NewSex");
+            for (var i = 0u; i < customizationCount; ++i)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
+
         [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUpInfo(Packet packet)
         {
