@@ -793,6 +793,7 @@ namespace WowPacketParser.Enums.Version.V3_4_0_45166
             { Opcode.SMSG_AVAILABLE_HOTFIXES, 0x290F },
             { Opcode.SMSG_AZERITE_RESPEC_NPC, 0x27F9 },
             { Opcode.SMSG_BAG_CLEANUP_FINISHED, 0x2DA7 },
+            { Opcode.SMSG_CONFIRM_BARBERS_CHOICE, 0x26BA },
             { Opcode.SMSG_BARBER_SHOP_RESULT, 0x26BB },
             { Opcode.SMSG_BATCH_PRESENCE_SUBSCRIPTION, 0x2847 },
             { Opcode.SMSG_BATTLEFIELD_LIST, 0x2927 },
