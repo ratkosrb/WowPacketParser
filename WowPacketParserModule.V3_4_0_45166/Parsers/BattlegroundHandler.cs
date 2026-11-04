@@ -6,6 +6,20 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 {
     public static class BattlegroundHandler
     {
+        // 3.4.0.44930 / 3.4.0.45043: only two reward blocks, no "HasWon" bits
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, ClientVersionBuild.V3_4_0_44463)]
+        public static void HandleRequestPVPRewardsResponse(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_0_45166))
+            {
+                V7_0_3_22248.Parsers.BattlegroundHandler.HandleRequestPVPRewardsResponse(packet);
+                return;
+            }
+
+            V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "RandomBGRewards");
+            V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "ArenaRewards");
+        }
+
         public static void ReadRatedPvpBracketInfo(Packet packet, params object[] idx)
         {
             packet.ReadInt32("PersonalRating", idx);
