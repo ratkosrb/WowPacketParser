@@ -31,5 +31,72 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadUInt64("BidAmount");
             packet.ReadUInt64("MinIncrement");
         }
+
+        public static void ReadCliAuctionItem(Packet packet, params object[] idx)
+        {
+            Substructures.ItemHandler.ReadItemInstance(packet, idx);
+            packet.ResetBitReader();
+
+            packet.ReadInt32("Count", idx);
+            packet.ReadInt32("Charges", idx);
+            packet.ReadInt32("Flags", idx);
+            packet.ReadInt32("AuctionItemID", idx);
+
+            packet.ReadPackedGuid128("Owner", idx);
+
+            packet.ReadUInt64("MinBid", idx);
+            packet.ReadUInt64("MinIncrement", idx);
+            packet.ReadUInt64("BuyoutPrice", idx);
+
+            packet.ReadInt32("DurationLeft", idx);
+            packet.ReadByte("DeleteReason", idx);
+
+            var enchantmentsCount = packet.ReadBits("EnchantmentsCount", 4, idx);
+            var gemsCount = packet.ReadBits("GemsCount", 2, idx);
+            var censorServerSideInfo = packet.ReadBit("CensorServerSideInfo", idx);
+            var censorBidInfo = packet.ReadBit("CensorBidInfo", idx);
+            packet.ResetBitReader();
+
+            for (int i = 0; i < gemsCount; i++)
+                Substructures.ItemHandler.ReadItemGemData(packet, idx, "Gems", i);
+
+            for (int i = 0; i < enchantmentsCount; i++)
+                Substructures.ItemHandler.ReadItemEnchantData(packet, idx, "Enchantments", i);
+
+            if (!censorServerSideInfo)
+            {
+                packet.ReadPackedGuid128("ItemGUID", idx);
+                packet.ReadPackedGuid128("OwnerAccountID", idx);
+                packet.ReadInt32("EndTime", idx);
+            }
+
+            if (!censorBidInfo)
+            {
+                packet.ReadPackedGuid128("Bidder", idx);
+                packet.ReadInt64("BidAmount", idx);
+            }
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_ITEMS_RESULT)]
+        public static void HandleAuctionListItemsResult(Packet packet)
+        {
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            packet.ReadInt32("TotalCount");
+            packet.ReadInt32("DesiredDelay");
+            packet.ReadBit("OnlyUsable");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < itemsCount; i++)
+                ReadCliAuctionItem(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_WON_NOTIFICATION)]
+        public static void HandleAuctionWonNotification(Packet packet)
+        {
+            packet.ReadUInt32("AuctionHouseID");
+            packet.ReadUInt32("AuctionItemID");
+            packet.ReadPackedGuid128("Bidder");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
+        }
     }
 }
