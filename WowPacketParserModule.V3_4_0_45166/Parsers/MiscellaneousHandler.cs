@@ -575,5 +575,28 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             packet.ReadBit("ShowSocialContract");
         }
+
+        [Parser(Opcode.SMSG_TALENT_GROUP_ROLE_CHANGED)]
+        public static void HandleTalentGroupRoleChanged(Packet packet)
+        {
+            packet.ReadByte("TalentGroup");
+            packet.ReadByte("Role");
+        }
+
+        [Parser(Opcode.SMSG_BARBER_SHOP_RESULT)]
+        public static void HandleBarberShopResult(Packet packet)
+        {
+            packet.ReadUInt32("Result");
+            packet.ReadBit("Unk");
+        }
+
+        [Parser(Opcode.SMSG_BATCH_PRESENCE_SUBSCRIPTION)]
+        public static void HandleBatchPresenceSubscription(Packet packet)
+        {
+            packet.ReadBit("Unk");
+            var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt32("Id", i);
+        }
     }
 }
