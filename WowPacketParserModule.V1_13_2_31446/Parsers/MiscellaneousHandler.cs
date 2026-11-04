@@ -277,10 +277,12 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 packet.ReadUInt32("ItemModifiedAppearanceId", "FavoriteAppearances", i);
         }
 
+        [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_REATTACH_RESURRECT)]
-        public static void HandleReattachResurrect(Packet packet)
+        public static void HandleClearResurrect(Packet packet)
         {
-            packet.ReadUInt16("Unk");
+            if (packet.CanRead())
+                packet.ReadPackedGuid128("Guid");
         }
     }
 }
