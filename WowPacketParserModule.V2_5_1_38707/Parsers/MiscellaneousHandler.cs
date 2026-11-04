@@ -33,5 +33,33 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ReadUInt32("Unk6", i);
             }
         }
+
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
+        public static void HandleMailMarkAsRead(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadInt32("MailID");
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_TOY_UPDATE)]
+        public static void HandleAccountToyUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var itemIdCount = packet.ReadUInt32("ToyItemIDsCount");
+            var isFavoriteCount = packet.ReadUInt32("ToyIsFavoriteCount");
+            var fanfareCount = packet.ReadUInt32("FanfareCount");
+
+            for (var i = 0; i < itemIdCount; i++)
+                packet.ReadInt32("ToyItemID", i);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < isFavoriteCount; i++)
+                packet.ReadBit("ToyIsFavorite", i);
+
+            for (var i = 0; i < fanfareCount; i++)
+                packet.ReadBit("HasFanfare", i);
+        }
     }
 }
