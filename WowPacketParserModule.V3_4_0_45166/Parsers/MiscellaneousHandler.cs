@@ -529,5 +529,39 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32("Unknown");
             packet.ReadBit("Success");
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_TOY_UPDATE, ClientVersionBuild.V3_4_0_44463, ClientVersionBuild.V3_4_0_45166)]
+        public static void HandleAccountToyUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var itemIdCount = packet.ReadUInt32("ToyItemIDsCount");
+            var isFavoriteCount = packet.ReadUInt32("ToyIsFavoriteCount");
+            var fanfareCount = packet.ReadUInt32("FanfareCount");
+
+            for (var i = 0; i < itemIdCount; i++)
+                packet.ReadInt32("ToyItemID", i);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < isFavoriteCount; i++)
+                packet.ReadBit("ToyIsFavorite", i);
+
+            for (var i = 0; i < fanfareCount; i++)
+                packet.ReadBit("HasFanfare", i);
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_TRANSMOG_UPDATE, ClientVersionBuild.V3_4_0_44463, ClientVersionBuild.V3_4_0_45166)]
+        public static void HandleAccountTransmogUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+            packet.ReadBit("IsSetFavorite");
+            var count = packet.ReadUInt32("FavoriteAppearancesCount");
+            var newCount = packet.ReadUInt32("NewAppearancesCount");
+            for (var i = 0; i < count; i++)
+                packet.ReadUInt32("ItemModifiedAppearanceId", "FavoriteAppearances", i);
+            for (var i = 0; i < newCount; i++)
+                packet.ReadUInt32("ItemModifiedAppearanceId", "NewAppearances", i);
+        }
     }
 }
