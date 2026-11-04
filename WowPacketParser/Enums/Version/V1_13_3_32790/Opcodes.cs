@@ -1615,7 +1615,7 @@ namespace WowPacketParser.Enums.Version.V1_13_3_32790
             {Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, 0x2C1B},
             {Opcode.SMSG_SPELL_PREPARE, 0x2C38},
             {Opcode.SMSG_SPELL_START, 0x2C3A},
-            {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x2C3B},
+            {Opcode.SMSG_RESUME_CAST, 0x2C3B},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x2757},
             {Opcode.SMSG_STAND_STATE_UPDATE, 0x275D},
             {Opcode.SMSG_START_ELAPSED_TIMER, 0x261A},
