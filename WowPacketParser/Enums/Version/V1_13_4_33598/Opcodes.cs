@@ -619,7 +619,7 @@ namespace WowPacketParser.Enums.Version.V1_13_4_33598
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x355A},
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x3A37},
             {Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING, 0x32B3},
-            {Opcode.CMSG_SET_AMMO, 0x3559},
+            {Opcode.CMSG_SET_AMMO, 0x355B},
             {Opcode.CMSG_PLAYER_SHOWING_HELM, 0x3561},
             {Opcode.CMSG_PLAYER_SHOWING_CLOAK, 0x3562},
             {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x364E},
@@ -761,6 +761,7 @@ namespace WowPacketParser.Enums.Version.V1_13_4_33598
             {Opcode.SMSG_AREA_POI_UPDATE_RESPONSE, 0x284B},
             {Opcode.SMSG_AREA_SPIRIT_HEALER_TIME, 0x2784},
             {Opcode.SMSG_AREA_TRIGGER_DENIED, 0x26A1},
+            {Opcode.SMSG_AREA_TRIGGER_MESSAGE, 0x26A2},
             //{Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x2756}, // wrong
             {Opcode.SMSG_AREA_TRIGGER_PLAY_SPELL_VISUAL, 0x263E},
             {Opcode.SMSG_AREA_TRIGGER_RE_PATH, 0x263D},
