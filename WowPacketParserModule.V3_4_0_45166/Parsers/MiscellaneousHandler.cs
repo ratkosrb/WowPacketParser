@@ -563,5 +563,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             for (var i = 0; i < newCount; i++)
                 packet.ReadUInt32("ItemModifiedAppearanceId", "NewAppearances", i);
         }
+
+        [Parser(Opcode.CMSG_LFG_LIST_SET_ROLES)]
+        public static void HandleLfgListSetRoles(Packet packet)
+        {
+            packet.ReadByteE<LfgRoleFlag>("RolesDesired");
+        }
+
+        [Parser(Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE)]
+        public static void HandleSocialContractRequestResponse(Packet packet)
+        {
+            packet.ReadBit("ShowSocialContract");
+        }
     }
 }
