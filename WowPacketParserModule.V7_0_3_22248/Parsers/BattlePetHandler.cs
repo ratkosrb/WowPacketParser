@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var slotsCount = packet.ReadInt32("SlotsCount");
             var petsCount = packet.ReadInt32("PetsCount");
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_0_39185))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_0_39185) || ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
                 packet.ReadInt32("MaxPets");
 
             packet.ReadBit("HasJournalLock");
