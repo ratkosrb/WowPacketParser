@@ -1660,7 +1660,7 @@ namespace WowPacketParser.Enums.Version.V2_5_2_39570
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x25C4},
             {Opcode.SMSG_XP_GAIN_ENABLED, 0x27A4},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x2BB5},
-            {Opcode.SMSG_UNK_SPELL_DEBUG1, 0x2C3D},
+            {Opcode.SMSG_BREAK_CROWD_CONTROL_ROLL_INFO, 0x2C3D},
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();

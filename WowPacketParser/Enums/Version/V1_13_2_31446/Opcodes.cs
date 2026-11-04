@@ -1703,7 +1703,7 @@ namespace WowPacketParser.Enums.Version.V1_13_2_31446
             {Opcode.SMSG_UI_HEALING_RANGE_MODIFIED, 0x2788},
             {Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE, 0x2813},
             {Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x2814},
-            {Opcode.SMSG_UNK_SPELL_DEBUG1, 0x2C3D},
+            {Opcode.SMSG_BREAK_CROWD_CONTROL_ROLL_INFO, 0x2C3D},
             {Opcode.SMSG_UNLEARNED_SPELLS, 0x2C4E},
             {Opcode.SMSG_UNLOAD_CHILD_MAP, 0x2579},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x274B},

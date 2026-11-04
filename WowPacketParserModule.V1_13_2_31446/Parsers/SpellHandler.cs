@@ -11,8 +11,8 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 {
     public static class SpellHandler
     {
-        [Parser(Opcode.SMSG_UNK_SPELL_DEBUG1)]
-        public static void HandleUnkSpellDebug1(Packet packet)
+        [Parser(Opcode.SMSG_BREAK_CROWD_CONTROL_ROLL_INFO)]
+        public static void HandleBreakCrowdControlRollInfo(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("TargetGUID");
