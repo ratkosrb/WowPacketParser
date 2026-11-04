@@ -715,7 +715,7 @@ namespace WowPacketParser.Enums.Version.V1_13_6_36231
             {Opcode.CMSG_VOICE_CHAT_JOIN_CHANNEL, 0x3711},
             {Opcode.CMSG_VOICE_CHAT_LOGIN, 0x3710},
             {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x31A5},
-            {Opcode.CMSG_WARDEN_DATA, 0x35EC},
+            {Opcode.CMSG_WARDEN3_DATA, 0x35EC},
             {Opcode.CMSG_WHO, 0x367F},
             {Opcode.CMSG_WHO_IS, 0x367E},
             {Opcode.CMSG_WORLD_PORT_RESPONSE, 0x35F9},
