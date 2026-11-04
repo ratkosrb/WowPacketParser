@@ -1130,7 +1130,7 @@ namespace WowPacketParser.Enums.Version.V1_13_4_33598
             {Opcode.SMSG_GUILD_EVENT_BANK_MONEY_CHANGED, 0x29F4},
             {Opcode.SMSG_GUILD_EVENT_DISBANDED, 0x29EB},
             {Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULTS, 0x29E2},
-            {Opcode.SMSG_GUILD_EVENT_MOTD, 0x27D1}, // wrong?
+            {Opcode.SMSG_GUILD_EVENT_MOTD, 0x29EC},
             {Opcode.SMSG_GUILD_EVENT_NEW_LEADER, 0x29EA},
             {Opcode.SMSG_GUILD_EVENT_PLAYER_JOINED, 0x29E8},
             {Opcode.SMSG_GUILD_EVENT_PLAYER_LEFT, 0x29E9},
