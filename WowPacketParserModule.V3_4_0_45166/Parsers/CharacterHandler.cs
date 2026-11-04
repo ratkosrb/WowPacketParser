@@ -41,6 +41,11 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
         public static void ReadCharactersListEntry(Packet packet, params object[] idx)
         {
+            ReadCharactersListEntryEx(packet, 34, idx);
+        }
+
+        public static void ReadCharactersListEntryEx(Packet packet, int visualItemCount, params object[] idx)
+        {
             var playerGuid = packet.ReadPackedGuid128("Guid", idx);
             packet.ReadUInt64("GuildClubMemberID", idx);
             packet.ReadByte("ListPosition", idx);
@@ -63,7 +68,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             for (uint j = 0; j < 2; ++j)
                 packet.ReadInt32("ProfessionIDs", idx, j);
 
-            for (uint j = 0; j < 34; ++j)
+            for (uint j = 0; j < visualItemCount; ++j)
                 ReadVisualItemInfo(packet, idx, j);
 
             packet.ReadTime64("LastPlayedTime", idx);
@@ -125,6 +130,43 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("HasAchievement", idx);
             packet.ReadBit("HasHeritageArmor", idx);
             packet.ReadBit("IsLocked");
+        }
+
+        // 3.4.0.44930 / 3.4.0.45043: no RaceLimitDisables, 23 visual items per character
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V3_4_0_44463)]
+        public static void HandleEnumCharactersResultEarly(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_0_45166))
+            {
+                V9_0_1_36216.Parsers.CharacterHandler.HandleEnumCharactersResult(packet);
+                return;
+            }
+
+            packet.ReadBit("Success");
+            packet.ReadBit("IsDeletedCharacters");
+            packet.ReadBit("IsNewPlayerRestrictionSkipped");
+            packet.ReadBit("IsNewPlayerRestricted");
+            packet.ReadBit("IsNewPlayer");
+            packet.ReadBit("IsTrialAccountRestricted");
+            var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
+            packet.ReadBit("IsAlliedRacesCreationAllowed");
+
+            var charsCount = packet.ReadUInt32("CharactersCount");
+            packet.ReadInt32("MaxCharacterLevel");
+            var raceUnlockCount = packet.ReadUInt32("RaceUnlockCount");
+            var unlockedConditionalAppearanceCount = packet.ReadUInt32("UnlockedConditionalAppearanceCount");
+
+            if (hasDisabledClassesMask)
+                packet.ReadUInt32("DisabledClassesMask");
+
+            for (var i = 0u; i < unlockedConditionalAppearanceCount; ++i)
+                V8_0_1_27101.Parsers.CharacterHandler.ReadUnlockedConditionalAppearance(packet, "UnlockedConditionalAppearances", i);
+
+            for (var i = 0u; i < charsCount; ++i)
+                ReadCharactersListEntryEx(packet, 23, i, "Characters");
+
+            for (var i = 0u; i < raceUnlockCount; ++i)
+                ReadRaceUnlockData(packet, i, "RaceUnlockData");
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V3_4_1_47720)]
