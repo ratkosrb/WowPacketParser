@@ -921,7 +921,7 @@ namespace WowPacketParser.Enums.Version.V1_13_5_34713
             {Opcode.SMSG_CLEAR_COOLDOWN, 0x26EC},
             {Opcode.SMSG_CLEAR_COOLDOWNS, 0x2C26},
             {Opcode.SMSG_CLEAR_LOSS_OF_CONTROL, 0x269C},
-            {Opcode.SMSG_REATTACH_RESURRECT, 0x2796},
+            {Opcode.SMSG_CLEAR_RESURRECT, 0x2796},
             {Opcode.SMSG_CLEAR_SPELL_CHARGES, 0x2C28},
             {Opcode.SMSG_CLEAR_TARGET, 0x26E3},
             {Opcode.SMSG_COIN_REMOVED, 0x262C},
