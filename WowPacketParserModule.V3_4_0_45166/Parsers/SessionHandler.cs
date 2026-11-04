@@ -9,6 +9,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 {
     public static class SessionHandler
     {
+        // 3.4.0.44930 / 3.4.0.45043 use a 64 byte RSA encrypted key
+        [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V3_4_0_44463)]
+        public static void HandleEnterEncryptedMode(Packet packet)
+        {
+            packet.ReadBytes("EncryptionKey (RSA encrypted)", ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_0_45166) ? 256 : 64);
+            packet.ResetBitReader();
+            packet.ReadBit("Enabled");
+        }
+
         [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
         public static void HandleSetTimeZoneInformation(Packet packet)
         {
