@@ -612,6 +612,8 @@ namespace WowPacketParser.Enums.Version.V1_13_3_32790
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x3A37},
             {Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING, 0x32B3},
             {Opcode.CMSG_SET_AMMO, 0x355A},
+            {Opcode.CMSG_PLAYER_SHOWING_HELM, 0x3560},
+            {Opcode.CMSG_PLAYER_SHOWING_CLOAK, 0x3561},
             {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x364E},
             {Opcode.CMSG_SET_CONTACT_NOTES, 0x36CF},
             {Opcode.CMSG_SET_CURRENCY_FLAGS, 0x316C},
