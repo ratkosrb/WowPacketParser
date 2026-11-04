@@ -1510,13 +1510,14 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
             data.GuildDeleteDate = packet.ReadUInt32("GuildDeleteDate", indexes);
             data.GuildLevel = packet.ReadInt32("GuildLevel", indexes);
             data.Customizations.Resize(packet.ReadUInt32());
-            data.PartyType = packet.ReadByte("PartyType", indexes);
+            // 44930/45043: PartyType is an array of 2 bytes and there is no trailing Unk254 byte (verified: NativeSex equals Sex).
+            data.PartyType = packet.ReadByte("PartyType", indexes, 0);
+            packet.ReadByte("PartyType", indexes, 1);
             data.NativeSex = packet.ReadByte("NativeSex", indexes);
             data.Inebriation = packet.ReadByte("Inebriation", indexes);
             data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
             data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
             data.PvpRank = packet.ReadByte("PvpRank", indexes);
-            data.Unk254 = packet.ReadByte("Unk254", indexes);
             data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
             data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
             if ((flags & UpdateFieldFlag.PartyMember) != UpdateFieldFlag.None)
@@ -1641,31 +1642,31 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
                 }
                 if (changesMask[11])
                 {
-                    data.PartyType = packet.ReadByte("PartyType", indexes);
+                    data.PartyType = packet.ReadByte("PartyType", indexes, 0);
                 }
                 if (changesMask[12])
                 {
-                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
+                    packet.ReadByte("PartyType", indexes, 1);
                 }
                 if (changesMask[13])
                 {
-                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
+                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
                 }
                 if (changesMask[14])
                 {
-                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
+                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
                 }
                 if (changesMask[15])
                 {
-                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
+                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
                 }
                 if (changesMask[16])
                 {
-                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
+                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
                 }
                 if (changesMask[17])
                 {
-                    data.Unk254 = packet.ReadByte("Unk254", indexes);
+                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
                 }
                 if (changesMask[18])
                 {
