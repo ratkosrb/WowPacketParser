@@ -793,8 +793,8 @@ namespace WowPacketParser.Enums.Version.V3_4_0_45166
             { Opcode.SMSG_AVAILABLE_HOTFIXES, 0x290F },
             { Opcode.SMSG_AZERITE_RESPEC_NPC, 0x27F9 },
             { Opcode.SMSG_BAG_CLEANUP_FINISHED, 0x2DA7 },
-            { Opcode.SMSG_UNKNOWN_9651, 0x25B3 },
-            { Opcode.SMSG_UNKNOWN_9714, 0x25F2 },
+            { Opcode.SMSG_UNKNOWN_9651, 0x25B3 }, // unidentified. Same layout as SMSG_ACCOUNT_TRANSMOG_UPDATE (2 bits, 2 u32 counts, 2 u32 arrays); sent once at login right after SMSG_ACCOUNT_MOUNT_UPDATE/SET_FAVORITES, always c0 00.. (9 bytes, counts 0). Probably a collection sibling (illusions/sets). 46779 handler confirmed, not named
+            { Opcode.SMSG_UNKNOWN_9714, 0x25F2 }, // unidentified. u32 A, u32 B, then A packed guid128, then B packed guid128; sent during play near SMSG_PARTY_UPDATE, mostly empty (A>0 only, B always 0), up to 24 player guids. 46779 handler confirmed, not named
             { Opcode.SMSG_CONFIRM_BARBERS_CHOICE, 0x26BA },
             { Opcode.SMSG_BARBER_SHOP_RESULT, 0x26BB },
             { Opcode.SMSG_BATCH_PRESENCE_SUBSCRIPTION, 0x2847 },
