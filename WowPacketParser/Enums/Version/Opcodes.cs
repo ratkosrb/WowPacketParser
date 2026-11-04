@@ -786,13 +786,13 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V3_4_0_44729:
                 case ClientVersionBuild.V3_4_0_44832:
                 case ClientVersionBuild.V3_4_0_44925:
-                case ClientVersionBuild.V3_4_0_44930:
                 case ClientVersionBuild.V3_4_0_44996:
-                case ClientVersionBuild.V3_4_0_45043:
                 case ClientVersionBuild.V3_4_0_45064:
                 case ClientVersionBuild.V3_4_0_45102:
                     return ClientVersionBuild.V3_4_0_43659; // opcodes possibly changed earlier
                 case ClientVersionBuild.V3_4_0_45166:
+                case ClientVersionBuild.V3_4_0_44930:
+                case ClientVersionBuild.V3_4_0_45043:
                 case ClientVersionBuild.V3_4_0_45189:
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
