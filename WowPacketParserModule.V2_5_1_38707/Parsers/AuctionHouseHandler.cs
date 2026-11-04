@@ -37,15 +37,45 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
             bool hasCreator = packet.ReadBit("HasCreator", idx);
             bool hasBidder = false;
             bool hasBidAmount = false;
-            if (!censorBidInfo)
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_2_39570))
             {
-                hasBidder = packet.ReadBit("HasBidder", idx);
-                hasBidAmount = packet.ReadBit("HasBidAmount", idx);
+                // 2.5.1: no bidder guid, the bit after HasCreator gates the 8 byte bid amount, last byte of bits is unknown
+                if (!censorBidInfo)
+                    hasBidAmount = packet.ReadBit("HasBidAmount", idx);
+                packet.ReadBits("UnkBits", censorBidInfo ? 9 : 8, idx);
             }
-            packet.ReadBits("UnkBits2", 7, idx);
+            else
+            {
+                if (!censorBidInfo)
+                {
+                    hasBidder = packet.ReadBit("HasBidder", idx);
+                    hasBidAmount = packet.ReadBit("HasBidAmount", idx);
+                }
+                packet.ReadBits("UnkBits2", 7, idx);
+            }
 
             if (hasItemInstance)
-                Substructures.ItemHandler.ReadItemInstance(packet, idx);
+            {
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_2_39570))
+                {
+                    // 2.5.1 (TBC Classic): the item instance has a single bits byte (HasItemBonus), no modifiers byte
+                    packet.ReadInt32<ItemId>("ItemID", idx);
+                    packet.ReadUInt32("RandomPropertiesSeed", idx);
+                    packet.ReadUInt32("RandomPropertiesID", idx);
+                    packet.ResetBitReader();
+                    var hasBonuses = packet.ReadBit("HasItemBonus", idx);
+                    packet.ResetBitReader();
+                    if (hasBonuses)
+                    {
+                        packet.ReadByte("Context", idx);
+                        var bonusCount = packet.ReadUInt32();
+                        for (var j = 0; j < bonusCount; ++j)
+                            packet.ReadUInt32("BonusListID", idx, j);
+                    }
+                }
+                else
+                    Substructures.ItemHandler.ReadItemInstance(packet, idx);
+            }
 
             packet.ReadInt32("Count", idx);
             packet.ReadInt32("Charges", idx);
@@ -109,6 +139,34 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
             for (var i = 0; i < itemsCount; i++)
                 ReadCliAuctionItem(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_REPLICATE_RESPONSE)]
+        public static void HandleAuctionReplicateResponseList(Packet packet)
+        {
+            packet.ReadUInt32("Result");
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadUInt32("ChangeNumberGlobal");
+            packet.ReadUInt32("ChangeNumberCursor");
+            packet.ReadUInt32("ChangeNumberTombstone");
+
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_REPLICATE_ITEMS)]
+        public static void HandleAuctionReplicateItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("ChangeNumberGlobal");
+            packet.ReadInt32("ChangeNumberCursor");
+            packet.ReadInt32("ChangeNumberTombstone");
+            packet.ReadInt32("Count");
+            bool hasAddonInfo = packet.ReadBit("HasAddonInfo");
+
+            if (hasAddonInfo)
+                V8_0_1_27101.Parsers.AddonHandler.ReadAddOnInfo(packet);
         }
 
         [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]
