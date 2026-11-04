@@ -2091,6 +2091,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
             data.VersatilityBonus = packet.ReadSingle("VersatilityBonus", indexes);
             data.PvpPowerDamage = packet.ReadSingle("PvpPowerDamage", indexes);
             data.PvpPowerHealing = packet.ReadSingle("PvpPowerHealing", indexes);
+            packet.ReadInt32("Unk44930_AfterPvpPowerHealing", indexes); // extra 4 bytes in 44930/45043 before ExploredZones (unidentified)
             for (var i = 0; i < 240; ++i)
             {
                 data.ExploredZones[i] = packet.ReadUInt64("ExploredZones", indexes, i);
