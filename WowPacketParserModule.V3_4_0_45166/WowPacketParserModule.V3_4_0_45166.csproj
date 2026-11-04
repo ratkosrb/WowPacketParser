@@ -72,6 +72,7 @@
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\UpdateFieldsHandler340.cs" />
+    <Compile Include="Parsers\UpdateFieldsHandler34930.cs" />
     <Compile Include="Parsers\UpdateFieldsHandler341.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateFields\V3_4_0_45166\ActivePlayerData.cs" />
