@@ -1635,7 +1635,7 @@ namespace WowPacketParser.Enums.Version.V1_13_4_33598
             {Opcode.SMSG_SPELL_PREPARE, 0x2C38},
             {Opcode.SMSG_SPELL_START, 0x2C3A},
             {Opcode.SMSG_RESUME_CAST, 0x2C3B},
-            {Opcode.SMSG_UNK_SPELL_DEBUG1, 0x2C3D},
+            {Opcode.SMSG_BREAK_CROWD_CONTROL_ROLL_INFO, 0x2C3D},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x2758}, // ok
             {Opcode.SMSG_STAND_STATE_UPDATE, 0x275E},
             {Opcode.SMSG_START_ELAPSED_TIMER, 0x261A},
