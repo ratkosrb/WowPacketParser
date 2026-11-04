@@ -249,5 +249,38 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ResetBitReader();
             packet.ReadBit("SkipStartingArea");
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_TOY_UPDATE)]
+        public static void HandleAccountToyUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var itemIdCount = packet.ReadUInt32("ToyItemIDsCount");
+            var isFavoriteCount = packet.ReadUInt32("ToyIsFavoriteCount");
+
+            for (var i = 0; i < itemIdCount; i++)
+                packet.ReadInt32("ToyItemID", i);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < isFavoriteCount; i++)
+                packet.ReadBit("ToyIsFavorite", i);
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_TRANSMOG_UPDATE)]
+        public static void HandleAccountTransmogUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+            packet.ReadBit("IsSetFavorite");
+            var count = packet.ReadUInt32("FavoriteAppearancesCount");
+            for (var i = 0; i < count; i++)
+                packet.ReadUInt32("ItemModifiedAppearanceId", "FavoriteAppearances", i);
+        }
+
+        [Parser(Opcode.SMSG_REATTACH_RESURRECT)]
+        public static void HandleReattachResurrect(Packet packet)
+        {
+            packet.ReadUInt16("Unk");
+        }
     }
 }
