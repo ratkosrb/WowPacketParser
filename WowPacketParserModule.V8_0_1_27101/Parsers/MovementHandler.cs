@@ -247,7 +247,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
             {
                 obj = Storage.Objects[guid].Item1 as Unit;
-                obj.Movement.HasWpsOrRandMov = true;
+                if (obj != null && obj.Movement != null)
+                    obj.Movement.HasWpsOrRandMov = true;
                 monsterMove = new ServerSideMovement();
             }
 
