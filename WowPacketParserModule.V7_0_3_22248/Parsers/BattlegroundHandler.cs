@@ -227,7 +227,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadInt32("Rank", idx);
                 }
 
-                if (ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
+                if (ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build) && ClientVersion.AddedInVersion(ClientVersionBuild.V1_14_3_42770))
                     packet.ReadInt32("Unused5", idx);
 
                 packet.ResetBitReader();
