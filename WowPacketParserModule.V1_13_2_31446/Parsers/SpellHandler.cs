@@ -11,6 +11,18 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 {
     public static class SpellHandler
     {
+        [Parser(Opcode.SMSG_UNK_SPELL_DEBUG1)]
+        public static void HandleUnkSpellDebug1(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadSingle("Unk1");
+            packet.ReadSingle("Unk2");
+            packet.ReadInt32("Unk3");
+            packet.ReadByte("Unk4");
+        }
+
         public static void ReadSpellCastLogData(Packet packet, params object[] idx)
         {
             packet.ReadSByte("Unk1_13_2", idx);
