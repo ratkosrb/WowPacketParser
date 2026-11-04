@@ -1665,6 +1665,7 @@ namespace WowPacketParser.Enums.Version.V1_13_5_34713
             {Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE, 0x2818},
             {Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x2819},
             {Opcode.SMSG_UNLEARNED_SPELLS, 0x2C4E},
+            {Opcode.SMSG_UNK_SPELL_DEBUG1, 0x2C3D},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x2750},
             {Opcode.SMSG_UPDATE_BNET_SESSION_KEY, 0x286D}, // ok
             {Opcode.SMSG_UPDATE_CELESTIAL_BODY, 0x2869},
