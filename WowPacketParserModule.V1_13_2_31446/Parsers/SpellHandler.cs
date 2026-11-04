@@ -301,5 +301,12 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         {
             packet.ReadUInt32<SpellId>("SpellID");
         }
+
+        [Parser(Opcode.CMSG_LEARN_TALENT)]
+        public static void HandleLearnTalent(Packet packet)
+        {
+            packet.ReadInt32("TalentID");
+            packet.ReadUInt16("Rank");
+        }
     }
 }

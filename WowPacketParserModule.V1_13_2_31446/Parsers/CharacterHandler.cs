@@ -169,5 +169,27 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         {
             WowPacketParserModule.V8_0_1_27101.Parsers.CharacterHandler.HandleInspectResult(packet);
         }
+
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGuid");
+            packet.ReadByte("LifetimeHighestRank");
+            packet.ReadUInt16("TodayHonorableKills");
+            packet.ReadUInt16("TodayDishonorableKills");
+            packet.ReadUInt16("YesterdayHonorableKills");
+            packet.ReadUInt16("YesterdayDishonorableKills");
+            packet.ReadUInt16("LastWeekHonorableKills");
+            packet.ReadUInt16("LastWeekDishonorableKills");
+            packet.ReadUInt16("ThisWeekHonorableKills");
+            packet.ReadUInt16("ThisWeekDishonorableKills");
+            packet.ReadUInt32("LifetimeHonorableKills");
+            packet.ReadUInt32("LifetimeDishonorableKills");
+            packet.ReadUInt32("YesterdayHonor");
+            packet.ReadUInt32("LastWeekHonor");
+            packet.ReadUInt32("ThisWeekHonor");
+            packet.ReadUInt32("Standing");
+            packet.ReadByte("RankProgress");
+        }
     }
 }
