@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
@@ -17,7 +17,9 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadInt32<SpellId>("SpellID");
+            // Unk1: float, stable per caster/target pair, mostly multiples of 1/109 (0.85..176); meaning unknown.
             packet.ReadSingle("Unk1");
+            // Unk2: uniform 0..100 over 2015 packets, uncorrelated with damage/duration => looks like a random roll (hit/resist/proc).
             packet.ReadSingle("Unk2");
             packet.ReadInt32("Unk3");
             packet.ReadByte("Unk4");
