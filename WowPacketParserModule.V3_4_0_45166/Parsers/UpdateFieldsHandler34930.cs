@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -1567,6 +1567,12 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
                     rawChangesMask[i] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
+            if (changesMask[0])
+            {
+                // 44930/45043: one extra bit precedes the Customizations size (seen in a values update after an appearance change;
+                // position inferred, it is always followed by a bit-reader reset so a misplacement elsewhere is invisible).
+                packet.ReadBit();
+            }
             if (changesMask[0])
             {
                 if (changesMask[1])
