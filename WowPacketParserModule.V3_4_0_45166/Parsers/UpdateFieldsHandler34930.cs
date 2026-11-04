@@ -2599,13 +2599,13 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
                 {
                     data.CombatRatingExpertise = packet.ReadSingle("CombatRatingExpertise", indexes);
                 }
-                if (changesMask[34])
+            }
+            if (changesMask[34])
+            {
+                if (changesMask[35])
                 {
                     data.BlockPercentage = packet.ReadSingle("BlockPercentage", indexes);
                 }
-            }
-            if (changesMask[35])
-            {
                 if (changesMask[36])
                 {
                     data.DodgePercentage = packet.ReadSingle("DodgePercentage", indexes);
@@ -2726,13 +2726,13 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
                 {
                     data.MultiActionBars = packet.ReadByte("MultiActionBars", indexes);
                 }
-                if (changesMask[66])
+            }
+            if (changesMask[66])
+            {
+                if (changesMask[67])
                 {
                     data.LifetimeMaxRank = packet.ReadByte("LifetimeMaxRank", indexes);
                 }
-            }
-            if (changesMask[67])
-            {
                 if (changesMask[68])
                 {
                     data.NumRespecs = packet.ReadByte("NumRespecs", indexes);
@@ -2853,13 +2853,13 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_44930
                 {
                     data.OverrideSpellsID = packet.ReadInt32("OverrideSpellsID", indexes);
                 }
-                if (changesMask[98])
+            }
+            if (changesMask[98])
+            {
+                if (changesMask[99])
                 {
                     data.LfgBonusFactionID = packet.ReadInt32("LfgBonusFactionID", indexes);
                 }
-            }
-            if (changesMask[99])
-            {
                 if (changesMask[100])
                 {
                     data.LootSpecID = packet.ReadUInt16("LootSpecID", indexes);
