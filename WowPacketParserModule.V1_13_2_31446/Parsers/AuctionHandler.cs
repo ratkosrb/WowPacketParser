@@ -90,6 +90,20 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 ReadCliAuctionItem(packet, i);
         }
 
+        [Parser(Opcode.SMSG_AUCTION_REPLICATE_RESPONSE)]
+        public static void HandleAuctionReplicateResponse(Packet packet)
+        {
+            packet.ReadUInt32("Result");
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadUInt32("ChangeNumberGlobal");
+            packet.ReadUInt32("ChangeNumberCursor");
+            packet.ReadUInt32("ChangeNumberTombstone");
+
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+        }
+
         [Parser(Opcode.SMSG_AUCTION_WON_NOTIFICATION)]
         public static void HandleAuctionWonNotification(Packet packet)
         {
