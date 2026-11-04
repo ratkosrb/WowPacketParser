@@ -110,8 +110,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         {
             packet.ReadInt32E<DB2Hash>("TableHash");
 
-            packet.ReadBool("Allow?");
-            var count = packet.ReadBits("Count", 5);
+            var count = packet.ReadBits("Count", 13);
 
             for (var i = 0; i < count; ++i)
             {
