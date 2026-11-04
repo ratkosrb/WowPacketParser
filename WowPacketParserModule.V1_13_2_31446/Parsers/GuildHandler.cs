@@ -53,5 +53,15 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         {
             packet.ReadPackedGuid128("Petition GUID");
         }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_UPDATE_NOTE)]
+        public static void HandleGuildMemberUpdateNote(Packet packet)
+        {
+            packet.ReadPackedGuid128("Member");
+            var noteLen = packet.ReadBits(8);
+            packet.ReadBit("IsPublic");
+            packet.ResetBitReader();
+            packet.ReadWoWString("Note", noteLen);
+        }
     }
 }
