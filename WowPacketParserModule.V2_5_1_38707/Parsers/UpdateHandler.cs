@@ -434,7 +434,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 }
 
                 var hasStandingOnGameObjectGUID = false;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_2_50063))
                     hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
@@ -565,9 +565,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                         var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
 
                         var hasAnimationTierTransition = packet.ReadBit("HasAnimationTierTransition", index);
-                        var hasUnknown901 = false;
+                        var hasSpellVisualData = false;
                         if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_3_51505))
-                            hasUnknown901 = packet.ReadBit("Unknown901", index);
+                            hasSpellVisualData = packet.ReadBit("HasSpellVisualData", index);
 
                         if (hasSplineFilterKey)
                         {
@@ -623,14 +623,14 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                             monsterMove.AnimTier = packet.ReadByte("AnimTier", index);
                         }
 
-                        if (hasUnknown901)
+                        if (hasSpellVisualData)
                         {
                             for (var i = 0; i < 16; ++i)
                             {
-                                packet.ReadInt32("Unknown1", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown2", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown3", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown4", index, "Unknown901", i);
+                                packet.ReadInt32("SpellID", index, "SpellVisualData", i);
+                                uint temp;
+                                V9_0_1_36216.Parsers.SpellHandler.ReadSpellCastVisual(out temp, packet, index, "SpellVisualData", i, "Visual");
+                                packet.ReadInt32("StartNodeIndex", index, "SpellVisualData", i);
                             }
                         }
 

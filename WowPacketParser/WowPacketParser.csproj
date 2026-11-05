@@ -455,6 +455,7 @@
     <Compile Include="Enums\Version\V3_4_0_43659\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_4_0_45166\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_4_1_47014\Opcodes.cs" />
+    <Compile Include="Enums\Version\V3_4_2_50129\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_4_3_51666\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_0_1_8874\UpdateFields.cs" />
     <Compile Include="Enums\Version\V3_0_2_9056\UpdateFields.cs" />
@@ -715,6 +716,7 @@
     <Compile Include="Store\Objects\SpellCastData.cs" />
     <Compile Include="Store\Objects\UpdateFields\IGlyphInfo.cs" />
     <Compile Include="Store\Objects\UpdateFields\IVisualAnim.cs" />
+    <Compile Include="Store\Objects\UpdateFields\IWeeklySpellUse.cs" />
     <Compile Include="Store\Objects\UpdateFields\IQuestSession.cs" />
     <Compile Include="Store\Objects\UpdateFields\IReplayedQuest.cs" />
     <Compile Include="Store\Objects\UpdateFields\ISelectedAzeriteEssences.cs" />
@@ -788,6 +790,7 @@
     <Compile Include="Store\Objects\UpdateFields\IArtifactPower.cs" />
     <Compile Include="Store\Objects\UpdateFields\IAzeriteEmpoweredItemData.cs" />
     <Compile Include="Store\Objects\UpdateFields\IAzeriteItemData.cs" />
+    <Compile Include="Store\Objects\UpdateFields\ICategoryCooldownMod.cs" />
     <Compile Include="Store\Objects\UpdateFields\ICharacterRestriction.cs" />
     <Compile Include="Store\Objects\UpdateFields\IContainerData.cs" />
     <Compile Include="Store\Objects\UpdateFields\IConversationActor.cs" />
@@ -819,6 +822,7 @@
     <Compile Include="Store\Objects\UpdateFields\ISpellCastVisual.cs" />
     <Compile Include="Store\Objects\UpdateFields\ISpellFlatModByLabel.cs" />
     <Compile Include="Store\Objects\UpdateFields\ISpellPctModByLabel.cs" />
+    <Compile Include="Store\Objects\UpdateFields\ITraitConfig.cs" />
     <Compile Include="Store\Objects\UpdateFields\IUnitChannel.cs" />
     <Compile Include="Store\Objects\UpdateFields\IUnitData.cs" />
     <Compile Include="Store\Objects\UpdateFields\IVisibleItem.cs" />
