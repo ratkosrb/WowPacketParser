@@ -130,11 +130,6 @@ namespace WowPacketParser.Enums.Version
         {
             ClientVersionBuild handlerBuild;
             UpdateFieldsHandlerBase handler;
-            // 3.4.0.44930 / 3.4.0.45043 have their own layout (V3_4_0_45166 module, V3_4_0_44930 handler)
-            if (ClientVersion.Build == ClientVersionBuild.V3_4_0_44930 || ClientVersion.Build == ClientVersionBuild.V3_4_0_45043)
-                if (UpdateFieldsHandlers.TryGetValue(ClientVersionBuild.V3_4_0_44930, out handler))
-                    return handler;
-
             if (Enum.TryParse(GetUpdateFieldDictionaryBuildName(ClientVersion.Build), out handlerBuild))
                 if (UpdateFieldsHandlers.TryGetValue(handlerBuild, out handler))
                     return handler;
@@ -919,6 +914,9 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V3_4_0_44930:
                 case ClientVersionBuild.V3_4_0_44996:
                 case ClientVersionBuild.V3_4_0_45043:
+                {
+                    return "V3_4_0_44930";
+                }
                 case ClientVersionBuild.V3_4_0_45064:
                 case ClientVersionBuild.V3_4_0_45102:
                 case ClientVersionBuild.V3_4_0_45166:
